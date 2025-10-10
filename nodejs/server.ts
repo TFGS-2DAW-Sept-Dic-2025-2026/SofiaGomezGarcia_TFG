@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import authRoutes from "./config_server/config_enrutamiento/routes/auth";
 import { authMiddleware } from "./config_server/authMiddleware";
 import router from "./config_server/config_enrutamiento/routes/routes";
+import path from "path";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 // Rutas para la verificacion en el registro
 app.use("/auth", authRoutes);
 app.use("/", router);
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.get("/profile", authMiddleware, (req, res) => {
   res.json({ msg: "Perfil de usuario", user: (req as any).user });

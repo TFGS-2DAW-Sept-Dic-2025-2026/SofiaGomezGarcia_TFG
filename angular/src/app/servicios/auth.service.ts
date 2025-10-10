@@ -189,8 +189,8 @@ export class AuthService {
 
 
   getUserName(): string {
-  return this.getDatosUsuario()?.username || '';
-}
+    return this.getDatosUsuario()?.username || '';
+  }
 
   /**
    * Actualiza el perfil del usuario
@@ -421,4 +421,27 @@ export class AuthService {
   }
 
   //#endregion
+
+
+  subirFotoPerfil(formData: FormData) {
+    return this.http.post<{ url: string }>('http://localhost:5000/auth/foto', formData, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.getSessionToken() || ''}`
+      })
+    });
+  }
+
+  actualizarDatosUsuario(datos: Partial<IUsuario>): void {
+    this._datosUsuario.update(prev => {
+      if (prev) {
+        return { ...prev, ...datos };
+      }
+      return { ...datos } as IUsuario;
+    });
+
+    // Persistir en sessionStorage
+    this.persistUserDataToSessionStorage();
+  }
+
+
 }

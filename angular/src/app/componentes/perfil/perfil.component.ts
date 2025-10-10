@@ -15,7 +15,7 @@ import { LayoutComponent } from '../layout/layout.component';
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   standalone: true,
-  imports: [CommonModule, RouterModule,LayoutComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent],
 
 })
 export class PerfilComponent implements OnInit {
@@ -26,9 +26,35 @@ export class PerfilComponent implements OnInit {
   lista: any = null;
   esMiPerfil = false;
 
- auth = inject(AuthService);
+  auth = inject(AuthService);
   listasService = inject(ListasService);
   seriesService = inject(seriesService);
+  fotoSeleccionada?: File;
+
+  onFotoSeleccionada(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.fotoSeleccionada = input.files[0];
+      this.subirFotoPerfil();
+    }
+  }
+
+  subirFotoPerfil() {
+    if (!this.fotoSeleccionada) return;
+
+    const formData = new FormData();
+    formData.append('foto', this.fotoSeleccionada);
+    formData.append('userId', this.usuario.id); 
+
+    this.auth.subirFotoPerfil(formData).subscribe({
+      next: (res) => {
+        this.usuario.fotoPerfil = res.url;
+        this.auth.actualizarDatosUsuario(this.usuario);
+      },
+      error: (err) => console.error('Error al subir foto:', err)
+    });
+  }
+
 
 
   ngOnInit(): void {
@@ -38,6 +64,9 @@ export class PerfilComponent implements OnInit {
     } else {
       // TODO: traer datos de otro usuario por ID
     }
+
+
+
 
     // this.cargarAmigos();
     // this.cargarListasPublicas();
