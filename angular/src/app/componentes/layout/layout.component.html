@@ -1,0 +1,41 @@
+<div class="layout">
+
+  <!-- Logo -->
+  <div class="logo-container" routerLink="/">
+    <img src="recursos/Logo.png" alt="Logo" class="logo">
+  </div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <nav class="navbar">
+
+      <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a class="nav-link" routerLink="/favoritas" routerLinkActive="active-link">Favoritos</a>
+      <a class="nav-link" routerLink="/listas" routerLinkActive="active-link">Listas</a>
+      <a class="nav-link" routerLink="/seguimiento" routerLinkActive="active-link">Seguimiento</a>
+      <a class="nav-link" routerLink="/descubre" routerLinkActive="active-link">Descubre</a>
+
+      <ng-container *ngIf="!auth.hasValidSession(); else loggedIn">
+        <button class="btn" routerLink="/login">Iniciar Sesión</button>
+        <button class="btn btn-primary" routerLink="/registro">Registrarse</button>
+      </ng-container>
+
+      <ng-template #loggedIn>
+        <button class="btn btn-danger" (click)="auth.logout()">Cerrar Sesión</button>
+      </ng-template>
+    </nav>
+  </aside>
+
+  <div class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
+    <span class="user-name">{{ auth.username$() || 'Usuario' }}</span>
+  </div>
+
+
+  <!-- Contenido de la página -->
+
+  <ng-content></ng-content>
+
+
+
+</div>

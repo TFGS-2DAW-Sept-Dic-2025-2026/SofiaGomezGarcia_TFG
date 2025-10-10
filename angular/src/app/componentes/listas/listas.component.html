@@ -1,0 +1,71 @@
+<app-layout>
+
+  <!-- Contenido principal -->
+  <main class="listas flex-grow-1 bg-light p-4" *ngIf="isLoggedIn; else noAuth" style="margin-left: 220px;">
+    <div class="container">
+
+      <!-- Crear lista -->
+      <section class="crear-lista mb-5">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="h4 mb-3">Crear nueva lista</h2>
+            <form class="row g-3" (ngSubmit)="crearLista()">
+              <div class="col-md-5">
+                <input type="text" class="form-control" [(ngModel)]="nuevaLista.nombre" name="nombre"
+                  placeholder="Nombre de la lista" required />
+              </div>
+              <div class="col-md-5">
+                <input type="text" class="form-control" [(ngModel)]="nuevaLista.descripcion"
+                  name="descripcion" placeholder="Descripción" />
+              </div>
+              <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-success">+ Crear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Estado de carga -->
+      <section *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3">Cargando tus listas...</p>
+      </section>
+
+      <!-- Listas -->
+      <section *ngIf="!loading && listas.length > 0">
+        <h2 class="h4 mb-4">Mis listas</h2>
+
+        <div class="row g-3">
+          <div *ngFor="let lista of listas" class="col-md-6 col-lg-4" [routerLink]="['/listas', lista._id]" style="cursor: pointer;">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ lista.nombre }}</h5>
+                <p class="card-text text-muted flex-grow-1">{{ lista.descripcion || 'Sin descripción' }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-secondary">{{ lista.series.length }} series</small>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="eliminarLista(lista._id); $event.stopPropagation()">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sin listas -->
+      <section *ngIf="!loading && listas.length === 0" class="text-center mt-5">
+        <p class="text-muted fs-5">No tienes listas creadas aún. ¡Crea tu primera lista arriba! 🎬</p>
+      </section>
+
+    </div>
+  </main>
+
+  <ng-template #noAuth>
+    <p>Por favor, inicia sesión para crear y gestionar tus listas de series.</p>
+  </ng-template>
+
+</app-layout>

@@ -1,0 +1,27 @@
+
+<app-layout>
+
+  <!-- Contenido principal -->
+  <main class="home">
+    <h1>Bienvenido a ShowMeShows</h1>
+
+    <ng-container *ngIf="auth.hasValidSession(); else noAuth">
+      <div class="series-list">
+        <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" alt="{{ serie.name }}">
+          <h3>{{ serie.name }}</h3>
+          <p class="mb-1"><strong>Año:</strong> {{ serie.first_air_date | date:'yyyy' }}</p>
+          <p><strong>Puntuación:</strong> {{ serie.vote_average }}/10</p>
+        </div>
+      </div>
+
+      <div *ngIf="loading" class="loading">
+        <p>Cargando más series...</p>
+      </div>
+    </ng-container>
+
+    <ng-template #noAuth>
+      <p>Por favor, inicia sesión para descubrir series.</p>
+    </ng-template>
+  </main>
+</app-layout>

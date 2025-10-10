@@ -1,0 +1,23 @@
+<app-layout>
+
+  <main class="home">
+    <h1>Tus series favoritas</h1>
+
+    <ng-container *ngIf="auth.hasValidSession(); else noAuth">
+      <div *ngIf="loading">Cargando favoritas...</div>
+
+      <div class="series-list" *ngIf="!loading && series.length > 0">
+        <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" alt="{{ serie.name }}">
+          <h3>{{ serie.name }}</h3>
+        </div>
+      </div>
+
+      <p *ngIf="!loading && series.length === 0">No tienes series favoritas todavía.</p>
+    </ng-container>
+
+    <ng-template #noAuth>
+      <p>Por favor, inicia sesión para ver tus favoritas.</p>
+    </ng-template>
+  </main>
+</app-layout>

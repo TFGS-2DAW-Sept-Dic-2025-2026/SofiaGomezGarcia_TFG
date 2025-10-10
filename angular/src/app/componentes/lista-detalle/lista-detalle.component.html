@@ -1,0 +1,47 @@
+<app-layout>
+
+    <!-- Contenido principal -->
+    <main class="lista-detalle flex-grow-1 bg-light p-4" style="margin-left: 220px;">
+        <div *ngIf="lista && isLoggedIn; else noAuth" class="container py-4">
+
+            <h2 class="fw-bold text-warning mb-3">{{ lista.nombre }}</h2>
+            <p class="text-secondary mb-4">{{ lista.descripcion || 'Sin descripción' }}</p>
+
+            <!-- Spinner -->
+            <div *ngIf="loading" class="text-center my-5">
+                <div class="spinner-border text-warning" role="status"></div>
+                <p class="mt-3">Cargando series...</p>
+            </div>
+
+            <!-- Series -->
+            <div *ngIf="!loading && lista.series.length > 0" class="series-list grid gap-4">
+                <div *ngFor="let serie of lista.series" class="serie-card shadow-sm rounded overflow-hidden">
+                    <div class="serie-img-container" [routerLink]="['/serie', serie.id]">
+                        <img *ngIf="serie.poster_path" [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path"
+                            alt="{{ serie.name }}" class="card-img-top rounded-top" />
+                    </div>
+                    <div class="serie-info p-2 d-flex flex-column">
+                        <h5 class="card-title text-dark">{{ serie.name }}</h5>
+                        <p class="text-muted mb-2" *ngIf="serie.first_air_date">{{ serie.first_air_date | date:'yyyy' }}
+                        </p>
+                        <button type="button" class="btn btn-outline-danger mt-auto" (click)="eliminarSerie(serie.id)" >
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista vacía -->
+            <div *ngIf="!loading && lista.series.length === 0" class="text-center mt-5">
+                <p class="text-muted fs-5">No hay series en esta lista aún 🎬</p>
+            </div>
+        </div>
+
+        <!-- No autenticado -->
+        <ng-template #noAuth>
+            <div class="text-center mt-5">
+                <p>Por favor, inicia sesión para ver tus listas.</p>
+            </div>
+        </ng-template>
+    </main>
+</app-layout>

@@ -1,0 +1,31 @@
+<h2>Iniciar Sesión</h2>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label>Email</label>
+    <input type="email" formControlName="email" />
+    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+      El email no es válido
+    </div>
+  </div>
+
+  <div>
+    <label>Contraseña</label>
+    <input type="password" formControlName="password" />
+    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+      La contraseña debe tener al menos 6 caracteres
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+</form>
+
+<!-- Mensaje de error -->
+<div *ngIf="errorMessage" style="color:red">
+  {{ errorMessage }}
+</div>
+
+<!-- Mensaje de bienvenida opcional después de iniciar sesión -->
+<ng-container *ngIf="auth.hasValidSession()">
+  <p>¡Bienvenido {{ auth.datosUsuario$()?.username }}!</p>
+</ng-container>

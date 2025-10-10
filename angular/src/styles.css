@@ -1,0 +1,260 @@
+
+/* Reinicio global */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  background-color: #00121A !important;
+
+}
+
+/*ESTILOS GLOBALES DEL LAYOUT*/
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  min-height: 100%;
+  width: 100%;
+  background-color: #00121A;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100%;
+  width: 100%;
+  color: #fff;
+}
+
+.nav-link.active-link {
+  color: #80CED7;      /* color de la página activa */
+  font-weight: bold;
+  padding-left: 8px;   /* si usas border-left */
+}
+
+
+.sidebar {
+  position: sticky;
+  top:170px;
+  grid-column: 1 / 2;
+  width: 220px;
+  height: 60vh;
+  background-color: #001A26;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+  margin-left: 20px;
+  box-sizing: border-box;
+  border-radius: 26px;
+}
+
+
+
+
+.logo-container {
+  position: sticky;
+  top: 0;
+  margin-bottom: 40px;
+  width: 100%;
+  text-align: center;
+  margin-left: 10px;
+}
+.logo {
+  cursor: pointer;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}
+
+/* Navegación vertical dentro del sidebar */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+}
+
+.navbarUsuario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.nav-link {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 0;
+  font-size: 1.1rem;
+  transition: color 0.3s;
+}
+
+.navbar .nav-link:hover {
+  color: #80CED7;
+}
+
+.nav-usuario{
+  color: #80CED7;
+}
+
+/* Botones */
+.btn {
+  padding: 8px 16px;
+  border: 1px solid #555;
+  background: white;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s;
+  width: 80%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.btn:hover { background: #eee; }
+.btn-primary { background: #007bff; color: white; border: none; }
+.btn-primary:hover { background: #0056b3; }
+.btn-danger { background: #d9534f; color: white; border: none; }
+.btn-danger:hover { background: #b52b27; }
+
+
+.home {
+  grid-column: 2 / -1;
+  padding: 40px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.user-box {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  background-color: #001A26;
+  border-radius: 20px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  height: 50px;
+  min-width: 150px;
+  text-align: center;
+}
+
+
+
+.sidebar-usuario {
+  position: fixed;
+  top: calc(170px + 60vh + 20px);
+  left: 20px; 
+  width: 220px;
+  height: 8vh;
+  background-color: #001A26;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 26px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  z-index: 10; 
+}
+
+.user-name {
+  color: #80CED7;
+  font-size: 1.1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+/* Estilos para el perfil */
+
+/* .perfil-container {
+  margin-left: 0; 
+  padding: 40px 20px; 
+  max-width: 900px; 
+  margin-left: 240px; 
+  box-sizing: border-box;
+} */
+
+.perfil-container {
+  grid-column: 2 / -1; /* ocupa solo la columna de contenido */
+  padding: 40px 20px;   /* espacio interno */
+  max-width: 900px;     /* limita el ancho */
+  margin: 0 auto;       /* centra horizontalmente dentro de la columna */
+  box-sizing: border-box;
+}
+
+.homePerfil {
+  grid-column: 2 / -1; /* ocupa columna de contenido */
+  padding: 40px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* Header de perfil centrado dentro del contenedor */
+.perfil-header {
+  background-color: #001A26;
+  border-radius: 15px;
+  padding: 20px 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+/* Avatar wrapper */
+.perfil-header .avatar-wrapper {
+  width: 130px;
+  height: 130px;
+  position: relative;
+}
+
+/* Avatar circular con degradado y sombra */
+  .perfil-header .avatar-marcado {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 20px #80CED7, 0 0 0 5px #001A26;
+  background: linear-gradient(135deg, #80CED7 20%, #007bff 100%);
+  border: 4px solid #fff;
+}
+
+/* Nombre destacado */
+.perfil-header .nombre-usuario {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.7rem;
+  color: #80CED7;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Botón de acción */
+.perfil-header .btn-primary {
+  background-color: #80CED7;
+  color: #001A26;
+  border: none;
+  padding: 6px 28px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.perfil-header .btn-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+  transform: translateY(-2px) scale(1.05);
+}

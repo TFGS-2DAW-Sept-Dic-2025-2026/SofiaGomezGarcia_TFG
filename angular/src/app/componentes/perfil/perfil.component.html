@@ -1,0 +1,55 @@
+<app-layout>
+  <div class="homePerfil">
+  <main class="perfil-container py-4">
+    <div class="perfil-header card shadow-sm p-3 mb-4 d-flex align-items-center gap-4">
+      <!-- Avatar -->
+      <div class="avatar-wrapper position-relative">
+        <img *ngIf="usuario?.fotoPerfil; else placeholderAvatar"
+             [src]="usuario.fotoPerfil"
+             alt="Avatar"
+             class="avatar-marcado propio-avatar">
+        <ng-template #placeholderAvatar>
+          <img src="recursos/🚬.jpg" alt="Avatar" class="avatar-marcado propio-avatar">
+        </ng-template>
+      </div>
+
+      <!-- Info usuario -->
+      <div class="flex-grow-1 d-flex flex-column justify-content-center">
+        <h2 class="nombre-usuario mb-1">{{ usuario.username }}</h2>
+        <p class="text-muted mb-2">{{ amigos.length }} amigos</p>
+        <button *ngIf="!esMiPerfil" class="btn btn-primary btn-sm w-auto"
+                (click)="enviarSolicitudAmistad()">Agregar amigo</button>
+      </div>
+    </div>
+  </main>
+</div>
+</app-layout>
+
+
+
+
+<!-- <app-layout>
+  <main class="perfil-container py-4" style="margin-left: 220px;">
+
+   
+    <div class="perfil-header card shadow-sm p-3 mb-4 d-flex align-items-center gap-4">
+
+      <div class="avatar-wrapper position-relative">
+        <img *ngIf="usuario?.fotoPerfil; else placeholderAvatar" [src]="usuario.fotoPerfil" 
+             class="avatar-marcado propio-avatar">
+        <ng-template #placeholderAvatar>
+          <img src="recursos/🚬.jpg" class="avatar-marcado propio-avatar" alt="Avatar">
+        </ng-template>
+      </div>
+
+      <div class="flex-grow-1 d-flex flex-column justify-content-center">
+        <h2 class="nombre-usuario mb-1">{{ usuario.username }}</h2>
+        <p class="text-muted mb-2">{{ amigos.length }} amigos</p>
+        <button *ngIf="!esMiPerfil" class="btn btn-primary btn-sm w-auto"
+                (click)="enviarSolicitudAmistad()">Agregar amigo</button>
+      </div>
+
+    </div>
+
+  </main>
+</app-layout> -->
