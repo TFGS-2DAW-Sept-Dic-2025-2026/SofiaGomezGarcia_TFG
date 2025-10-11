@@ -19,5 +19,9 @@ router.post("/listas/:id/eliminar", listasController.eliminarSerieDeLista); // C
 router.get("/listas/:id", listasController.obtenerListaPorId);
 router.delete("/listas/:id", listasController.eliminarLista);
 
+router.get('/series/descubrir', apiController.descubrirSeries);
+router.get('/series/generos', apiController.obtenerGeneros);
+router.get('/series/proveedores', apiController.obtenerProveedores);
+
 
 export default router;

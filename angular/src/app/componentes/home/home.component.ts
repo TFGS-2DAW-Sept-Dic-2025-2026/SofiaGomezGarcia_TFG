@@ -22,12 +22,12 @@ export class HomeComponent {
   loading = false;
 
   constructor() {
-    // Inicializa solo si ya hay sesión válida
+    
     if (this.auth.hasValidSession()) {
       this.loadSeries();
     }
 
-    // efecto reactivo: se ejecuta en contexto de inyección
+    
     effect(() => {
       this.isLoggedIn = this.auth.hasValidSession();
       if (this.isLoggedIn) {

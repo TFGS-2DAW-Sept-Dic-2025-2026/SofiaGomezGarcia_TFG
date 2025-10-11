@@ -10,7 +10,8 @@
   <aside class="sidebar">
     <nav class="navbar">
 
-      <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a class="nav-link" routerLink="/" routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }">Home</a>
       <a class="nav-link" routerLink="/favoritas" routerLinkActive="active-link">Favoritos</a>
       <a class="nav-link" routerLink="/listas" routerLinkActive="active-link">Listas</a>
       <a class="nav-link" routerLink="/seguimiento" routerLinkActive="active-link">Seguimiento</a>
@@ -27,8 +28,17 @@
     </nav>
   </aside>
 
+  
+
   <div class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
-    <span class="user-name">{{ auth.username$() || 'Usuario' }}</span>
+    <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" [src]="usuario?.fotoPerfil + '?' + usuario?.id"
+      alt="Foto de perfil" class="sidebar-avatar" />
+
+    <ng-template #defaultAvatar>
+      <img src="recursos/🚬.jpg" alt="Avatar por defecto" class="sidebar-avatar" />
+    </ng-template>
+
+    <span class="user-name">{{ usuario?.username || 'Usuario' }}</span>
   </div>
 
 

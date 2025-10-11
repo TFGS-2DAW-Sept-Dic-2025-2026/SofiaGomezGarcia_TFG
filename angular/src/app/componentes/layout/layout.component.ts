@@ -11,4 +11,10 @@ import { AuthService } from '../../servicios/auth.service';
 })
 export class LayoutComponent {
   auth = inject(AuthService);
+
+
+   get usuario() {
+    return this.auth.getDatosUsuario();
+  }
+
 }

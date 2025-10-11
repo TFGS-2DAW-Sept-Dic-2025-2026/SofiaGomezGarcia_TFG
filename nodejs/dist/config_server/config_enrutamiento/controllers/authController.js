@@ -21,10 +21,12 @@ const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 //Controlador para JWT el token y la verificacion en general de los usuarios en el registro y login
+//multer es un middleware para manejar la subida de archivos en este caso para gestionar las imagenes de las fotos de perfil
+//este guarda las imagenes en una carpeta llamada uploads
+//y luego se guarda la url en la base de datos del usuario
 // ===============================
 // CONFIGURACIÓN DE MULTER
 // ===============================
-// Configuración del almacenamiento de archivos
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = path_1.default.join(process.cwd(), "uploads");
@@ -38,7 +40,7 @@ const storage = multer_1.default.diskStorage({
         cb(null, uniqueSuffix + path_1.default.extname(file.originalname));
     }
 });
-// Filtro para restringir tipos de archivo
+// Filtro para restringir tipos de archivo y que solo se suban fotos
 const fileFilter = (req, file, cb) => {
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
     if (!allowedTypes.includes(file.mimetype)) {
@@ -48,7 +50,6 @@ const fileFilter = (req, file, cb) => {
         cb(null, true);
     }
 };
-// Export del middleware de subida configurado
 exports.upload = (0, multer_1.default)({
     storage,
     fileFilter
@@ -57,27 +58,21 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, email, password } = req.body;
         console.log('Datos recibidos:', req.body);
-        // Verificar si ya existe
         const userExists = yield usuario_1.default.findOne({ email });
         if (userExists) {
             res.status(400).json({ msg: "El email ya está registrado" });
             return;
         }
-        // Hashear contraseña
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
-        // Crear usuario
         const newUser = new usuario_2.default({
             username,
             email,
             passwordHash: hashedPassword
         });
-        // Crear token JWT
         const token = jsonwebtoken_1.default.sign({ id: newUser._id, username: newUser.username }, process.env.JWT_SECRET, { expiresIn: "1d" });
         const refreshToken = jsonwebtoken_1.default.sign({ id: newUser._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
         newUser.refreshToken = refreshToken;
-        // Guardar usuario en DB
         yield newUser.save();
-        // Devolver token y datos de usuario
         res.status(201).json({
             msg: "Usuario registrado correctamente",
             token,
@@ -95,21 +90,17 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
         console.log('Datos recibidos:', req.body);
-        // Se busca el usuario
         const user = yield usuario_2.default.findOne({ email });
         if (!user) {
             res.status(400).json({ msg: "Usuario no encontrado" });
             return;
         }
-        // Para validar la contra
         const isMatch = yield bcrypt_1.default.compare(password, user.passwordHash);
         if (!isMatch) {
             res.status(400).json({ msg: "Contraseña incorrecta" });
             return;
         }
-        // token de sesion
         const token = jsonwebtoken_1.default.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "1d" });
-        // Crear refresh token
         const refreshToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
         user.refreshToken = refreshToken;
         yield user.save();
@@ -127,19 +118,17 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.login = login;
 const subirFotoPerfil = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // multer agrega el archivo a req.file
+        //endpoint para subir la foto de perfil
         if (!req.file) {
             res.status(400).json({ msg: "No se subió ningún archivo" });
             return;
         }
-        const userId = req.body.userId; // enviado desde Angular
+        const userId = req.body.userId;
         if (!userId) {
             res.status(400).json({ msg: "Falta el ID del usuario" });
             return;
         }
-        // Construimos la URL pública
         const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
-        // Actualizamos al usuario
         const user = yield usuario_1.default.findByIdAndUpdate(userId, { fotoPerfil: imageUrl }, { new: true });
         if (!user) {
             res.status(404).json({ msg: "Usuario no encontrado" });
