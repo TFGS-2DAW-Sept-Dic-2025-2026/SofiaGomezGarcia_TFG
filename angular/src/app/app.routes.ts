@@ -9,6 +9,7 @@ import { ListasComponent } from './componentes/listas/listas.component';
 import { ListaDetalleComponent } from './componentes/lista-detalle/lista-detalle.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { DescubreComponent } from './descubre/descubre.component';
+import { SeguimientoComponent } from './componentes/seguimiento/seguimiento.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -20,5 +21,6 @@ export const routes: Routes = [
     { path: 'listas/:id', component: ListaDetalleComponent, canActivate: [authGuard] },
     { path: 'perfil', component: PerfilComponent, canActivate: [authGuard] },
     { path: 'descubre', component:DescubreComponent, canActivate: [authGuard] },
+    { path: 'seguimiento', component: SeguimientoComponent, canActivate: [authGuard] },
 
 ];

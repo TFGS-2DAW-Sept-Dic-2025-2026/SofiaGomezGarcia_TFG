@@ -6,11 +6,14 @@ import { AuthService } from '../../servicios/auth.service';
 import { FavoritesService } from '../../servicios/favorites.service';
 import { ListasService } from '../../servicios/listas.service';
 import { LayoutComponent } from '../layout/layout.component';
+import { SeguimientoService } from '../../servicios/seguimiento.service';
+
+
 
 @Component({
   selector: 'app-informacion-serie',
   standalone: true,
-  imports: [RouterModule, CommonModule,LayoutComponent],
+  imports: [RouterModule, CommonModule, LayoutComponent],
   templateUrl: './informacion-serie.component.html',
   styleUrls: ['./informacion-serie.component.css'],
 })
@@ -19,29 +22,34 @@ export class InformacionSerieComponent implements OnInit {
   seriesService = inject(seriesService);
   favoritesService = inject(FavoritesService);
   listasService = inject(ListasService);
+  seguimientoService = inject(SeguimientoService);
 
   serie: any;
   isFavorite = false;
+  isFollowing = false;
   showListMenu = false;
   listasUsuario: any[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.seriesService.getSeriesByID(id).subscribe({
-        next: (data) => {
-          this.serie = data;
-          this.checkIfFavorite(id);
-        },
-        error: (err) => console.error('Error cargando la serie:', err),
-      });
-    }
+  const id = this.route.snapshot.paramMap.get('id');
+  if (id) {
+    this.seriesService.getSeriesByID(id).subscribe({
+      next: (data) => {
+        this.serie = data;
+        this.checkIfFavorite(id);
+        this.checkIfFollowing(this.serie.id || this.serie._id); 
+      },
+      error: (err) => console.error('Error cargando la serie:', err),
+    });
   }
+}
+
+  // ---------- FAVORITOS ----------
 
   private checkIfFavorite(serieId: string) {
-    if (!this.auth.hasValidSession()) return; 
+    if (!this.auth.hasValidSession()) return;
 
     this.favoritesService.getFavorites().subscribe({
       next: (res) => {
@@ -53,7 +61,7 @@ export class InformacionSerieComponent implements OnInit {
   }
 
   toggleFavorite() {
-    if (!this.auth.hasValidSession()) return; 
+    if (!this.auth.hasValidSession()) return;
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
@@ -65,7 +73,8 @@ export class InformacionSerieComponent implements OnInit {
     });
   }
 
-  
+  // ---------- LISTAS ----------
+
   toggleListMenu() {
     if (!this.showListMenu) {
       this.obtenerListasUsuario();
@@ -73,7 +82,7 @@ export class InformacionSerieComponent implements OnInit {
     this.showListMenu = !this.showListMenu;
   }
 
-  
+
   obtenerListasUsuario() {
     this.listasService.getListas().subscribe({
       next: (res) => {
@@ -83,7 +92,7 @@ export class InformacionSerieComponent implements OnInit {
     });
   }
 
-  
+
   agregarSerieALista(idLista: string) {
     if (!this.serie?._id && !this.serie?.id) return;
     const idSerie = this.serie._id || this.serie.id;
@@ -97,5 +106,52 @@ export class InformacionSerieComponent implements OnInit {
     });
   }
 
+  // ---------- SEGUIMIENTO ----------
+
+  private checkIfFollowing(idSerieTMDB: string) {
+    if (!this.auth.hasValidSession()) return;
+
+    this.seguimientoService.getSeguimientos().subscribe({
+      next: (res) => {
+        const siguiendo = res.some((s: any) => s.idSerieTMDB == idSerieTMDB);
+        this.isFollowing = siguiendo;
+      },
+      error: (err) => console.error('Error al comprobar seguimiento:', err),
+    });
+  }
+
+  toggleSeguimiento() {
+    if (!this.auth.hasValidSession()) return;
+
+    const idSerieTMDB = this.serie.id || this.serie._id;
+    if (!idSerieTMDB) return;
+
+    if (this.isFollowing) {
+      // Dejar de seguir
+      this.seguimientoService.eliminarSeguimiento(idSerieTMDB).subscribe({
+        next: () => {
+          this.isFollowing = false;
+          console.log('Serie eliminada del seguimiento');
+        },
+        error: (err) => console.error('Error al eliminar seguimiento:', err),
+      });
+    } else {
+      // Seguir serie
+      const seguimientoData = {
+        idSerieTMDB: idSerieTMDB,
+        titulo: this.serie.name,
+        poster_path: this.serie.poster_path,
+        totalTemporadas: this.serie.number_of_seasons || 0,
+      };
+
+      this.seguimientoService.agregarSeguimiento(seguimientoData).subscribe({
+        next: () => {
+          this.isFollowing = true;
+          console.log('Serie añadida al seguimiento');
+        },
+        error: (err) => console.error('Error al agregar seguimiento:', err),
+      });
+    }
+  }
 
 }

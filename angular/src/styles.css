@@ -283,3 +283,105 @@ html, body {
   border-radius: 1rem;
   align-items: center;
 }
+
+/* Estilos para el componente Seguimiento */
+
+.seguimiento-page {
+  grid-column: 2 / -1;
+  padding: 40px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.seguimiento-header {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.seguimiento-tab {
+  background-color: #001A26;
+  color: #80CED7;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.seguimiento-tab.active {
+  background-color: #80CED7;
+  color: #00121A;
+}
+
+.seguimiento-tab:hover {
+  background-color: #80CED7;
+  color: #00121A;
+}
+
+.seguimiento-lista {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px; 
+}
+
+.serie-card-horizontal {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #001A26;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s;
+  height: 30vh;
+}
+
+.serie-card-horizontal:hover {
+  transform: scale(1.02);
+}
+
+.serie-poster {
+  width: 160px;
+  height: 100%;
+  object-fit: cover;
+  border-right: 4px solid #00121A;
+}
+
+.serie-info {
+  flex: 1;
+  padding: 20px;
+  color: #fff;
+}
+
+.serie-info h3 {
+  color: #80CED7;
+  margin-bottom: 10px;
+}
+
+.btn-marcar {
+  background-color: #80CED7;
+  color: #001A26;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-marcar:hover {
+  background-color: #00121A;
+  color: #80CED7;
+  transform: translateY(-2px);
+}
+
+.serie-titulo {
+  font-size: 0.8rem;
+  font-weight: 600;
+  
+  color: #9b9b9b;
+}

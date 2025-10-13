@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import mongoose, { mongo } from "mongoose";
 import dotenv from 'dotenv';
 
+
 dotenv.config();
 
 
@@ -11,20 +12,20 @@ const API_KEY = process.env.TMDB_API_KEY;
 export default {
     buscarSeries: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const query = req.query.q as string; 
+            const query = req.query.q as string;
             if (!query) {
                 return res.status(400).json({ error: "Debes introducir una Serie" });
             }
 
             const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(query)}&page=1`;
 
-            const response = await fetch(url); 
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`Error en TMDb: ${response.statusText}`);
             }
 
             const data = await response.json();
-            res.json(data.results); 
+            res.json(data.results);
 
         } catch (error) {
             console.error(error);
@@ -45,10 +46,10 @@ export default {
             const data = await response.json();
 
             res.json({
-                page: data.page,                
-                total_pages: data.total_pages,  
-                total_results: data.total_results, 
-                results: data.results            
+                page: data.page,
+                total_pages: data.total_pages,
+                total_results: data.total_results,
+                results: data.results
             });
         } catch (error) {
             console.error(error);
@@ -85,7 +86,7 @@ export default {
                 throw new Error(`Error en TMDb: ${response.statusText}`);
             }
             const data = await response.json();
-            res.json(data); 
+            res.json(data);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Error obteniendo géneros" });
@@ -99,44 +100,60 @@ export default {
                 throw new Error(`Error en TMDb: ${response.statusText}`);
             }
             const data = await response.json();
-            res.json(data); 
+            res.json(data);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Error obteniendo proveedores" });
         }
     },
     descubrirSeries: async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { query, with_genres, with_original_language, with_watch_providers, page } = req.query;
+        try {
+            const { query, with_genres, with_original_language, with_watch_providers, page } = req.query;
 
-    const baseEndpoint = query ? "search/tv" : "discover/tv";
+            const baseEndpoint = query ? "search/tv" : "discover/tv";
 
-    
-    const pageNum = page ? Number(page) : 1;
 
-    let url = `${BASE_URL}/${baseEndpoint}?api_key=${API_KEY}&language=es-ES&page=${pageNum}`;
+            const pageNum = page ? Number(page) : 1;
 
-    if (query) url += `&query=${encodeURIComponent(query as string)}`;
-    if (with_genres) url += `&with_genres=${encodeURIComponent(with_genres as string)}`;
-    if (with_original_language) url += `&with_original_language=${encodeURIComponent(with_original_language as string)}`;
-    if (with_watch_providers) url += `&with_watch_providers=${encodeURIComponent(with_watch_providers as string)}&watch_region=ES`;
+            let url = `${BASE_URL}/${baseEndpoint}?api_key=${API_KEY}&language=es-ES&page=${pageNum}`;
 
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Error en TMDb: ${response.statusText}`);
+            if (query) url += `&query=${encodeURIComponent(query as string)}`;
+            if (with_genres) url += `&with_genres=${encodeURIComponent(with_genres as string)}`;
+            if (with_original_language) url += `&with_original_language=${encodeURIComponent(with_original_language as string)}`;
+            if (with_watch_providers) url += `&with_watch_providers=${encodeURIComponent(with_watch_providers as string)}&watch_region=ES`;
 
-    const data = await response.json();
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Error en TMDb: ${response.statusText}`);
 
-    res.json({
-      page: data.page || pageNum,
-      total_pages: data.total_pages || 1,
-      total_results: data.total_results || 0,
-      results: data.results || []
-    });
+            const data = await response.json();
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error descubriendo series" });
-  }
-}
+            res.json({
+                page: data.page || pageNum,
+                total_pages: data.total_pages || 1,
+                total_results: data.total_results || 0,
+                results: data.results || []
+            });
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Error descubriendo series" });
+        }
+    },
+    obtenerTemporada: async (req: Request, res: Response) => {
+        try {
+            const idSerie = req.params.id;              
+            const numeroTemporada = req.params.seasonNumber; 
+            const url = `${BASE_URL}/tv/${idSerie}/season/${numeroTemporada}?api_key=${API_KEY}&language=es-ES`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Error en TMDb: ${response.statusText}`);
+            }
+            const data = await response.json();
+            res.json(data);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Error obteniendo detalles de la temporada" });
+        }
+    }
 
 }

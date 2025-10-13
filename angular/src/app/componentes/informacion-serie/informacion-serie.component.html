@@ -7,13 +7,11 @@
     <div class="overlay-gradient"></div>
 
     <div class="serie-content">
-      <!-- Imagen -->
       <div class="poster-container">
         <img [src]="'https://image.tmdb.org/t/p/w500' + serie.poster_path" alt="{{ serie.name }}"
           class="poster rounded-4 shadow-lg" />
       </div>
 
-      <!-- Información -->
       <div class="info-container">
         <h1 class="fw-bold text-primary mb-3">{{ serie.name }}</h1>
         <p class="lead text-light mb-4">
@@ -32,11 +30,17 @@
             <i class="bi" [ngClass]="isFavorite ? 'bi-star-fill' : 'bi-star'"></i>
             {{ isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos' }}
           </button>
+
+          <button class="btn" [class.btn-success]="!isFollowing" [class.btn-danger]="isFollowing"
+            (click)="toggleSeguimiento()">
+            <i class="bi" [ngClass]="isFollowing ? 'bi-check-circle-fill' : 'bi-plus-circle'"></i>
+            {{ isFollowing ? 'Dejar de Seguir' : 'Seguir Serie' }}
+          </button>
+
           <button class="btn btn-warning text-dark" (click)="toggleListMenu()">
             <i class="bi bi-star-fill"></i> Agregar a Lista
           </button>
 
-          <!-- Menú desplegable de listas -->
           <div *ngIf="showListMenu" class="menu-listas mt-3 p-3 bg-dark rounded shadow-lg">
             <h5 class="text-light mb-2">Selecciona una lista:</h5>
             <ul class="list-unstyled">

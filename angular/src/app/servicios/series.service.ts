@@ -42,4 +42,8 @@ export class seriesService {
     return this.http.get(`${this.apiUrl}/series/descubrir`, { params });
   }
 
+  getTemporada(idSerie: string, numeroTemporada: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/serie/${idSerie}/temporada/${numeroTemporada}`);
+  }
+
 }

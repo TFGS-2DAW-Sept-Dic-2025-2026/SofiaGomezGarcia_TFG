@@ -1,0 +1,49 @@
+<app-layout>
+  <div class="seguimiento-page">
+    <div class="seguimiento-header">
+      <button class="seguimiento-tab" [class.active]="filtro === 'siguiendo'" (click)="cambiarFiltro('siguiendo')">
+        Continuar viendo
+      </button>
+      <button class="seguimiento-tab" [class.active]="filtro === 'noComenzada'" (click)="cambiarFiltro('noComenzada')">
+        No comenzadas
+      </button>
+      <button class="seguimiento-tab" [class.active]="filtro === 'completada'" (click)="cambiarFiltro('completada')">
+        Completadas
+      </button>
+    </div>
+
+    <div class="seguimiento-lista">
+      <div *ngFor="let serie of series" class="serie-card-horizontal">
+        <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" alt="{{ serie.name }}">
+        <div class="serie-info">
+          <h3>{{ serie.name }}</h3>
+
+          
+          <p *ngIf="serie.seguimiento.estado === 'siguiendo'">
+            Siguiente capítulo: 
+            T{{ serie.seguimiento.ultimoCapitulo?.temporada || 1 }}
+            E{{ serie.seguimiento.ultimoCapitulo?.numero || 0 }}
+          </p>
+
+          
+          <p *ngIf="serie.seguimiento.estado === 'siguiendo' && serie.siguienteCapitulo" class="serie-titulo">
+            {{ serie.siguienteCapitulo }}
+          </p>
+
+          <p *ngIf="serie.seguimiento.estado === 'completada'">
+            Serie completada
+          </p>
+
+          <p *ngIf="serie.seguimiento.estado === 'noComenzada'">
+            Aún no has comenzado esta serie
+          </p>
+
+          <button *ngIf="serie.seguimiento.estado !== 'completada'" class="btn-marcar"
+            (click)="marcarCapituloVisto(serie)">
+            Marcar como visto
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>
