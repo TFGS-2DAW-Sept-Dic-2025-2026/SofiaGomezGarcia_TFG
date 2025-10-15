@@ -48,7 +48,7 @@ const SeguimientoSerieSchema = new mongoose_1.Schema({
     },
     estado: {
         type: String,
-        enum: ["noComenzada", "siguiendo", "completada"], // Revisar esto bien luego
+        enum: ["noComenzada", "siguiendo", "completada"],
         default: "noComenzada",
     },
     fechaActualizacion: { type: Date, default: Date.now },

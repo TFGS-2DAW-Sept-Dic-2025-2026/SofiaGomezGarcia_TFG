@@ -1,0 +1,50 @@
+<div class="favoritas-container">
+  <h3>Series favoritas</h3>
+
+  <div class="favoritas-lista">
+    <ng-container *ngIf="favoritas.length > 0; else sinFavoritas">
+      <div *ngFor="let serie of favoritas" class="favorita-card">
+        <img [src]="'https://image.tmdb.org/t/p/w200' + serie.poster_path" [alt]="serie.name" />
+        <p>{{ serie.name }}</p>
+      </div>
+    </ng-container>
+
+    <ng-template #sinFavoritas>
+      <p class="sin-favoritas">No has seleccionado tus series favoritas todavía.</p>
+    </ng-template>
+  </div>
+
+  <button *ngIf="esMiPerfil" class="btn-editar" (click)="abrirSelector()">
+    Editar favoritas
+  </button>
+</div>
+
+<div class="modal-overlay" *ngIf="selectorAbierto" (click)="cerrarSelector()"></div>
+<div class="modal-selector" *ngIf="selectorAbierto">
+  <h4>Selecciona tus 4 series favoritas</h4>
+
+  <input
+    type="text"
+    placeholder="Buscar serie..."
+    [(ngModel)]="busqueda"
+    (input)="buscarSeries()"
+    class="buscador-input"
+  />
+
+  <div class="resultados">
+    <div
+      *ngFor="let serie of resultadosBusqueda"
+      (click)="toggleSeleccion(serie)"
+      [class.seleccionada]="favoritasSeleccionadas.includes(serie)"
+      class="resultado-item"
+    >
+      <img [src]="'https://image.tmdb.org/t/p/w200' + serie.poster_path" [alt]="serie.name" />
+      <span>{{ serie.name }}</span>
+    </div>
+  </div>
+
+  <div class="acciones-modal">
+    <button (click)="guardarFavoritas()" [disabled]="favoritasSeleccionadas.length === 0">Guardar</button>
+    <button (click)="cerrarSelector()">Cancelar</button>
+  </div>
+</div>

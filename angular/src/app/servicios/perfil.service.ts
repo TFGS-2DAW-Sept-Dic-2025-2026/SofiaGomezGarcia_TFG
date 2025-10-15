@@ -1,0 +1,35 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { AuthService } from "./auth.service";
+
+@Injectable({ providedIn: 'root' })
+export class PerfilService {
+  private apiUrl = 'http://localhost:5000/perfil'; // o ajusta según tu backend
+
+  constructor(private http: HttpClient) {}
+
+  auth = inject(AuthService);
+
+  actualizarFavoritasPerfil(userId: string, idsFavoritas: string[]): Observable<any> {
+    const token = this.auth.getSessionToken();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = { favoritas: idsFavoritas };
+
+    return this.http.put(`${this.apiUrl}/${userId}/favoritas`, body, { headers });
+  }
+
+    obtenerFavoritasPerfil(userId: string): Observable<any> {
+    const token = this.auth.getSessionToken();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(`${this.apiUrl}/${userId}/favoritas`, { headers });
+  }
+}

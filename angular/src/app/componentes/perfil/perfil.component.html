@@ -20,6 +20,11 @@
           <input type="file" accept="image/*" (change)="onFotoSeleccionada($event)" />
         </div>
       </div>
+
+      <div class="perfil-body">
+        <app-favoritas-perfil [usuario]="usuario" [esMiPerfil]="esMiPerfil"></app-favoritas-perfil>
+      </div>
+
     </main>
   </div>
 </app-layout>

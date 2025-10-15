@@ -8,6 +8,7 @@ import { AuthService } from '../../servicios/auth.service';
 import IUsuario from '../../modelos/interfaces_orm/IUsuario';
 import { ListasService } from '../../servicios/listas.service';
 import { LayoutComponent } from '../layout/layout.component';
+import { FavoritasPerfilComponent } from './favoritas-perfil/favoritas-perfil.component';
 // import ILista from '../modelos/interfaces_orm/ILista';
 // import ISerie from '../modelos/interfaces_orm/ISerie';
 
@@ -15,7 +16,7 @@ import { LayoutComponent } from '../layout/layout.component';
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent, FavoritasPerfilComponent],
 
 })
 export class PerfilComponent implements OnInit {
@@ -68,30 +69,10 @@ export class PerfilComponent implements OnInit {
 
 
 
-    // this.cargarAmigos();
-    // this.cargarListasPublicas();
-    // this.cargarSeriesFavoritas();
+   
   }
 
-  // cargarAmigos() {
-  //   // ejemplo simple: suponiendo que el usuario tiene array de amigos
-  //   this.amigos = this.usuario.amigos || [];
-  // }
-
-  // cargarListasPublicas() {
-  //   this.listasService.obtenerListasUsuario(this.usuario.id).subscribe(listas => {
-  //     this.listasPublicas = listas.filter(l => l.publica);
-  //   });
-  // }
-
-  // cargarSeriesFavoritas() {
-  //   // Si el usuario tiene top5 guardado
-  //   if (this.usuario.seriesFavoritasIds?.length) {
-  //     this.seriesService.getSeriesByIds(this.usuario.seriesFavoritasIds.slice(0,5)).subscribe(series => {
-  //       this.seriesFavoritas = series;
-  //     });
-  //   }
-  // }
+ 
 
   enviarSolicitudAmistad() {
     // Implementar la lógica de amistad

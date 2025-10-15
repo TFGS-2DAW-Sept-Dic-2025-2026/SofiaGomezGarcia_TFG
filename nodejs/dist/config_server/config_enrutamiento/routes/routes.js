@@ -9,6 +9,7 @@ const authMiddleware_1 = require("../../authMiddleware");
 const favoritosController_1 = __importDefault(require("../controllers/favoritosController"));
 const listasController_1 = __importDefault(require("../controllers/listasController"));
 const seguimientoController_1 = __importDefault(require("../controllers/seguimientoController"));
+const perfilController_1 = __importDefault(require("../controllers/perfilController"));
 const router = (0, express_1.Router)();
 //Rutas para buscar y obtener series
 router.get("/obtenerSeries", apiController_1.default.obtenerSeries);
@@ -34,4 +35,7 @@ router.post("/seguimiento", authMiddleware_1.authMiddleware, seguimientoControll
 router.get("/seguimiento", authMiddleware_1.authMiddleware, seguimientoController_1.default.obtenerSeguimientos);
 router.patch("/seguimiento/:idSerieTMDB", authMiddleware_1.authMiddleware, seguimientoController_1.default.actualizarSeguimiento);
 router.delete("/seguimiento/:idSerieTMDB", authMiddleware_1.authMiddleware, seguimientoController_1.default.eliminarSeguimiento);
+// Ruta para obtener el perfil del usuario y las series favoritas del perfil
+router.get("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilController_1.default.obtenerFavoritas);
+router.put("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilController_1.default.actualizarFavoritas);
 exports.default = router;

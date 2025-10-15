@@ -4,6 +4,7 @@ import { authMiddleware } from "../../authMiddleware";
 import favoritosController from "../controllers/favoritosController";
 import listasController from "../controllers/listasController";
 import seguimientoController from "../controllers/seguimientoController";
+import perfilController from "../controllers/perfilController";
 
 
 const router = Router();
@@ -43,5 +44,10 @@ router.post("/seguimiento", authMiddleware, seguimientoController.agregarSeguimi
 router.get("/seguimiento", authMiddleware, seguimientoController.obtenerSeguimientos);
 router.patch("/seguimiento/:idSerieTMDB", authMiddleware, seguimientoController.actualizarSeguimiento);
 router.delete("/seguimiento/:idSerieTMDB", authMiddleware, seguimientoController.eliminarSeguimiento);
+
+// Ruta para obtener el perfil del usuario y las series favoritas del perfil
+
+router.get("/perfil/:userId/favoritas", authMiddleware, perfilController.obtenerFavoritas);
+router.put("/perfil/:userId/favoritas", authMiddleware, perfilController.actualizarFavoritas);
 
 export default router;
