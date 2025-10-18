@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, inject, ViewEncapsulation } from '@angular/core';
-// import { ListasService } from '../services/listas.service';
-// import IUsuario from '../modelos/interfaces_orm/IUsuario';
 import { seriesService } from '../../servicios/series.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -9,18 +7,18 @@ import IUsuario from '../../modelos/interfaces_orm/IUsuario';
 import { ListasService } from '../../servicios/listas.service';
 import { LayoutComponent } from '../layout/layout.component';
 import { FavoritasPerfilComponent } from './favoritas-perfil/favoritas-perfil.component';
-// import ILista from '../modelos/interfaces_orm/ILista';
-// import ISerie from '../modelos/interfaces_orm/ISerie';
+import { ActividadPerfilComponent } from './actividad-perfil/actividad-perfil.component';
+
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, FavoritasPerfilComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent, FavoritasPerfilComponent, ActividadPerfilComponent],
 
 })
 export class PerfilComponent implements OnInit {
-  @Input() userId?: string; // Si se ve otro usuario
+  @Input() userId?: string; 
 
   usuario!: IUsuario;
   amigos: IUsuario[] = [];

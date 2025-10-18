@@ -2,9 +2,10 @@ import { Component, HostListener, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { LayoutComponent } from '../componentes/layout/layout.component';
-import { AuthService } from '../servicios/auth.service';
-import { seriesService } from '../servicios/series.service';
+import { LayoutComponent } from '../layout/layout.component';
+import { AuthService } from '../../servicios/auth.service';
+import { seriesService } from '../../servicios/series.service';
+
 
 
 

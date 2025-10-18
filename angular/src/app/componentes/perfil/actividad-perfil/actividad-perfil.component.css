@@ -1,0 +1,49 @@
+.actividad-container {
+  background-color: #001A26;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  color: #fff;
+}
+
+.actividad-container h3 {
+  color: #80CED7;
+  margin-bottom: 10px;
+}
+
+.actividad-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.actividad-item img {
+  width: 80px;
+  border-radius: 10px;
+}
+
+.actividad-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-serie {
+  font-weight: 600;
+  color: #80CED7;
+}
+
+.detalle {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.fecha {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.sin-actividad {
+  color: #999;
+  font-style: italic;
+}

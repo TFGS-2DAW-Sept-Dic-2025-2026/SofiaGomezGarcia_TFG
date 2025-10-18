@@ -8,8 +8,8 @@ import { authGuard, guestGuard } from './guards/auth.guard';
 import { ListasComponent } from './componentes/listas/listas.component';
 import { ListaDetalleComponent } from './componentes/lista-detalle/lista-detalle.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
-import { DescubreComponent } from './descubre/descubre.component';
 import { SeguimientoComponent } from './componentes/seguimiento/seguimiento.component';
+import { DescubreComponent } from './componentes/descubre/descubre.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },

@@ -1,0 +1,18 @@
+<div class="actividad-container">
+  <h3>Actividad reciente</h3>
+
+  <ng-container *ngIf="actividad.length > 0; else sinActividad">
+    <div *ngFor="let item of actividad" class="actividad-item">
+      <img [src]="'https://image.tmdb.org/t/p/w200' + item.serie.poster_path" [alt]="item.serie.name" />
+      <div class="actividad-info">
+        <p class="titulo-serie">{{ item.serie.name }}</p>
+        <p class="detalle">{{ item.descripcion }}</p>
+        <p class="fecha">{{ item.fecha | date:'short' }}</p>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #sinActividad>
+    <p class="sin-actividad">No hay actividad reciente.</p>
+  </ng-template>
+</div>
