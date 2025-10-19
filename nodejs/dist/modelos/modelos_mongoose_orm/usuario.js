@@ -17,7 +17,8 @@ const UsuarioSchema = new mongoose_2.Schema({
     amigos: [{ type: mongoose_2.Schema.Types.ObjectId, ref: "usuario" }], //se guarda el id del amigo y con eso se cargan
     listas: [{ type: mongoose_2.Schema.Types.ObjectId, ref: "lista" }], //referencia a la tabla donde se guardan todas las listas
     favoritas: [{ type: String }], // array de IDs de series externas 
-    perfilFavoritas: [{ type: String }]
+    perfilFavoritas: [{ type: String }],
+    listasPublicas: [{ type: mongoose_2.Schema.Types.ObjectId, ref: 'lista' }]
 }, {
     timestamps: true, // agrega createdAt y updatedAt
 });

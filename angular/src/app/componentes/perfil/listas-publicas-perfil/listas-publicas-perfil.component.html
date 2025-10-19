@@ -1,0 +1,45 @@
+<div class="listas-publicas-container">
+  <h3>Listas públicas</h3>
+
+  <div *ngIf="listasPublicas.length > 0; else sinListas" class="listas-publicas-grid">
+    <div *ngFor="let lista of listasPublicas"
+     class="lista-card-publica"
+     (click)="verLista(lista._id)">
+      <div class="card-header">
+        <i class="bi bi-collection"></i>
+        <h5>{{ lista.nombre }}</h5>
+      </div>
+      <p class="descripcion">{{ lista.descripcion || 'Sin descripción' }}</p>
+      <small class="cantidad">{{ lista.series.length }} series</small>
+    </div>
+  </div>
+
+  <ng-template #sinListas>
+    <p class="sin-listas">No has publicado ninguna lista todavía.</p>
+  </ng-template>
+
+  <button *ngIf="esMiPerfil" class="btn-editar" (click)="abrirModalListas()">
+    <i class="bi bi-pencil-square"></i> Gestionar listas públicas
+  </button>
+</div>
+
+<!-- Modal para seleccionar listas -->
+<div class="modal-overlay" *ngIf="modalAbierto" (click)="cerrarModal()"></div>
+<div class="modal-selector" *ngIf="modalAbierto">
+  <h4>Selecciona las listas que quieres mostrar públicamente</h4>
+
+  <div class="listas-opciones">
+    <div *ngFor="let lista of listasUsuario"
+         class="lista-item"
+         [class.seleccionada]="lista.seleccionada"
+         (click)="toggleSeleccion(lista)">
+      <h5>{{ lista.nombre }}</h5>
+      <p>{{ lista.descripcion }}</p>
+    </div>
+  </div>
+
+  <div class="acciones-modal">
+    <button (click)="guardarListasPublicas()">Guardar</button>
+    <button (click)="cerrarModal()">Cancelar</button>
+  </div>
+</div>

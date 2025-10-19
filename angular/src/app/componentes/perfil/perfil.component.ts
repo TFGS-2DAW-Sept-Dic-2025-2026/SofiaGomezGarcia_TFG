@@ -8,13 +8,14 @@ import { ListasService } from '../../servicios/listas.service';
 import { LayoutComponent } from '../layout/layout.component';
 import { FavoritasPerfilComponent } from './favoritas-perfil/favoritas-perfil.component';
 import { ActividadPerfilComponent } from './actividad-perfil/actividad-perfil.component';
+import { ListasPublicasPerfilComponent } from './listas-publicas-perfil/listas-publicas-perfil.component';
 
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, FavoritasPerfilComponent, ActividadPerfilComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent, FavoritasPerfilComponent, ActividadPerfilComponent, ListasPublicasPerfilComponent],
 
 })
 export class PerfilComponent implements OnInit {

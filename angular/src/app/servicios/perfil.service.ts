@@ -7,7 +7,7 @@ import { AuthService } from "./auth.service";
 export class PerfilService {
   private apiUrl = 'http://localhost:5000/perfil'; // o ajusta según tu backend
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   auth = inject(AuthService);
 
@@ -24,7 +24,7 @@ export class PerfilService {
     return this.http.put(`${this.apiUrl}/${userId}/favoritas`, body, { headers });
   }
 
-    obtenerFavoritasPerfil(userId: string): Observable<any> {
+  obtenerFavoritasPerfil(userId: string): Observable<any> {
     const token = this.auth.getSessionToken();
 
     const headers = new HttpHeaders({
@@ -32,4 +32,32 @@ export class PerfilService {
     });
     return this.http.get(`${this.apiUrl}/${userId}/favoritas`, { headers });
   }
+
+  obtenerListasPublicasPerfil(idUsuario: string): Observable<any> {
+  const token = this.auth.getSessionToken();
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get<any>(
+    `${this.apiUrl}/${idUsuario}/listas-publicas`,
+    { headers }
+  );
+}
+
+actualizarListasPublicasPerfil(idUsuario: string, idsListas: string[]): Observable<any> {
+  const token = this.auth.getSessionToken();
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+
+  return this.http.put<any>(
+    `${this.apiUrl}/${idUsuario}/listas-publicas`,
+    { listasPublicas: idsListas },
+    { headers }
+  );
+}
 }

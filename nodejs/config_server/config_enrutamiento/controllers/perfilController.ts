@@ -18,7 +18,7 @@ export default {
         } catch (error) {
             console.log("Error al obtener favoritos perfil: ", error);
             res.status(500).json({ msg: 'Error al obtener favoritos perfil' });
-        }   
+        }
     },
     actualizarFavoritas: async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -43,6 +43,36 @@ export default {
             console.log("Error al actualizar favoritos perfil: ", error);
             res.status(500).json({ msg: 'Error al actualizar favoritos perfil' });
         }
+    },
+    obtenerListasPublicas: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const user = await usuario.findById(req.params.id).populate('listasPublicas');
+            if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+            res.json({ listasPublicas: user.listasPublicas });
+        } catch (error) {
+            res.status(500).json({ msg: 'Error al obtener listas públicas', error });
+        }
+    },
+    actualizarListasPublicas: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { listasPublicas } = req.body;
+
+            const user = await usuario.findByIdAndUpdate(
+                req.params.id,
+                { listasPublicas },
+                { new: true }
+            ).populate('listasPublicas');
+
+            if (!user) {
+                return res.status(404).json({ msg: 'Usuario no encontrado' });
+            }
+
+            res.json(user.listasPublicas);
+        } catch (err) {
+            console.error('Error al actualizar listas públicas:', err);
+            res.status(500).json({ msg: 'Error al actualizar listas públicas', err });
+        }
     }
+
 
 }

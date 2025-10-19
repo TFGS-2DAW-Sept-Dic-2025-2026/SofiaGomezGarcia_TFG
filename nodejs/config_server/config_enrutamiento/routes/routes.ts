@@ -50,5 +50,7 @@ router.delete("/seguimiento/:idSerieTMDB", authMiddleware, seguimientoController
 
 router.get("/perfil/:userId/favoritas", authMiddleware, perfilController.obtenerFavoritas);
 router.put("/perfil/:userId/favoritas", authMiddleware, perfilController.actualizarFavoritas);
+router.get('/perfil/:id/listas-publicas', perfilController.obtenerListasPublicas);
+router.put('/perfil/:id/listas-publicas', perfilController.actualizarListasPublicas);
 
 export default router;

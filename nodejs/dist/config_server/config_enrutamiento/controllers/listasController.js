@@ -163,13 +163,13 @@ exports.default = {
         var _a;
         try {
             const usuarioCreador = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
-            const { idSerie } = req.params; // id de la serie a comprobar
+            const { idSerie } = req.params;
             if (!usuarioCreador)
                 return res.status(401).json({ msg: 'Usuario no autenticado' });
             if (!idSerie)
                 return res.status(400).json({ msg: 'ID de la serie es obligatorio' });
             const listas = yield lista_1.Lista.find({ usuarioCreador }).sort({ createdAt: -1 });
-            // Agregar flag contieneSerie
+            //Metodo para saber si la lista contiene esa serie o no para el modal de agregar serie a la lista
             const listasConEstado = listas.map(lista => ({
                 _id: lista._id,
                 nombre: lista.nombre,

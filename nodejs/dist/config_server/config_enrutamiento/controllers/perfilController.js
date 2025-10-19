@@ -52,5 +52,30 @@ exports.default = {
             console.log("Error al actualizar favoritos perfil: ", error);
             res.status(500).json({ msg: 'Error al actualizar favoritos perfil' });
         }
+    }),
+    obtenerListasPublicas: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const user = yield usuario_1.default.findById(req.params.id).populate('listasPublicas');
+            if (!user)
+                return res.status(404).json({ msg: 'Usuario no encontrado' });
+            res.json({ listasPublicas: user.listasPublicas });
+        }
+        catch (error) {
+            res.status(500).json({ msg: 'Error al obtener listas públicas', error });
+        }
+    }),
+    actualizarListasPublicas: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { listasPublicas } = req.body;
+            const user = yield usuario_1.default.findByIdAndUpdate(req.params.id, { listasPublicas }, { new: true }).populate('listasPublicas');
+            if (!user) {
+                return res.status(404).json({ msg: 'Usuario no encontrado' });
+            }
+            res.json(user.listasPublicas);
+        }
+        catch (err) {
+            console.error('Error al actualizar listas públicas:', err);
+            res.status(500).json({ msg: 'Error al actualizar listas públicas', err });
+        }
     })
 };

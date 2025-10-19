@@ -39,4 +39,6 @@ router.delete("/seguimiento/:idSerieTMDB", authMiddleware_1.authMiddleware, segu
 // Ruta para obtener el perfil del usuario y las series favoritas del perfil
 router.get("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilController_1.default.obtenerFavoritas);
 router.put("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilController_1.default.actualizarFavoritas);
+router.get('/perfil/:id/listas-publicas', perfilController_1.default.obtenerListasPublicas);
+router.put('/perfil/:id/listas-publicas', perfilController_1.default.actualizarListasPublicas);
 exports.default = router;
