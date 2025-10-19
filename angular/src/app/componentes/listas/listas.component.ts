@@ -10,7 +10,7 @@ import { LayoutComponent } from '../layout/layout.component';
 @Component({
   selector: 'app-listas',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule,LayoutComponent],
+  imports: [CommonModule, RouterModule, FormsModule, LayoutComponent],
   templateUrl: './listas.component.html',
   styleUrl: './listas.component.css'
 })
@@ -23,19 +23,19 @@ export class ListasComponent {
   listas: any[] = [];
   loading = false;
 
-  
+
   nuevaLista = {
     nombre: '',
     descripcion: ''
   };
 
   constructor() {
-    
+
     if (this.auth.hasValidSession()) {
       this.loadListas();
     }
 
-    
+
     effect(() => {
       this.isLoggedIn = this.auth.hasValidSession();
       if (this.isLoggedIn) {
@@ -46,7 +46,7 @@ export class ListasComponent {
     });
   }
 
-  
+
   loadListas() {
     this.loading = true;
     this.listasService.getListas().subscribe({
@@ -61,7 +61,7 @@ export class ListasComponent {
     });
   }
 
-  
+
   crearLista() {
     const { nombre, descripcion } = this.nuevaLista;
     if (!nombre.trim()) return console.log('se ha creado la lista correctamente'); // cambiar el alert por un mensaje en el html
@@ -76,7 +76,7 @@ export class ListasComponent {
     });
   }
 
-  
+
   eliminarLista(idLista: string) {
     if (!confirm('¿Seguro que quieres eliminar esta lista?')) return; // cambiar el confirm por un modal en el html
 
@@ -89,4 +89,16 @@ export class ListasComponent {
       }
     });
   }
+
+  mostrarModal = false;
+
+  abrirModal() {
+    this.mostrarModal = true;
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
+  }
+
+
 }

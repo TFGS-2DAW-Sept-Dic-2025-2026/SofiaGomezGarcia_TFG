@@ -388,4 +388,45 @@ html, body {
 
 
 
+/* Estilos para el componente Perfil, boton cambiar foto de perfil*/
 
+
+.subir-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.btn-cambiar-foto {
+  background-color: #80CED7;
+  color: #001A26;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cambiar-foto:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-editar {
+  margin-top: 15px;
+  background-color: #80CED7;
+  color: #001A26;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-editar:hover {
+  background-color: #00121a;
+  color: #80CED7;
+}
+
+/* Estilos para el componente de lista de series */

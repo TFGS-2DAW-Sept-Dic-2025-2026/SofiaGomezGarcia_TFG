@@ -7,25 +7,25 @@
     background-color: #00121A;
 }
 
-/* Contenedor principal */
+
 .perfil-container {
-  margin-left: 220px; /* respeta tu layout */
+  margin-left: 220px; 
 }
 
-/* Header de perfil */
+
 .perfil-header {
   background-color: #001A26;
   border-radius: 15px;
 }
 
-/* Avatar wrapper */
+
 .perfil-header .avatar-wrapper {
   width: 130px;
   height: 130px;
   position: relative;
 }
 
-/* Avatar circular con degradado y sombra */
+
 ::ng-deep .perfil-header .avatar-marcado {
   width: 130px;
   height: 130px;
@@ -36,7 +36,7 @@
   border: 4px solid #fff;
 }
 
-/* Nombre destacado */
+
 .perfil-header .nombre-usuario {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.7rem;
@@ -45,7 +45,7 @@
   letter-spacing: 1px;
 }
 
-/* Botón de acción */
+
 .perfil-header .btn-primary {
   background-color: #80CED7;
   color: #001A26;
@@ -62,3 +62,4 @@
   color: #fff;
   transform: translateY(-2px) scale(1.05);
 }
+

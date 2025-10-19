@@ -1,23 +1,26 @@
 <app-layout>
   <div class="homePerfil">
     <main class="perfil-container py-4">
-      <div class="perfil-header card shadow-sm p-3 mb-4 d-flex align-items-center gap-4"> 
+      <div class="perfil-header card shadow-sm p-3 mb-4 d-flex align-items-center gap-4">
         <div class="avatar-wrapper position-relative">
-           <img *ngIf="usuario?.fotoPerfil; else placeholderAvatar"
-              [src]="usuario.fotoPerfil + '?' + usuario.id" alt="Avatar" class="avatar-marcado propio-avatar">
+          <img *ngIf="usuario?.fotoPerfil; else placeholderAvatar" [src]="usuario.fotoPerfil + '?' + usuario.id"
+            alt="Avatar" class="avatar-marcado propio-avatar">
           <ng-template #placeholderAvatar>
             <img src="recursos/🚬.jpg" alt="Avatar" class="avatar-marcado propio-avatar">
           </ng-template>
-        </div> 
+        </div>
         <div class="flex-grow-1 d-flex flex-column justify-content-center">
           <h2 class="nombre-usuario mb-1">{{ usuario.username }}</h2>
-          <p class="text-muted mb-2">{{ amigos.length }} amigos</p> 
-          <button *ngIf="!esMiPerfil"
-            class="btn btn-primary btn-sm w-auto" (click)="enviarSolicitudAmistad()">Agregar amigo
+          <p class="text-muted mb-2">{{ amigos.length }} amigos</p>
+          <button *ngIf="!esMiPerfil" class="btn btn-primary btn-sm w-auto" (click)="enviarSolicitudAmistad()">Agregar
+            amigo
           </button>
         </div>
         <div *ngIf="esMiPerfil" class="subir-foto mt-2">
-          <input type="file" accept="image/*" (change)="onFotoSeleccionada($event)" />
+          <label for="fotoPerfil" class="btn-editar">
+            Cambiar foto de perfil
+          </label>
+          <input id="fotoPerfil" type="file" accept="image/*" (change)="onFotoSeleccionada($event)" hidden />
         </div>
       </div>
 
@@ -29,5 +32,3 @@
     </main>
   </div>
 </app-layout>
-
-
