@@ -89,6 +89,146 @@
   line-height: 1.6;
 }
 
+
+/*Estilos del modal*/
+.btn-agregar-lista {
+  display: block;
+  margin: 20px auto;
+  background-color: #80ced7;
+  color: #001a26;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-agregar-lista:hover {
+  background-color: #00121a;
+  color: #80ced7;
+  transform: scale(1.03);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 10;
+}
+
+.modal-selector {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #001a26;
+  color: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+  width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-selector h4 {
+  color: #80ced7;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.listas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.lista-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #002533;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  margin: 10px;
+}
+
+.lista-item:hover {
+  background: #003547;
+  border: 1px solid #80ced7;
+  transform: scale(1.02);
+}
+
+.lista-item i {
+  font-size: 1.4rem;
+  color: #80ced7;
+}
+
+.sin-listas {
+  text-align: center;
+  color: #ccc;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+.acciones-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.acciones-modal button {
+  background: #80ced7;
+  border: none;
+  color: #00121a;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.acciones-modal button:hover {
+  background: #00121a;
+  color: #80ced7;
+}
+
+button.cancelar {
+  background: #444;
+  color: #fff;
+}
+
+
+.lista-item.contiene-serie {
+  background-color: #263b49 !important;
+  color: #001a26 !important;
+  cursor: not-allowed;
+  pointer-events: none; /* bloquea click y hover */
+  transform: none !important;
+  border: 1px solid #263b49;
+}
+
+.lista-item.contiene-serie i {
+  color: #ccc;
+}
+
+.badge-agregada {
+  margin-left: 10px;
+  color: #80ced7;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 992px) {
   .serie-content {
     flex-direction: column;

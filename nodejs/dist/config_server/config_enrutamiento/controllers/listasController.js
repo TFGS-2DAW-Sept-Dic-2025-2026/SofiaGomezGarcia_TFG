@@ -158,5 +158,31 @@ exports.default = {
             console.log("Error al obtener la lista: ", error);
             res.status(500).json({ msg: 'Error al obtener la lista' });
         }
+    }),
+    obtenerListasConEstado: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        try {
+            const usuarioCreador = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+            const { idSerie } = req.params; // id de la serie a comprobar
+            if (!usuarioCreador)
+                return res.status(401).json({ msg: 'Usuario no autenticado' });
+            if (!idSerie)
+                return res.status(400).json({ msg: 'ID de la serie es obligatorio' });
+            const listas = yield lista_1.Lista.find({ usuarioCreador }).sort({ createdAt: -1 });
+            // Agregar flag contieneSerie
+            const listasConEstado = listas.map(lista => ({
+                _id: lista._id,
+                nombre: lista.nombre,
+                descripcion: lista.descripcion,
+                series: lista.series,
+                contieneSerie: lista.series.includes(idSerie),
+                fechaCreacion: lista.fechaCreacion
+            }));
+            res.status(200).json(listasConEstado);
+        }
+        catch (error) {
+            console.log("Error al obtener listas con estado:", error);
+            res.status(500).json({ msg: 'Error al obtener listas con estado' });
+        }
     })
 };

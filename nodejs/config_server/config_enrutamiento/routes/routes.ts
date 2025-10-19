@@ -30,6 +30,7 @@ router.post("/listas/:id/agregar", listasController.agregarSerieALista);
 router.post("/listas/:id/eliminar", listasController.eliminarSerieDeLista); // Cambiado a POST para enviar el idSerie en el body
 router.get("/listas/:id", listasController.obtenerListaPorId);
 router.delete("/listas/:id", listasController.eliminarLista);
+router.get('/listas/conEstado/:idSerie', listasController.obtenerListasConEstado);
 
 
 //Rutas para componente descubrir series

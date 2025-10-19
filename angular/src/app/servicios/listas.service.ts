@@ -64,6 +64,9 @@ export class ListasService {
     return this.http.get(`${this.apiUrl}/${idLista}`, { headers });
   }
 
-
+  getListasConEstado(idSerie: string) {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.apiUrl}/conEstado/${idSerie}`, { headers });
+  }
 
 }

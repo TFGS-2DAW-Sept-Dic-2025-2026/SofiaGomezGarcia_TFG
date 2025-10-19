@@ -26,6 +26,7 @@ router.post("/listas/:id/agregar", listasController_1.default.agregarSerieALista
 router.post("/listas/:id/eliminar", listasController_1.default.eliminarSerieDeLista); // Cambiado a POST para enviar el idSerie en el body
 router.get("/listas/:id", listasController_1.default.obtenerListaPorId);
 router.delete("/listas/:id", listasController_1.default.eliminarLista);
+router.get('/listas/conEstado/:idSerie', listasController_1.default.obtenerListasConEstado);
 //Rutas para componente descubrir series
 router.get('/series/descubrir', apiController_1.default.descubrirSeries);
 router.get('/series/generos', apiController_1.default.obtenerGeneros);

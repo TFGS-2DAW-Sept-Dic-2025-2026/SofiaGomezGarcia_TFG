@@ -33,18 +33,18 @@ export class InformacionSerieComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-  const id = this.route.snapshot.paramMap.get('id');
-  if (id) {
-    this.seriesService.getSeriesByID(id).subscribe({
-      next: (data) => {
-        this.serie = data;
-        this.checkIfFavorite(id);
-        this.checkIfFollowing(this.serie.id || this.serie._id); 
-      },
-      error: (err) => console.error('Error cargando la serie:', err),
-    });
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.seriesService.getSeriesByID(id).subscribe({
+        next: (data) => {
+          this.serie = data;
+          this.checkIfFavorite(id);
+          this.checkIfFollowing(this.serie.id || this.serie._id);
+        },
+        error: (err) => console.error('Error cargando la serie:', err),
+      });
+    }
   }
-}
 
   // ---------- FAVORITOS ----------
 
@@ -75,35 +75,49 @@ export class InformacionSerieComponent implements OnInit {
 
   // ---------- LISTAS ----------
 
-  toggleListMenu() {
-    if (!this.showListMenu) {
-      this.obtenerListasUsuario();
-    }
-    this.showListMenu = !this.showListMenu;
-  }
+  mostrarModalListas = false;
+  listasUsuarioConEstado: any[] = []; 
 
+  abrirModalListas() {
+  if (!this.auth.hasValidSession() || !this.serie) return;
 
-  obtenerListasUsuario() {
-    this.listasService.getListas().subscribe({
-      next: (res) => {
-        this.listasUsuario = res;
-      },
-      error: (err) => console.error('Error al obtener las listas:', err),
-    });
-  }
+  const idSerie = this.serie._id || this.serie.id;
 
+  this.listasService.getListasConEstado(idSerie).subscribe({
+    next: (listas) => {
+      this.listasUsuarioConEstado = listas;
+      this.mostrarModalListas = true;
+    },
+    error: (err) => console.error('Error al obtener listas con estado:', err)
+  });
+}
 
   agregarSerieALista(idLista: string) {
-    if (!this.serie?._id && !this.serie?.id) return;
-    const idSerie = this.serie._id || this.serie.id;
+  if (!this.serie?._id && !this.serie?.id) return;
+  const idSerie = this.serie._id || this.serie.id;
 
-    this.listasService.agregarSerieALista(idLista, idSerie).subscribe({
-      next: () => {
-        console.log(`Serie añadida correctamente a la lista`); //cambiar por un mensaje en el html
-        this.showListMenu = false;
-      },
-      error: (err) => console.error('Error al añadir serie a la lista:', err),
-    });
+  this.listasService.agregarSerieALista(idLista, idSerie).subscribe({
+    next: (listaActualizada) => {
+      console.log(`Serie añadida correctamente a la lista`);
+
+      
+      this.listasUsuarioConEstado = this.listasUsuarioConEstado.map(lista => {
+        if (lista._id === idLista) {
+          return {
+            ...lista,
+            series: [...lista.series, idSerie], 
+            contieneSerie: true
+          };
+        }
+        return lista;
+      });
+    },
+    error: (err) => console.error('Error al añadir serie a la lista:', err),
+  });
+}
+
+  cerrarModalListas() {
+    this.mostrarModalListas = false;
   }
 
   // ---------- SEGUIMIENTO ----------
@@ -153,5 +167,12 @@ export class InformacionSerieComponent implements OnInit {
       });
     }
   }
+
+
+
+
+
+
+
 
 }

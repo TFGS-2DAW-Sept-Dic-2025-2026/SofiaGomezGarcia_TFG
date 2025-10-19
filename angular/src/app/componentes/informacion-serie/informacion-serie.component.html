@@ -1,6 +1,4 @@
 <app-layout>
-
-  <!-- Información de la serie -->
   <main *ngIf="serie" class="serie-info text-white">
     <div class="serie-background"
       [style.background-image]="'url(https://image.tmdb.org/t/p/original' + serie.backdrop_path + ')'"></div>
@@ -37,21 +35,9 @@
             {{ isFollowing ? 'Dejar de Seguir' : 'Seguir Serie' }}
           </button>
 
-          <button class="btn btn-warning text-dark" (click)="toggleListMenu()">
+          <button class="btn btn-warning text-dark" (click)="abrirModalListas()">
             <i class="bi bi-star-fill"></i> Agregar a Lista
           </button>
-
-          <div *ngIf="showListMenu" class="menu-listas mt-3 p-3 bg-dark rounded shadow-lg">
-            <h5 class="text-light mb-2">Selecciona una lista:</h5>
-            <ul class="list-unstyled">
-              <li *ngFor="let lista of listasUsuario" class="mb-2">
-                <button class="btn btn-outline-light w-100 text-start" (click)="agregarSerieALista(lista._id)">
-                  {{ lista.nombre }}
-                </button>
-              </li>
-            </ul>
-            <button class="btn btn-sm btn-secondary mt-2" (click)="showListMenu = false">Cancelar</button>
-          </div>
         </div>
 
         <p *ngIf="!auth.hasValidSession()" class="text-light mt-3">
@@ -60,5 +46,31 @@
       </div>
     </div>
   </main>
+
+  <div class="modal-overlay" *ngIf="mostrarModalListas" (click)="cerrarModalListas()"></div>
+
+  <div class="modal-selector" *ngIf="mostrarModalListas">
+    <h4>Agregar "{{ serie.name }}" a una lista</h4>
+
+    <ng-container *ngIf="listasUsuarioConEstado.length > 0; else sinListas">
+      <div class="listas-grid">
+        <div *ngFor="let lista of listasUsuarioConEstado" class="lista-item"
+          [ngClass]="{ 'contiene-serie': lista.contieneSerie }"
+          (click)="!lista.contieneSerie && agregarSerieALista(lista._id)">
+          <i class="bi bi-collection"></i>
+          <span>{{ lista.nombre }}</span>
+          <span *ngIf="lista.contieneSerie" class="badge-agregada">Ya agregada</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #sinListas>
+      <p class="sin-listas">No tienes listas creadas aún.</p>
+    </ng-template>
+
+    <div class="acciones-modal">
+      <button (click)="cerrarModalListas()" class="cancelar">Cancelar</button>
+    </div>
+  </div>
 
 </app-layout>

@@ -145,7 +145,7 @@ export default {
             if (!lista) {
                 return res.status(404).json({ msg: 'Lista no encontrada' });
             }
-            
+
             // se elimina la referencia de la lista en el usuario
             await usuario.findByIdAndUpdate(usuarioCreador, {
                 $pull: { listas: id },
@@ -177,7 +177,34 @@ export default {
         } catch (error) {
             console.log("Error al obtener la lista: ", error);
             res.status(500).json({ msg: 'Error al obtener la lista' });
-            
+
+        }
+    },
+    obtenerListasConEstado: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const usuarioCreador = (req as any).user?.id;
+            const { idSerie } = req.params; 
+
+            if (!usuarioCreador) return res.status(401).json({ msg: 'Usuario no autenticado' });
+            if (!idSerie) return res.status(400).json({ msg: 'ID de la serie es obligatorio' });
+
+            const listas = await Lista.find({ usuarioCreador }).sort({ createdAt: -1 });
+
+            //Metodo para saber si la lista contiene esa serie o no para el modal de agregar serie a la lista
+
+            const listasConEstado = listas.map(lista => ({
+                _id: lista._id,
+                nombre: lista.nombre,
+                descripcion: lista.descripcion,
+                series: lista.series,
+                contieneSerie: lista.series.includes(idSerie),
+                fechaCreacion: lista.fechaCreacion
+            }));
+
+            res.status(200).json(listasConEstado);
+        } catch (error) {
+            console.log("Error al obtener listas con estado:", error);
+            res.status(500).json({ msg: 'Error al obtener listas con estado' });
         }
     }
 
