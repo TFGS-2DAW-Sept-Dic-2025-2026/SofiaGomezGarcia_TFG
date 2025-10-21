@@ -170,3 +170,17 @@
   color: #80CED7;
   transform: translateY(-2px);
 }
+
+
+.me-gusta button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.me-gusta button.liked {
+  color: #007bff;
+  font-weight: bold;
+}

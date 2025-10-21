@@ -7,6 +7,7 @@ export interface IOpinion extends Document {
   opinion?: string;                 
   fecha: Date;
   meGusta: number;
+  usuariosMeGusta: Types.ObjectId[];
 }
 
 const OpinionSchema = new mongoose.Schema({
@@ -16,6 +17,7 @@ const OpinionSchema = new mongoose.Schema({
   opinion: { type: String },
   fecha: { type: Date, default: Date.now },
   meGusta: { type: Number, default: 0 },
+  usuariosMeGusta: [{ type: mongoose.Schema.Types.ObjectId, ref: 'usuario' }]
 });
 
 export const Opinion = model<IOpinion>("opinion", OpinionSchema);

@@ -11,12 +11,12 @@ import { OpinionService } from '../../../servicios/opinion.service';
   styleUrl: './opinion-serie.component.css'
 })
 export class OpinionSerieComponent {
-   @Input() serieId!: string;
+  @Input() serieId!: string;
 
   auth = inject(AuthService);
   opinionesService = inject(OpinionService);
 
-  opiniones: any[] = [];  
+  opiniones: any[] = [];
   miOpinion = { titulo: '', estrellas: 5, opinion: '' };
   isLoggedIn = false;
 
@@ -30,29 +30,49 @@ export class OpinionSerieComponent {
     }
   }
 
+
   cargarOpiniones() {
+    const usuarioId = this.auth.getDatosUsuario()?.id;
+
     this.opinionesService.obtenerOpinionesSerie(this.serieId).subscribe({
-      next: (res) => {
-        this.opiniones = res || [];  // aunque venga vacío
-        console.log('Opiniones cargadas', this.opiniones);
+      next: (opiniones) => {
+        this.opiniones = opiniones.map((o: any) => ({
+          ...o,
+          usuarioHaDadoMeGusta: o.usuariosMeGusta?.includes(usuarioId)
+        }));
       },
       error: (err) => {
-        console.error('Error cargando opiniones', err);
-        this.opiniones = [];  // fallback
+        console.error('Error al cargar opiniones:', err);
       }
     });
   }
+
+
 
   guardarOpinion() {
     if (!this.miOpinion.opinion || this.miOpinion.estrellas < 1) return;
 
     this.opinionesService.guardarOpinionSerie(this.serieId, this.miOpinion).subscribe({
       next: (nuevaOp) => {
-        this.opiniones.push(nuevaOp); 
+        this.opiniones.push(nuevaOp);
         this.miOpinion = { titulo: '', estrellas: 5, opinion: '' }; // Para limpiar el usuario
         this.cargarOpiniones(); // Se vuelven a cargar las opiniones para que salgan los nombres de usuarios actualizados
       },
       error: (err) => console.error('Error guardando opinión', err)
+    });
+  }
+
+  toggleMeGusta(opinion: any) {
+    this.opinionesService.darMeGustaOpinion(opinion._id).subscribe({
+      next: (actualizada) => {
+        // Actualizamos el contador de me gusta
+        opinion.meGusta = actualizada.meGusta;
+
+        // Verificar si el usuario ya ha dado me gusta
+        const usuarioId = this.auth.getDatosUsuario()?.id;
+        opinion.usuarioHaDadoMeGusta = actualizada.usuariosMeGusta.includes(usuarioId);
+      },
+      error: (err) => console.error('Error al dar/quitar me gusta:', err)
     });
   }
 }

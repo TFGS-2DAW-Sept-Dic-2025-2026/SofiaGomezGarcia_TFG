@@ -66,7 +66,18 @@ exports.default = {
             const opinion = yield opinion_1.Opinion.findById(idOpinion);
             if (!opinion)
                 return res.status(404).json({ msg: "Opinión no encontrada" });
-            opinion.meGusta += 1;
+            // Verificamos si el usuario ya dio me gusta
+            const index = opinion.usuariosMeGusta.findIndex(u => u.toString() === idUsuario);
+            if (index === -1) {
+                // No ha dado me gusta aún → lo agrega
+                opinion.meGusta += 1;
+                opinion.usuariosMeGusta.push(idUsuario);
+            }
+            else {
+                // Ya había dado me gusta → lo quita
+                opinion.meGusta -= 1;
+                opinion.usuariosMeGusta.splice(index, 1);
+            }
             yield opinion.save();
             res.status(200).json(opinion);
         }

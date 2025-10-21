@@ -58,7 +58,7 @@ router.put('/perfil/:id/listas-publicas', perfilController.actualizarListasPubli
 //Rutas para las reseñas de las series
 router.get("/series/:idSerie/opiniones", authMiddleware, opinionesController.obtenerOpinionesSerie);
 router.post("/series/:idSerie/opiniones", authMiddleware, opinionesController.crearOpinion);
-router.post("/opinion/:id/meGusta", authMiddleware, opinionesController.meGustaOpinion);
+router.post("/opiniones/:idOpinion/meGusta", authMiddleware, opinionesController.meGustaOpinion);
 
 
 

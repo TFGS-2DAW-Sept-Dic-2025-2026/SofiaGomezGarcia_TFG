@@ -63,7 +63,16 @@ export default {
       const opinion = await Opinion.findById(idOpinion);
       if (!opinion) return res.status(404).json({ msg: "Opinión no encontrada" });
 
-      opinion.meGusta += 1;
+      const index = opinion.usuariosMeGusta.findIndex(u => u.toString() === idUsuario);
+
+      if (index === -1) {
+        opinion.meGusta += 1;
+        opinion.usuariosMeGusta.push(idUsuario);
+      } else {
+        opinion.meGusta -= 1;
+        opinion.usuariosMeGusta.splice(index, 1);
+      }
+
       await opinion.save();
 
       res.status(200).json(opinion);

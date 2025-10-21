@@ -42,5 +42,6 @@ const OpinionSchema = new mongoose_1.default.Schema({
     opinion: { type: String },
     fecha: { type: Date, default: Date.now },
     meGusta: { type: Number, default: 0 },
+    usuariosMeGusta: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'usuario' }]
 });
 exports.Opinion = (0, mongoose_1.model)("opinion", OpinionSchema);
