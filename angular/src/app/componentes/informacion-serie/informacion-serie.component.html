@@ -45,6 +45,12 @@
         </p>
       </div>
     </div>
+
+
+    <div class="opiniones-serie mt-5">
+      <app-opinion-serie [serieId]="serie._id || serie.id"></app-opinion-serie>
+    </div>
+
   </main>
 
   <div class="modal-overlay" *ngIf="mostrarModalListas" (click)="cerrarModalListas()"></div>
@@ -71,6 +77,12 @@
     <div class="acciones-modal">
       <button (click)="cerrarModalListas()" class="cancelar">Cancelar</button>
     </div>
+
+
+
+
   </div>
+
+
 
 </app-layout>

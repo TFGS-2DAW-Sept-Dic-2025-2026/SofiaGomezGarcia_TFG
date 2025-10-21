@@ -5,6 +5,7 @@ import favoritosController from "../controllers/favoritosController";
 import listasController from "../controllers/listasController";
 import seguimientoController from "../controllers/seguimientoController";
 import perfilController from "../controllers/perfilController";
+import opinionesController from "../controllers/opinionesController";
 
 
 const router = Router();
@@ -52,5 +53,13 @@ router.get("/perfil/:userId/favoritas", authMiddleware, perfilController.obtener
 router.put("/perfil/:userId/favoritas", authMiddleware, perfilController.actualizarFavoritas);
 router.get('/perfil/:id/listas-publicas', perfilController.obtenerListasPublicas);
 router.put('/perfil/:id/listas-publicas', perfilController.actualizarListasPublicas);
+
+
+//Rutas para las reseñas de las series
+router.get("/series/:idSerie/opiniones", authMiddleware, opinionesController.obtenerOpinionesSerie);
+router.post("/series/:idSerie/opiniones", authMiddleware, opinionesController.crearOpinion);
+router.post("/opinion/:id/meGusta", authMiddleware, opinionesController.meGustaOpinion);
+
+
 
 export default router;

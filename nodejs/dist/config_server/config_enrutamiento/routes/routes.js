@@ -10,6 +10,7 @@ const favoritosController_1 = __importDefault(require("../controllers/favoritosC
 const listasController_1 = __importDefault(require("../controllers/listasController"));
 const seguimientoController_1 = __importDefault(require("../controllers/seguimientoController"));
 const perfilController_1 = __importDefault(require("../controllers/perfilController"));
+const opinionesController_1 = __importDefault(require("../controllers/opinionesController"));
 const router = (0, express_1.Router)();
 //Rutas para buscar y obtener series
 router.get("/obtenerSeries", apiController_1.default.obtenerSeries);
@@ -41,4 +42,8 @@ router.get("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilC
 router.put("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilController_1.default.actualizarFavoritas);
 router.get('/perfil/:id/listas-publicas', perfilController_1.default.obtenerListasPublicas);
 router.put('/perfil/:id/listas-publicas', perfilController_1.default.actualizarListasPublicas);
+//Rutas para las reseñas de las series
+router.get("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesSerie);
+router.post("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.crearOpinion);
+router.post("/opinion/:id/meGusta", authMiddleware_1.authMiddleware, opinionesController_1.default.meGustaOpinion);
 exports.default = router;

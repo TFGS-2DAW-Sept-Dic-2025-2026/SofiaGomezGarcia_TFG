@@ -7,13 +7,14 @@ import { FavoritesService } from '../../servicios/favorites.service';
 import { ListasService } from '../../servicios/listas.service';
 import { LayoutComponent } from '../layout/layout.component';
 import { SeguimientoService } from '../../servicios/seguimiento.service';
+import { OpinionSerieComponent } from './opinion-serie/opinion-serie.component';
 
 
 
 @Component({
   selector: 'app-informacion-serie',
   standalone: true,
-  imports: [RouterModule, CommonModule, LayoutComponent],
+  imports: [RouterModule, CommonModule, LayoutComponent, OpinionSerieComponent],
   templateUrl: './informacion-serie.component.html',
   styleUrls: ['./informacion-serie.component.css'],
 })

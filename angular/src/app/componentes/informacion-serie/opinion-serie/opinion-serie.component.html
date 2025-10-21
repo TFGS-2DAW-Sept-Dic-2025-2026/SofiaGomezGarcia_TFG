@@ -1,0 +1,34 @@
+<section class="opiniones-container">
+  <h3>Opiniones de la serie</h3>
+
+  <!-- Formulario para dejar opinión -->
+  <div *ngIf="isLoggedIn" class="form-opinion">
+    <h4>Tu opinión</h4>
+    <!-- <input type="text" placeholder="Título" [(ngModel)]="miOpinion.titulo"/> -->
+    <select [(ngModel)]="miOpinion.estrellas">
+      <option *ngFor="let s of [1,2,3,4,5]" [value]="s">{{s}} ⭐</option>
+    </select>
+    <textarea placeholder="Tu opinión" [(ngModel)]="miOpinion.opinion"></textarea>
+    <button (click)="guardarOpinion()">Guardar</button>
+  </div>
+
+  <p *ngIf="!isLoggedIn">Inicia sesión para dejar tu opinión.</p>
+
+  <!-- Indicador si no hay opiniones -->
+  <div *ngIf="opiniones.length === 0">
+    <p>Aún no hay opiniones. Sé el primero en opinar.</p>
+  </div>
+
+  <!-- Opiniones de otros usuarios -->
+  <div *ngFor="let o of opiniones" class="opinion-card">
+    <div class="header">
+      <strong>{{ o.idUsuario?.username || 'Usuario' }}</strong>
+      <span>{{ o.estrellas }} ⭐</span>
+      <small>{{ o.fecha | date:'short' }}</small>
+    </div>
+    <p>{{ o.opinion }}</p>
+    <div class="me-gusta">
+      <i class="bi bi-hand-thumbs-up"></i> {{ o.meGusta }}
+    </div>
+  </div>
+</section>

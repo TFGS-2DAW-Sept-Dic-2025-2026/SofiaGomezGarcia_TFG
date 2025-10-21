@@ -22,24 +22,4 @@ const UsuarioSchema = new mongoose_2.Schema({
 }, {
     timestamps: true, // agrega createdAt y updatedAt
 });
-exports.default = mongoose_1.default.model("Usuario", UsuarioSchema, "usuarios");
-//
-/**
- * Un Usuario tiene los siguientes datos:
- * --Datos personales: - ID unico
- *                     - Nombre de usuario
- *                     - Gmail
- *                     - Contra Hash
- *                     - Foto de perfil
- *                     - Fecha de Registro
- *
- * --Otros datos relacionados con otras tablas:
- *                     - Listas
- *                     - Amigos
- *                     - Favoritas
- *                     -
- *                     -
- *                     -
- *                     -
- *
- */ 
+exports.default = mongoose_1.default.model("usuario", UsuarioSchema, "usuarios");

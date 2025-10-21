@@ -229,6 +229,28 @@ button.cancelar {
   font-size: 0.9rem;
 }
 
+
+.opiniones-serie {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.serie-content {
+  position: relative;  /* ya lo deberías tener */
+  z-index: 10;         /* asegúrate que esté por encima del overlay */
+}
+
+.opiniones-serie {
+  position: relative;
+  z-index: 20; /* más alto que overlay y fondo */
+  padding: 20px 0;
+}
+
 @media (max-width: 992px) {
   .serie-content {
     flex-direction: column;

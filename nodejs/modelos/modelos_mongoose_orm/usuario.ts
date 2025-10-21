@@ -45,25 +45,5 @@ const UsuarioSchema = new Schema<IUser>(
 
 
 
-export default mongoose.model("Usuario", UsuarioSchema, "usuarios");
+export default mongoose.model("usuario", UsuarioSchema, "usuarios");
 
-//
-/**
- * Un Usuario tiene los siguientes datos:
- * --Datos personales: - ID unico
- *                     - Nombre de usuario
- *                     - Gmail 
- *                     - Contra Hash 
- *                     - Foto de perfil
- *                     - Fecha de Registro
- * 
- * --Otros datos relacionados con otras tablas:
- *                     - Listas
- *                     - Amigos
- *                     - Favoritas
- *                     - 
- *                     -
- *                     -
- *                     - 
- * 
- */
