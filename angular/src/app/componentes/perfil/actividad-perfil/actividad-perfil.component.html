@@ -3,11 +3,23 @@
 
   <ng-container *ngIf="actividad.length > 0; else sinActividad">
     <div *ngFor="let item of actividad" class="actividad-item">
-      <img [src]="'https://image.tmdb.org/t/p/w200' + item.serie.poster_path" [alt]="item.serie.name" />
+      <a [routerLink]="['/serie', item.serie.id || item.serie.idSerieTMDB]">
+        <img
+          [src]="'https://image.tmdb.org/t/p/w200' + item.serie.poster_path"
+          [alt]="item.serie.name"
+        />
+      </a>
+
       <div class="actividad-info">
-        <p class="titulo-serie">{{ item.serie.name }}</p>
+        <a
+          class="titulo-serie"
+          [routerLink]="['/serie', item.serie.id || item.serie.idSerieTMDB]"
+        >
+          {{ item.serie.name }}
+        </a>
+
         <p class="detalle">{{ item.descripcion }}</p>
-        <p class="fecha">{{ item.fecha | date:'short' }}</p>
+        <p class="fecha">{{ item.fecha | date: 'short' }}</p>
       </div>
     </div>
   </ng-container>

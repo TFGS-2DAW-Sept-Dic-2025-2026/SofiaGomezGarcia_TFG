@@ -192,6 +192,8 @@ export class AuthService {
     return this.getDatosUsuario()?.username || '';
   }
 
+
+
   /**
    * Actualiza el perfil del usuario
    */
@@ -296,30 +298,51 @@ export class AuthService {
   /**
    * Maneja una autenticación exitosa
    */
-  private handleSuccessfulAuth(response: any): void {
-    // Si tu backend devuelve un objeto con estructura { jwt: {...}, usuario: {...} }
-    if (response.jwt) {
-      this._jwt.set(response.jwt);
-    } else if (response.token) {
-      // Si solo devuelve un token simple
+  // private handleSuccessfulAuth(response: any): void {
+  //   // Si tu backend devuelve un objeto con estructura { jwt: {...}, usuario: {...} }
+  //   if (response.jwt) {
+  //     this._jwt.set(response.jwt);
+  //   } else if (response.token) {
+  //     // Si solo devuelve un token simple
+  //     this.setJwt('sesion', response.token);
+  //   }
+
+  //   // Si también devuelve un refresh token por separado
+  //   if (response.refreshToken) {
+  //     this.setJwt('refresh', response.refreshToken);
+  //   }
+
+  //   if (response.usuario) {
+  //     this.setDatosUsuario(response.usuario);
+  //   }
+
+  //   this._isAuthenticated.set(true);
+
+  //   // Persistir datos
+  //   this.persistJwtToSessionStorage();
+  //   this.persistUserDataToSessionStorage();
+  // }
+
+
+
+  handleSuccessfulAuth(response: any) {
+    // Guarda los tokens si existen
+    if (response.token) {
       this.setJwt('sesion', response.token);
+      this._isAuthenticated.set(true);
     }
 
-    // Si también devuelve un refresh token por separado
     if (response.refreshToken) {
       this.setJwt('refresh', response.refreshToken);
     }
 
-    if (response.usuario) {
-      this.setDatosUsuario(response.usuario);
+    // Guarda el usuario (soporta tanto login como registro)
+    const usuario = response.usuario || response.user;
+    if (usuario) {
+      this.setDatosUsuario(usuario);
     }
-
-    this._isAuthenticated.set(true);
-
-    // Persistir datos
-    this.persistJwtToSessionStorage();
-    this.persistUserDataToSessionStorage();
   }
+
 
   /**
    * Manejo centralizado de errores

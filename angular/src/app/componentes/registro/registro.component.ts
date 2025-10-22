@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../servicios/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router,RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { log } from 'console';
 
@@ -16,7 +16,11 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService,private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -27,20 +31,42 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-  if (this.registerForm.invalid) return;
+    if (this.registerForm.invalid) return;
 
-  // el register() devuelve un observable
-  this.authService.register(this.registerForm.value).subscribe({ 
-    next: (res) => {
-     
-      console.log('Registro exitoso', res.msg);
-      this.router.navigate(['/']); 
-    },
-    error: (err) => {
-      this.errorMessage = err.error?.msg || 'Error en el registro';
-    }
-  });
+    this.authService.register(this.registerForm.value).subscribe({
+      next: (res) => {
+        console.log('✅ Registro exitoso', res);
+
+        // 🧩 Usa el manejador del AuthService para guardar token y usuario correctamente
+        this.authService['handleSuccessfulAuth'](res);
+
+        // 🔁 Navega al perfil o layout principal
+        this.router.navigate(['/perfil']); 
+      },
+      error: (err) => {
+        console.error('❌ Error en el registro:', err);
+        this.errorMessage = err.error?.msg || 'Error en el registro';
+      }
+    });
+  }
 }
+
+
+  //   onSubmit(): void {
+  //   if (this.registerForm.invalid) return;
+
+  //   // el register() devuelve un observable
+  //   this.authService.register(this.registerForm.value).subscribe({ 
+  //     next: (res) => {
+
+  //       console.log('Registro exitoso', res.msg);
+  //       this.router.navigate(['/']); 
+  //     },
+  //     error: (err) => {
+  //       this.errorMessage = err.error?.msg || 'Error en el registro';
+  //     }
+  //   });
+  // }
 
 
   //para hacer visible la password
@@ -55,4 +81,3 @@ export class RegisterComponent implements OnInit {
 
 
 
-}

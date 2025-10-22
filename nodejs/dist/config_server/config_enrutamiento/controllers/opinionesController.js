@@ -86,7 +86,6 @@ exports.default = {
     obtenerOpinionesUsuario: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { idUsuario } = req.params;
-            // const idUsuario = (req as any).user?.id;
             if (!idUsuario) {
                 return res.status(400).json({ msg: "ID de usuario es obligatorio" });
             }
