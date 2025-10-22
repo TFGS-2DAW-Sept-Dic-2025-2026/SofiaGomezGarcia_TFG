@@ -59,7 +59,7 @@ router.put('/perfil/:id/listas-publicas', perfilController.actualizarListasPubli
 router.get("/series/:idSerie/opiniones", authMiddleware, opinionesController.obtenerOpinionesSerie);
 router.post("/series/:idSerie/opiniones", authMiddleware, opinionesController.crearOpinion);
 router.post("/opiniones/:idOpinion/meGusta", authMiddleware, opinionesController.meGustaOpinion);
-
+router.get("/opiniones/:idUsuario", authMiddleware, opinionesController.obtenerOpinionesUsuario);
 
 
 export default router;

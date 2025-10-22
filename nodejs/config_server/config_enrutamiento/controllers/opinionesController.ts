@@ -81,5 +81,23 @@ export default {
       console.log("Error al dar me gusta a la opinión:", error);
       res.status(500).json({ msg: "Error al dar me gusta a la opinión" });
     }
+  },
+  obtenerOpinionesUsuario: async (req: Request, res: Response) => {
+    try {
+      const { idUsuario } = req.params;
+
+      if (!idUsuario) {
+        return res.status(400).json({ msg: "ID de usuario es obligatorio" });
+      }
+
+      const opiniones = await Opinion.find({ idUsuario })
+        .populate("idUsuario", "username")
+        .sort({ fecha: -1 });
+
+      res.status(200).json(opiniones);
+    } catch (error) {
+      console.error("Error al obtener opiniones del usuario:", error);
+      res.status(500).json({ msg: "Error al obtener opiniones del usuario" });
+    }
   }
 }

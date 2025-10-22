@@ -46,4 +46,5 @@ router.put('/perfil/:id/listas-publicas', perfilController_1.default.actualizarL
 router.get("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesSerie);
 router.post("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.crearOpinion);
 router.post("/opiniones/:idOpinion/meGusta", authMiddleware_1.authMiddleware, opinionesController_1.default.meGustaOpinion);
+router.get("/opiniones/:idUsuario", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesUsuario);
 exports.default = router;

@@ -32,4 +32,8 @@ export class OpinionService {
     return this.http.post<any>(`${this.apiUrl}/opiniones/${idOpinion}/meGusta`, {}, { headers: this.getHeaders() });
   }
 
+  obtenerOpinionesUsuario(idUsuario: string) {
+  return this.http.get<any[]>(`${this.apiUrl}/opiniones/${idUsuario}`, { headers: this.getHeaders() });
+}
+
 }

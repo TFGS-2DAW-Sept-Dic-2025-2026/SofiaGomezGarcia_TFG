@@ -66,15 +66,12 @@ exports.default = {
             const opinion = yield opinion_1.Opinion.findById(idOpinion);
             if (!opinion)
                 return res.status(404).json({ msg: "Opinión no encontrada" });
-            // Verificamos si el usuario ya dio me gusta
             const index = opinion.usuariosMeGusta.findIndex(u => u.toString() === idUsuario);
             if (index === -1) {
-                // No ha dado me gusta aún → lo agrega
                 opinion.meGusta += 1;
                 opinion.usuariosMeGusta.push(idUsuario);
             }
             else {
-                // Ya había dado me gusta → lo quita
                 opinion.meGusta -= 1;
                 opinion.usuariosMeGusta.splice(index, 1);
             }
@@ -84,6 +81,23 @@ exports.default = {
         catch (error) {
             console.log("Error al dar me gusta a la opinión:", error);
             res.status(500).json({ msg: "Error al dar me gusta a la opinión" });
+        }
+    }),
+    obtenerOpinionesUsuario: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { idUsuario } = req.params;
+            // const idUsuario = (req as any).user?.id;
+            if (!idUsuario) {
+                return res.status(400).json({ msg: "ID de usuario es obligatorio" });
+            }
+            const opiniones = yield opinion_1.Opinion.find({ idUsuario })
+                .populate("idUsuario", "username")
+                .sort({ fecha: -1 });
+            res.status(200).json(opiniones);
+        }
+        catch (error) {
+            console.error("Error al obtener opiniones del usuario:", error);
+            res.status(500).json({ msg: "Error al obtener opiniones del usuario" });
         }
     })
 };
