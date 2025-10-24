@@ -10,6 +10,7 @@ import { ListaDetalleComponent } from './componentes/lista-detalle/lista-detalle
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { SeguimientoComponent } from './componentes/seguimiento/seguimiento.component';
 import { DescubreComponent } from './componentes/descubre/descubre.component';
+import { PerfilExternoComponent } from './componentes/perfil-externo/perfil-externo.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: 'listas', component: ListasComponent, canActivate: [authGuard] },
     { path: 'listas/:id', component: ListaDetalleComponent, canActivate: [authGuard] },
     { path: 'perfil', component: PerfilComponent, canActivate: [authGuard] },
+    { path: 'usuario/:username', component: PerfilExternoComponent, canActivate: [authGuard] },
     { path: 'descubre', component:DescubreComponent, canActivate: [authGuard] },
     { path: 'seguimiento', component: SeguimientoComponent, canActivate: [authGuard] },
 

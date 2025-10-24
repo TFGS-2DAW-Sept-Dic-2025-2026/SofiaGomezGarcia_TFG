@@ -9,6 +9,7 @@ const ListaSchema = new mongoose_1.Schema({
     usuarioCreador: { type: mongoose_1.Schema.Types.ObjectId, ref: "usuario", required: true },
     // IDs de series externas
     series: [{ type: String }],
+    publica: { type: Boolean, default: false },
     fechaCreacion: { type: Date, default: Date.now }
 }, {
     timestamps: true

@@ -21,12 +21,13 @@ export default {
                 nombre,
                 descripcion,
                 usuarioCreador,
-                series: []
+                series: [],
+                publica: false
             });
 
             await nuevaLista.save();
 
-            // se agrega la referencia de la lista al usuario
+            
             await usuario.findByIdAndUpdate(usuarioCreador, {
                 $push: { listas: nuevaLista._id },
             })
@@ -62,7 +63,7 @@ export default {
     agregarSerieALista: async (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params; 
             const { idSerie } = req.body;
             const usuarioCreador = (req as any).user?.id;
 
@@ -96,7 +97,7 @@ export default {
     },
     eliminarSerieDeLista: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params; 
             const { idSerie } = req.body;
             const usuarioCreador = (req as any).user?.id;
 
@@ -133,7 +134,7 @@ export default {
     eliminarLista: async (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params; 
             const usuarioCreador = (req as any).user?.id;
 
             if (!usuarioCreador) {
@@ -146,7 +147,6 @@ export default {
                 return res.status(404).json({ msg: 'Lista no encontrada' });
             }
 
-            // se elimina la referencia de la lista en el usuario
             await usuario.findByIdAndUpdate(usuarioCreador, {
                 $pull: { listas: id },
             });
@@ -161,7 +161,7 @@ export default {
     },
     obtenerListaPorId: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params; 
             const usuarioCreador = (req as any).user?.id;
             if (!usuarioCreador) {
                 return res.status(401).json({ msg: 'Usuario no autenticado' });
@@ -183,7 +183,7 @@ export default {
     obtenerListasConEstado: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const usuarioCreador = (req as any).user?.id;
-            const { idSerie } = req.params; 
+            const { idSerie } = req.params;
 
             if (!usuarioCreador) return res.status(401).json({ msg: 'Usuario no autenticado' });
             if (!idSerie) return res.status(400).json({ msg: 'ID de la serie es obligatorio' });
@@ -205,6 +205,29 @@ export default {
         } catch (error) {
             console.log("Error al obtener listas con estado:", error);
             res.status(500).json({ msg: 'Error al obtener listas con estado' });
+        }
+    },
+    obtenerListasPublicasPorUsername: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { username } = req.params;
+
+            if (!username) {
+                return res.status(400).json({ mensaje: 'Username es requerido' });
+            }
+
+            const Usuario = await usuario.findOne({ username });
+            if (!usuario) {
+                return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+            }
+
+            const listasPublicas = await Lista.find({
+                _id: { $in: Usuario?.listasPublicas }
+            }).populate('series'); 
+
+            return res.json({ listasPublicas });
+        } catch (error) {
+            console.error('Error obteniendo listas públicas por username:', error);
+            return res.status(500).json({ mensaje: 'Error interno del servidor' });
         }
     }
 

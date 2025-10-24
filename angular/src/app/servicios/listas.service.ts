@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 @Injectable({ providedIn: 'root' })
 export class ListasService {
   private apiUrl = 'http://localhost:5000/listas';
+   private baseUrl = 'http://localhost:5000';
   private auth = inject(AuthService);
 
   constructor(private http: HttpClient) { }
@@ -46,8 +47,8 @@ export class ListasService {
   eliminarSerieDeLista(idLista: string, idSerie: string): Observable<any> {
     return this.http.post<any>(
       `${this.apiUrl}/${idLista}/eliminar`,
-      { idSerie },               // <-- body correcto
-      { headers: this.getHeaders() }  // <-- headers separados
+      { idSerie },               
+      { headers: this.getHeaders() }  
     );
   }
 
@@ -64,9 +65,14 @@ export class ListasService {
     return this.http.get(`${this.apiUrl}/${idLista}`, { headers });
   }
 
+
   getListasConEstado(idSerie: string) {
     const headers = this.getHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/conEstado/${idSerie}`, { headers });
+  }
+
+  obtenerListasPublicasPorUsername(username: string) {
+    return this.http.get<any>(`${this.baseUrl}/usuarios/${username}/listasPublicas`);
   }
 
 }

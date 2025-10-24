@@ -184,3 +184,7 @@
   color: #007bff;
   font-weight: bold;
 }
+
+.username-link{
+  cursor: pointer;
+}

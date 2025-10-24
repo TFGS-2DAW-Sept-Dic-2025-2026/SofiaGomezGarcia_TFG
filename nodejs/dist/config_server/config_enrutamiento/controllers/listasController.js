@@ -30,7 +30,8 @@ exports.default = {
                 nombre,
                 descripcion,
                 usuarioCreador,
-                series: []
+                series: [],
+                publica: false
             });
             yield nuevaLista.save();
             // se agrega la referencia de la lista al usuario
@@ -183,6 +184,28 @@ exports.default = {
         catch (error) {
             console.log("Error al obtener listas con estado:", error);
             res.status(500).json({ msg: 'Error al obtener listas con estado' });
+        }
+    }),
+    obtenerListasPublicasPorUsername: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { username } = req.params;
+            if (!username) {
+                return res.status(400).json({ mensaje: 'Username es requerido' });
+            }
+            // Buscar al usuario por username
+            const Usuario = yield usuario_1.default.findOne({ username });
+            if (!usuario_1.default) {
+                return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+            }
+            // Obtener las listas públicas del array de IDs del usuario
+            const listasPublicas = yield lista_1.Lista.find({
+                _id: { $in: Usuario === null || Usuario === void 0 ? void 0 : Usuario.listasPublicas }
+            }).populate('series'); // opcional, si quieres incluir series
+            return res.json({ listasPublicas });
+        }
+        catch (error) {
+            console.error('Error obteniendo listas públicas por username:', error);
+            return res.status(500).json({ mensaje: 'Error interno del servidor' });
         }
     })
 };

@@ -6,6 +6,7 @@ import listasController from "../controllers/listasController";
 import seguimientoController from "../controllers/seguimientoController";
 import perfilController from "../controllers/perfilController";
 import opinionesController from "../controllers/opinionesController";
+import usuariosController from "../controllers/usuariosController";
 
 
 const router = Router();
@@ -32,6 +33,7 @@ router.post("/listas/:id/eliminar", listasController.eliminarSerieDeLista); // C
 router.get("/listas/:id", listasController.obtenerListaPorId);
 router.delete("/listas/:id", listasController.eliminarLista);
 router.get('/listas/conEstado/:idSerie', listasController.obtenerListasConEstado);
+router.get('/usuarios/:username/listasPublicas', listasController.obtenerListasPublicasPorUsername);
 
 
 //Rutas para componente descubrir series
@@ -53,13 +55,18 @@ router.get("/perfil/:userId/favoritas", authMiddleware, perfilController.obtener
 router.put("/perfil/:userId/favoritas", authMiddleware, perfilController.actualizarFavoritas);
 router.get('/perfil/:id/listas-publicas', perfilController.obtenerListasPublicas);
 router.put('/perfil/:id/listas-publicas', perfilController.actualizarListasPublicas);
+router.get('/lista/publica/:id',perfilController.obtenerListaPublicaPorId);
 
 
-//Rutas para las reseñas de las series
+// Rutas para las reseñas de las series
 router.get("/series/:idSerie/opiniones", authMiddleware, opinionesController.obtenerOpinionesSerie);
 router.post("/series/:idSerie/opiniones", authMiddleware, opinionesController.crearOpinion);
 router.post("/opiniones/:idOpinion/meGusta", authMiddleware, opinionesController.meGustaOpinion);
 router.get("/opiniones/:idUsuario", authMiddleware, opinionesController.obtenerOpinionesUsuario);
 
+// Rutas para obtener los usuarios
+router.get("/usuarios", authMiddleware, usuariosController.obtenerUsuarios);
+router.get("/usuarios/:idUsuario", authMiddleware, usuariosController.obtenerUsuariosByID);
+router.get("/:username/username", authMiddleware, usuariosController.obtenerUsuariosPorUsername);
 
 export default router;

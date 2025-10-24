@@ -6,6 +6,7 @@ import { seriesService } from '../../servicios/series.service';
 import { ListasService } from '../../servicios/listas.service';
 import { forkJoin } from 'rxjs';
 import { LayoutComponent } from '../layout/layout.component';
+import { PerfilService } from '../../servicios/perfil.service';
 
 @Component({
   selector: 'app-lista-detalle',
@@ -18,28 +19,36 @@ export class ListaDetalleComponent implements OnInit {
   auth = inject(AuthService);
   listasService = inject(ListasService);
   seriesService = inject(seriesService);
+  perfilService = inject(PerfilService);
   route = inject(ActivatedRoute);
 
   isLoggedIn = false;
+  esPublica = false;
   lista: any = null;
   loading = true;
 
   ngOnInit() {
+   
     this.isLoggedIn = this.auth.hasValidSession();
-    if (!this.isLoggedIn) return;
 
-    const idLista = this.route.snapshot.paramMap.get('id'); // Obtener el ID de la lista desde la URL
-    if (idLista) this.cargarLista(idLista);
+    
+    const idLista = this.route.snapshot.paramMap.get('id');
+    this.esPublica = this.route.snapshot.queryParamMap.get('publica') === 'true';
+
+    if (idLista) this.cargarLista(idLista, this.esPublica);
   }
 
-  cargarLista(idLista: string) {
+  cargarLista(idLista: string, esPublica: boolean) {
     this.loading = true;
-    this.listasService.obtenerListaPorId(idLista).subscribe({
-      next: async (res) => {
+
+    const observable = esPublica
+      ? this.perfilService.obtenerListaPublicaPorId(idLista)
+      : this.listasService.obtenerListaPorId(idLista);
+
+    observable.subscribe({
+      next: (res) => {
         this.lista = res;
 
-        // Recibe el id de la lista y a partir de este hace un map con los datos de todas las series que tiene la lista a partir de su id para poder mostrar estos datos
-        // Comprobacion de si hay listas
         if (this.lista.series?.length) {
           const observables = this.lista.series.map((serieId: string) =>
             this.seriesService.getSeriesByID(serieId)
@@ -67,13 +76,14 @@ export class ListaDetalleComponent implements OnInit {
   }
 
   eliminarSerie(idSerie: string) {
+    if (!this.lista || !this.lista._id) return;
+
     const idLista = this.lista._id;
+
     this.listasService.eliminarSerieDeLista(idLista, idSerie)
       .subscribe({
-        next: listaActualizada => {
-
+        next: (listaActualizada) => {
           this.lista.series = listaActualizada.series;
-
 
           if (this.lista.series.length) {
             const observables = this.lista.series.map((serieId: string) =>
@@ -81,14 +91,14 @@ export class ListaDetalleComponent implements OnInit {
             );
 
             forkJoin(observables).subscribe({
-              next: (seriesCompletas) => {
-                this.lista.series = seriesCompletas;
-              },
+              next: (seriesCompletas) => this.lista.series = seriesCompletas,
               error: (err) => console.error('Error recargando series:', err)
             });
           }
         },
-        error: err => console.error('Error al eliminar serie:', err)
+        error: (err) => console.error('Error al eliminar serie:', err)
       });
   }
 }
+
+ 

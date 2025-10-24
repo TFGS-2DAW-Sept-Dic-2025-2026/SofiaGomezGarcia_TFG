@@ -5,7 +5,8 @@ import { AuthService } from "./auth.service";
 
 @Injectable({ providedIn: 'root' })
 export class PerfilService {
-  private apiUrl = 'http://localhost:5000/perfil'; // o ajusta según tu backend
+  private apiUrl = 'http://localhost:5000/perfil'; 
+  private baseUrl = 'http://localhost:5000';
 
   constructor(private http: HttpClient) { }
 
@@ -60,4 +61,10 @@ actualizarListasPublicasPerfil(idUsuario: string, idsListas: string[]): Observab
     { headers }
   );
 }
+
+
+obtenerListaPublicaPorId(id: string) {
+    return this.http.get<any>(`${this.baseUrl}/lista/publica/${id}`);
+  }
+
 }

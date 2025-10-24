@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const usuario_1 = __importDefault(require("../../../modelos/modelos_mongoose_orm/usuario"));
+const lista_1 = require("../../../modelos/modelos_mongoose_orm/lista");
 exports.default = {
     obtenerFavoritas: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -66,16 +67,49 @@ exports.default = {
     }),
     actualizarListasPublicas: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { listasPublicas } = req.body;
-            const user = yield usuario_1.default.findByIdAndUpdate(req.params.id, { listasPublicas }, { new: true }).populate('listasPublicas');
-            if (!user) {
+            const { listasPublicas } = req.body; // array de IDs de listas a marcar como públicas
+            const userId = req.params.id;
+            // Obtener todas las listas del usuario
+            const listas = yield lista_1.Lista.find({ usuarioCreador: userId });
+            // Actualizar la propiedad "publica" según si la lista está en listasPublicas
+            const actualizaciones = listas.map((lista) => __awaiter(void 0, void 0, void 0, function* () {
+                lista.publica = listasPublicas.includes(lista.id.toString());
+                return lista.save();
+            }));
+            yield Promise.all(actualizaciones);
+            // Opcional: actualizar también el campo de usuario si quieres mantener el array
+            //implementar updateMany
+            const user = yield usuario_1.default.findByIdAndUpdate(userId, { listasPublicas }, { new: true }).populate('listasPublicas');
+            if (!user)
                 return res.status(404).json({ msg: 'Usuario no encontrado' });
-            }
             res.json(user.listasPublicas);
         }
         catch (err) {
             console.error('Error al actualizar listas públicas:', err);
             res.status(500).json({ msg: 'Error al actualizar listas públicas', err });
+        }
+    }),
+    obtenerListaPublicaPorId: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        try {
+            const { id } = req.params;
+            // Buscar la lista por ID
+            const lista = yield lista_1.Lista.findById(id).populate('series');
+            if (!lista) {
+                return res.status(404).json({ msg: 'Lista no encontrada' });
+            }
+            // Si la lista NO es pública, requiere autenticación
+            if (!lista.publica) {
+                const usuarioId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+                if (!usuarioId || lista.usuarioCreador.toString() !== usuarioId) {
+                    return res.status(401).json({ msg: 'No autorizado' });
+                }
+            }
+            return res.json(lista);
+        }
+        catch (error) {
+            console.error('Error obteniendo lista:', error);
+            return res.status(500).json({ msg: 'Error interno del servidor' });
         }
     })
 };

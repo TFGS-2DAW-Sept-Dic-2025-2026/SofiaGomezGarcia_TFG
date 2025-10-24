@@ -1,0 +1,19 @@
+<app-layout>
+  <div class="homePerfil">
+    <main class="perfil-container py-4" *ngIf="!loading && usuario">
+      <div class="perfil-header card shadow-sm p-3 mb-4 d-flex align-items-center gap-4">
+        <img [src]="usuario.fotoPerfil || 'recursos/🚬.jpg'" class="avatar-marcado propio-avatar" alt="Avatar" />
+        <div class="flex-grow-1">
+          <h2 class="nombre-usuario mb-1">{{ usuario.username }}</h2>
+          <p class="text-muted mb-2">{{ usuario.amigos?.length || 0 }} amigos</p>
+          <button class="btn btn-primary btn-sm" (click)="enviarSolicitudAmistad()">Agregar amigo</button>
+        </div>
+      </div>
+
+      <app-listas-publicas-perfil [usuario]="usuario" [esMiPerfil]="false"></app-listas-publicas-perfil>
+      <app-actividad-perfil [usuario]="usuario"></app-actividad-perfil>
+    </main>
+
+    <div *ngIf="loading" class="text-center">Cargando perfil...</div>
+  </div>
+</app-layout>

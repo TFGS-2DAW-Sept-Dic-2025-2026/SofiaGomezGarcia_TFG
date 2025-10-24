@@ -55,24 +55,55 @@ export default {
     },
     actualizarListasPublicas: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { listasPublicas } = req.body;
+            const { listasPublicas } = req.body; 
+            const userId = req.params.id;
+            const listas = await Lista.find({ usuarioCreador: userId });
 
+            const actualizaciones = listas.map(async (lista) => {
+                lista.publica = listasPublicas.includes(lista.id.toString());
+                return lista.save();
+            });
+
+            await Promise.all(actualizaciones);
+            
+            //implementar updateMany
             const user = await usuario.findByIdAndUpdate(
-                req.params.id,
+                userId,
                 { listasPublicas },
                 { new: true }
             ).populate('listasPublicas');
 
-            if (!user) {
-                return res.status(404).json({ msg: 'Usuario no encontrado' });
-            }
+            if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
 
             res.json(user.listasPublicas);
         } catch (err) {
             console.error('Error al actualizar listas públicas:', err);
             res.status(500).json({ msg: 'Error al actualizar listas públicas', err });
         }
+        
+    },
+    obtenerListaPublicaPorId: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+
+        
+        const lista = await Lista.findById(id).populate('series');
+        if (!lista) {
+            return res.status(404).json({ msg: 'Lista no encontrada' });
+        }
+
+        // Si la lista NO es pública, requiere autenticación
+        if (!lista.publica) {
+            const usuarioId = (req as any).user?.id;
+            if (!usuarioId || lista.usuarioCreador.toString() !== usuarioId) {
+                return res.status(401).json({ msg: 'No autorizado' });
+            }
+        }
+
+        return res.json(lista);
+    } catch (error) {
+        console.error('Error obteniendo lista:', error);
+        return res.status(500).json({ msg: 'Error interno del servidor' });
     }
-
-
+}
 }

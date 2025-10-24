@@ -18,7 +18,9 @@
 
   <div *ngFor="let o of opiniones" class="opinion-card">
     <div class="header">
-      <strong>{{ o.idUsuario?.username || 'Usuario' }}</strong>
+      <strong (click)="irPerfil(o.idUsuario?.username)" class="username-link">
+        {{ o.idUsuario?.username || 'Usuario' }}
+      </strong>
       <span>{{ o.estrellas }} ⭐</span>
       <small>{{ o.fecha | date:'short' }}</small>
     </div>

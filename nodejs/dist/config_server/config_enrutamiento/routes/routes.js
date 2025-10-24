@@ -11,6 +11,7 @@ const listasController_1 = __importDefault(require("../controllers/listasControl
 const seguimientoController_1 = __importDefault(require("../controllers/seguimientoController"));
 const perfilController_1 = __importDefault(require("../controllers/perfilController"));
 const opinionesController_1 = __importDefault(require("../controllers/opinionesController"));
+const usuariosController_1 = __importDefault(require("../controllers/usuariosController"));
 const router = (0, express_1.Router)();
 //Rutas para buscar y obtener series
 router.get("/obtenerSeries", apiController_1.default.obtenerSeries);
@@ -28,6 +29,7 @@ router.post("/listas/:id/eliminar", listasController_1.default.eliminarSerieDeLi
 router.get("/listas/:id", listasController_1.default.obtenerListaPorId);
 router.delete("/listas/:id", listasController_1.default.eliminarLista);
 router.get('/listas/conEstado/:idSerie', listasController_1.default.obtenerListasConEstado);
+router.get('/usuarios/:username/listasPublicas', listasController_1.default.obtenerListasPublicasPorUsername);
 //Rutas para componente descubrir series
 router.get('/series/descubrir', apiController_1.default.descubrirSeries);
 router.get('/series/generos', apiController_1.default.obtenerGeneros);
@@ -42,9 +44,14 @@ router.get("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilC
 router.put("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilController_1.default.actualizarFavoritas);
 router.get('/perfil/:id/listas-publicas', perfilController_1.default.obtenerListasPublicas);
 router.put('/perfil/:id/listas-publicas', perfilController_1.default.actualizarListasPublicas);
-//Rutas para las reseñas de las series
+router.get('/lista/publica/:id', perfilController_1.default.obtenerListaPublicaPorId);
+// Rutas para las reseñas de las series
 router.get("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesSerie);
 router.post("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.crearOpinion);
 router.post("/opiniones/:idOpinion/meGusta", authMiddleware_1.authMiddleware, opinionesController_1.default.meGustaOpinion);
 router.get("/opiniones/:idUsuario", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesUsuario);
+// Rutas para obtener los usuarios
+router.get("/usuarios", authMiddleware_1.authMiddleware, usuariosController_1.default.obtenerUsuarios);
+router.get("/usuarios/:idUsuario", authMiddleware_1.authMiddleware, usuariosController_1.default.obtenerUsuariosByID);
+router.get("/:username/username", authMiddleware_1.authMiddleware, usuariosController_1.default.obtenerUsuariosPorUsername);
 exports.default = router;

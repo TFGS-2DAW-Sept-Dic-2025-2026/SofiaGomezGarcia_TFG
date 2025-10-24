@@ -2,7 +2,7 @@
 
     <!-- Contenido principal -->
     <main class="lista-detalle flex-grow-1 bg-light p-4" style="margin-left: 220px;">
-        <div *ngIf="lista && isLoggedIn; else noAuth" class="container py-4">
+        <div *ngIf="lista && (isLoggedIn || esPublica); else noAuth" class="container py-4">
 
             <h2 class="fw-bold text-warning mb-3">{{ lista.nombre }}</h2>
             <p class="text-secondary mb-4">{{ lista.descripcion || 'Sin descripción' }}</p>
@@ -24,7 +24,8 @@
                         <h5 class="card-title text-dark">{{ serie.name }}</h5>
                         <p class="text-muted mb-2" *ngIf="serie.first_air_date">{{ serie.first_air_date | date:'yyyy' }}
                         </p>
-                        <button type="button" class="btn btn-outline-danger mt-auto" (click)="eliminarSerie(serie.id)" >
+                        <button *ngIf="!esPublica" type="button" class="btn btn-outline-danger mt-auto"
+                            (click)="eliminarSerie(serie.id)">
                             <i class="bi bi-trash"></i> Eliminar
                         </button>
                     </div>

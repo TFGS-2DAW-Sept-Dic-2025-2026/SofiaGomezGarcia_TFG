@@ -6,6 +6,7 @@ export interface ILista extends Document {
   usuarioCreador: Types.ObjectId;   
   series: string[];                 
   fechaCreacion: Date;
+  publica: boolean;
 }
 
 const ListaSchema = new Schema<ILista>(
@@ -17,6 +18,7 @@ const ListaSchema = new Schema<ILista>(
     
     // IDs de series externas
     series: [{ type: String }],
+    publica: {type: Boolean, default:false},
 
     fechaCreacion: { type: Date, default: Date.now }
   },

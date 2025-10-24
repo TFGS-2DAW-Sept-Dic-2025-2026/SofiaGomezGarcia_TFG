@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../servicios/auth.service';
 import { PerfilService } from '../../../servicios/perfil.service';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './listas-publicas-perfil.component.html',
   styleUrl: './listas-publicas-perfil.component.css'
 })
-export class ListasPublicasPerfilComponent implements OnInit{
+export class ListasPublicasPerfilComponent implements OnChanges{
   @Input() usuario!: any;
   @Input() esMiPerfil = false;
 
@@ -25,18 +25,34 @@ export class ListasPublicasPerfilComponent implements OnInit{
   listasUsuario: any[] = [];
   modalAbierto = false;
 
-  ngOnInit(): void {
+
+  ngOnChanges(): void {
+  if (this.usuario && this.usuario.username) {
     this.cargarListasPublicas();
   }
+}
+
 
   constructor(private router: Router) {}
 
+
+
   cargarListasPublicas() {
-    this.perfilService.obtenerListasPublicasPerfil(this.usuario.id).subscribe({
-      next: (res) => this.listasPublicas = res.listasPublicas || [],
-      error: (err) => console.error('Error al cargar listas públicas:', err)
-    });
-  }
+  if (!this.usuario) return;
+
+  const idUsuario = this.usuario.id || this.usuario._id;
+  const username = this.usuario.username;
+
+  const observable = this.esMiPerfil
+    ? this.perfilService.obtenerListasPublicasPerfil(idUsuario)
+    : this.listasService.obtenerListasPublicasPorUsername(username);
+
+  observable.subscribe({
+    next: (res) => this.listasPublicas = res.listasPublicas || [],
+    error: (err) => console.error('Error al cargar listas públicas:', err)
+  });
+}
+
 
   abrirModalListas() {
     this.listasService.getListas().subscribe({
@@ -74,12 +90,11 @@ export class ListasPublicasPerfilComponent implements OnInit{
   }
 
 
-  //para ir a la lista que seleccione el usuario (mirar como mejorarlo)
 
   verLista(idLista: string) {
   console.log('ID de la lista clicada:', idLista); 
   if (idLista) {
-    this.router.navigate(['/listas', idLista]);
+  this.router.navigate(['/listas', idLista], { queryParams: { publica: true } });
   } else {
     console.error('El ID de la lista es inválido');
   }

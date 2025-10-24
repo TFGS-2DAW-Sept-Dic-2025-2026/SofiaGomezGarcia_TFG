@@ -3,6 +3,9 @@ import { Component, inject, Input, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../servicios/auth.service';
 import { OpinionService } from '../../../servicios/opinion.service';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-opinion-serie',
@@ -15,6 +18,7 @@ export class OpinionSerieComponent {
 
   auth = inject(AuthService);
   opinionesService = inject(OpinionService);
+  router = inject(Router);
 
   opiniones: any[] = [];
   miOpinion = { titulo: '', estrellas: 5, opinion: '' };
@@ -27,6 +31,15 @@ export class OpinionSerieComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['serieId'] && this.serieId) {
       this.cargarOpiniones();
+    }
+  }
+
+
+
+  irPerfil(username: string) {
+    if (username) {
+      console.log('Username recibido:', username);
+      this.router.navigate(['/usuario', username]);
     }
   }
 
@@ -55,8 +68,8 @@ export class OpinionSerieComponent {
     this.opinionesService.guardarOpinionSerie(this.serieId, this.miOpinion).subscribe({
       next: (nuevaOp) => {
         this.opiniones.push(nuevaOp);
-        this.miOpinion = { titulo: '', estrellas: 5, opinion: '' }; // Para limpiar el usuario
-        this.cargarOpiniones(); // Se vuelven a cargar las opiniones para que salgan los nombres de usuarios actualizados
+        this.miOpinion = { titulo: '', estrellas: 5, opinion: '' }; 
+        this.cargarOpiniones(); 
       },
       error: (err) => console.error('Error guardando opinión', err)
     });
@@ -65,10 +78,8 @@ export class OpinionSerieComponent {
   toggleMeGusta(opinion: any) {
     this.opinionesService.darMeGustaOpinion(opinion._id).subscribe({
       next: (actualizada) => {
-        // Actualizamos el contador de me gusta
         opinion.meGusta = actualizada.meGusta;
 
-        // Verificar si el usuario ya ha dado me gusta
         const usuarioId = this.auth.getDatosUsuario()?.id;
         opinion.usuarioHaDadoMeGusta = actualizada.usuariosMeGusta.includes(usuarioId);
       },
