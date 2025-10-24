@@ -56,6 +56,9 @@ router.put("/perfil/:userId/favoritas", authMiddleware, perfilController.actuali
 router.get('/perfil/:id/listas-publicas', perfilController.obtenerListasPublicas);
 router.put('/perfil/:id/listas-publicas', perfilController.actualizarListasPublicas);
 router.get('/lista/publica/:id',perfilController.obtenerListaPublicaPorId);
+router.get('/perfil/publico/:username', perfilController.obtenerPerfilPublico);
+router.get('/perfil/publico/:username/favoritas', perfilController.obtenerFavoritasPublicas);
+//router.get('/perfil/publico/:username/actividad', perfilController.obtenerActividadPublica);
 
 
 // Rutas para las reseñas de las series

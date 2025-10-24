@@ -10,7 +10,9 @@
     </ng-container>
 
     <ng-template #sinFavoritas>
-      <p class="sin-favoritas">No has seleccionado tus series favoritas todavía.</p>
+      <p class="sin-favoritas">
+        {{ esMiPerfil ? 'No has seleccionado tus series favoritas todavía.' : 'Este usuario no tiene favoritas publicadas.' }}
+      </p>
     </ng-template>
   </div>
 

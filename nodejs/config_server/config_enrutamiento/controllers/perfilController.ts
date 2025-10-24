@@ -55,7 +55,7 @@ export default {
     },
     actualizarListasPublicas: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { listasPublicas } = req.body; 
+            const { listasPublicas } = req.body;
             const userId = req.params.id;
             const listas = await Lista.find({ usuarioCreador: userId });
 
@@ -65,7 +65,7 @@ export default {
             });
 
             await Promise.all(actualizaciones);
-            
+
             //implementar updateMany
             const user = await usuario.findByIdAndUpdate(
                 userId,
@@ -80,30 +80,60 @@ export default {
             console.error('Error al actualizar listas públicas:', err);
             res.status(500).json({ msg: 'Error al actualizar listas públicas', err });
         }
-        
+
     },
     obtenerListaPublicaPorId: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { id } = req.params;
+        try {
+            const { id } = req.params;
 
-        
-        const lista = await Lista.findById(id).populate('series');
-        if (!lista) {
-            return res.status(404).json({ msg: 'Lista no encontrada' });
-        }
 
-        // Si la lista NO es pública, requiere autenticación
-        if (!lista.publica) {
-            const usuarioId = (req as any).user?.id;
-            if (!usuarioId || lista.usuarioCreador.toString() !== usuarioId) {
-                return res.status(401).json({ msg: 'No autorizado' });
+            const lista = await Lista.findById(id).populate('series');
+            if (!lista) {
+                return res.status(404).json({ msg: 'Lista no encontrada' });
             }
+
+            // Si la lista NO es pública, requiere autenticación
+            if (!lista.publica) {
+                const usuarioId = (req as any).user?.id;
+                if (!usuarioId || lista.usuarioCreador.toString() !== usuarioId) {
+                    return res.status(401).json({ msg: 'No autorizado' });
+                }
+            }
+
+            return res.json(lista);
+        } catch (error) {
+            console.error('Error obteniendo lista:', error);
+            return res.status(500).json({ msg: 'Error interno del servidor' });
         }
 
-        return res.json(lista);
-    } catch (error) {
-        console.error('Error obteniendo lista:', error);
-        return res.status(500).json({ msg: 'Error interno del servidor' });
+    },
+    obtenerPerfilPublico: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { username } = req.params;
+            const Usuario = await usuario.findOne({ username })
+                .select('username nombre perfilFavoritas actividad'); // solo los datos que son publicos y que se quieren usar
+
+            if (!Usuario) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+            res.json(Usuario);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: 'Error interno del servidor' });
+        }
+    },
+    obtenerFavoritasPublicas: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { username } = req.params;
+            const Usuario = await usuario.findOne({ username }).select('perfilFavoritas');
+            if (!Usuario) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+            res.json({ favoritas: Usuario.perfilFavoritas });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: 'Error interno' });
+        }
     }
-}
+
+   
+
 }

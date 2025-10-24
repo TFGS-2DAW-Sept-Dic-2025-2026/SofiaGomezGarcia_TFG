@@ -28,16 +28,12 @@ exports.default = {
     obtenerUsuariosByID: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {
-            // const { _id } = req.params;
-            //const { userId } = req.params;
             const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             const user = yield usuario_1.default.findById(userId).select("-passwordHash -refreshToken -__v");
-            // const user = await usuario.findById(id);
             if (!user) {
                 return res.status(404).json({ msg: "Usuario no encontrado" });
             }
             res.status(200).json(user);
-            // res.status(200).json({ usuario: user });
         }
         catch (error) {
             console.error("Error obteniendo usuario por ID:", error);

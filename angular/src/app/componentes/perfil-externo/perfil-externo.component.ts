@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { LayoutComponent } from '../layout/layout.component';
 import { ActividadPerfilComponent } from '../perfil/actividad-perfil/actividad-perfil.component';
 import { ListasPublicasPerfilComponent } from '../perfil/listas-publicas-perfil/listas-publicas-perfil.component';
+import { FavoritasPerfilComponent } from '../perfil/favoritas-perfil/favoritas-perfil.component';
 
 @Component({
   selector: 'app-perfil-externo',
-  imports: [FormsModule, CommonModule, LayoutComponent, ActividadPerfilComponent, ListasPublicasPerfilComponent],
+  imports: [FormsModule, CommonModule, LayoutComponent, ActividadPerfilComponent, ListasPublicasPerfilComponent, FavoritasPerfilComponent],
   templateUrl: './perfil-externo.component.html',
   styleUrl: './perfil-externo.component.css'
 })

@@ -5,7 +5,7 @@ import { AuthService } from "./auth.service";
 
 @Injectable({ providedIn: 'root' })
 export class PerfilService {
-  private apiUrl = 'http://localhost:5000/perfil'; 
+  private apiUrl = 'http://localhost:5000/perfil';
   private baseUrl = 'http://localhost:5000';
 
   constructor(private http: HttpClient) { }
@@ -35,36 +35,40 @@ export class PerfilService {
   }
 
   obtenerListasPublicasPerfil(idUsuario: string): Observable<any> {
-  const token = this.auth.getSessionToken();
+    const token = this.auth.getSessionToken();
 
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
 
-  return this.http.get<any>(
-    `${this.apiUrl}/${idUsuario}/listas-publicas`,
-    { headers }
-  );
-}
+    return this.http.get<any>(
+      `${this.apiUrl}/${idUsuario}/listas-publicas`,
+      { headers }
+    );
+  }
 
-actualizarListasPublicasPerfil(idUsuario: string, idsListas: string[]): Observable<any> {
-  const token = this.auth.getSessionToken();
+  actualizarListasPublicasPerfil(idUsuario: string, idsListas: string[]): Observable<any> {
+    const token = this.auth.getSessionToken();
 
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
 
-  return this.http.put<any>(
-    `${this.apiUrl}/${idUsuario}/listas-publicas`,
-    { listasPublicas: idsListas },
-    { headers }
-  );
-}
+    return this.http.put<any>(
+      `${this.apiUrl}/${idUsuario}/listas-publicas`,
+      { listasPublicas: idsListas },
+      { headers }
+    );
+  }
 
 
-obtenerListaPublicaPorId(id: string) {
+  obtenerListaPublicaPorId(id: string) {
     return this.http.get<any>(`${this.baseUrl}/lista/publica/${id}`);
+  }
+
+  obtenerFavoritasPerfilPublico(username: string) {
+    return this.http.get<any>(`${this.apiUrl}/publico/${username}/favoritas`);
   }
 
 }

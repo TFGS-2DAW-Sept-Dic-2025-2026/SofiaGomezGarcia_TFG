@@ -45,6 +45,9 @@ router.put("/perfil/:userId/favoritas", authMiddleware_1.authMiddleware, perfilC
 router.get('/perfil/:id/listas-publicas', perfilController_1.default.obtenerListasPublicas);
 router.put('/perfil/:id/listas-publicas', perfilController_1.default.actualizarListasPublicas);
 router.get('/lista/publica/:id', perfilController_1.default.obtenerListaPublicaPorId);
+router.get('/perfil/publico/:username', perfilController_1.default.obtenerPerfilPublico);
+router.get('/perfil/publico/:username/favoritas', perfilController_1.default.obtenerFavoritasPublicas);
+//router.get('/perfil/publico/:username/actividad', perfilController.obtenerActividadPublica);
 // Rutas para las reseñas de las series
 router.get("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesSerie);
 router.post("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.crearOpinion);

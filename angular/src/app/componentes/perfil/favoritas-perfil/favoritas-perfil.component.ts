@@ -47,35 +47,42 @@ export class FavoritasPerfilComponent implements OnInit {
 }
 
 
-/**
- * Carga las series favoritas del usuario actual.
- * Obtiene los IDs de las series favoritas desde el perfil del usuario,
- * realiza las peticiones para obtener los detalles de cada serie,
- * actualiza la lista de favoritas en el componente.
- * Si ocurre un error durante la carga, se muestra en consola.
- */
 cargarFavoritas() {
   this.favoritas = [];
 
-  if (!this.usuario?.id) return;
-  this.perfilService.obtenerFavoritasPerfil(this.usuario.id).subscribe({
-    next: (res: any) => {
-      const ids: string[] = res.favoritas || [];
-      if (!ids.length) return;
-      const requests: Observable<any>[] = ids.map(id => this.seriesService.getSeriesByID(id));
+  if (this.esMiPerfil) {
+    if (!this.usuario?.id) return;
+    this.perfilService.obtenerFavoritasPerfil(this.usuario.id).subscribe({
+      next: (res: any) => {
+        const ids: string[] = res.favoritas || [];
+        this.cargarDetallesSeries(ids);
+      },
+      error: (err) => console.error('Error obteniendo favoritas del perfil propio:', err)
+    });
+  } 
+ 
+  else {
+    if (!this.usuario?.username) return;
+    this.perfilService.obtenerFavoritasPerfilPublico(this.usuario.username).subscribe({
+      next: (res: any) => {
+        const ids: string[] = res.favoritas || [];
+        this.cargarDetallesSeries(ids);
+      },
+      error: (err) => console.error('Error obteniendo favoritas del perfil público:', err)
+    });
+  }
+}
 
-      forkJoin(requests).subscribe({
-        next: (detalles: any[]) => {
-          this.favoritas = detalles.filter(s => s != null);
-        },
-        error: (err) => {
-          console.error('Error cargando series favoritas:', err);
-          this.favoritas = [];
-        }
-      });
+private cargarDetallesSeries(ids: string[]) {
+  if (!ids.length) return;
+  const requests: Observable<any>[] = ids.map(id => this.seriesService.getSeriesByID(id));
+  forkJoin(requests).subscribe({
+    next: (detalles: any[]) => {
+      this.favoritas = detalles.filter(s => s != null);
     },
     error: (err) => {
-      console.error('Error obteniendo IDs de favoritas:', err);
+      console.error('Error cargando detalles de series favoritas:', err);
+      this.favoritas = [];
     }
   });
 }

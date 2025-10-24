@@ -34,7 +34,6 @@ exports.default = {
                 publica: false
             });
             yield nuevaLista.save();
-            // se agrega la referencia de la lista al usuario
             yield usuario_1.default.findByIdAndUpdate(usuarioCreador, {
                 $push: { listas: nuevaLista._id },
             });
@@ -64,7 +63,7 @@ exports.default = {
     agregarSerieALista: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params;
             const { idSerie } = req.body;
             const usuarioCreador = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             if (!usuarioCreador) {
@@ -92,7 +91,7 @@ exports.default = {
     eliminarSerieDeLista: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params;
             const { idSerie } = req.body;
             const usuarioCreador = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             if (!usuarioCreador) {
@@ -121,7 +120,7 @@ exports.default = {
     eliminarLista: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params;
             const usuarioCreador = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             if (!usuarioCreador) {
                 return res.status(401).json({ msg: 'Usuario no autenticado' });
@@ -130,7 +129,6 @@ exports.default = {
             if (!lista) {
                 return res.status(404).json({ msg: 'Lista no encontrada' });
             }
-            // se elimina la referencia de la lista en el usuario
             yield usuario_1.default.findByIdAndUpdate(usuarioCreador, {
                 $pull: { listas: id },
             });
@@ -144,7 +142,7 @@ exports.default = {
     obtenerListaPorId: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {
-            const { id } = req.params; // ID de la lista
+            const { id } = req.params;
             const usuarioCreador = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             if (!usuarioCreador) {
                 return res.status(401).json({ msg: 'Usuario no autenticado' });
@@ -192,15 +190,13 @@ exports.default = {
             if (!username) {
                 return res.status(400).json({ mensaje: 'Username es requerido' });
             }
-            // Buscar al usuario por username
             const Usuario = yield usuario_1.default.findOne({ username });
             if (!usuario_1.default) {
                 return res.status(404).json({ mensaje: 'Usuario no encontrado' });
             }
-            // Obtener las listas públicas del array de IDs del usuario
             const listasPublicas = yield lista_1.Lista.find({
                 _id: { $in: Usuario === null || Usuario === void 0 ? void 0 : Usuario.listasPublicas }
-            }).populate('series'); // opcional, si quieres incluir series
+            }).populate('series');
             return res.json({ listasPublicas });
         }
         catch (error) {
