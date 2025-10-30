@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const usuario_1 = __importDefault(require("../../../modelos/modelos_mongoose_orm/usuario"));
 const lista_1 = require("../../../modelos/modelos_mongoose_orm/lista");
+const seguimientoSerie_1 = __importDefault(require("../../../modelos/modelos_mongoose_orm/seguimientoSerie"));
+const opinion_1 = require("../../../modelos/modelos_mongoose_orm/opinion");
 exports.default = {
     obtenerFavoritas: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -134,16 +136,47 @@ exports.default = {
             console.error(error);
             res.status(500).json({ msg: 'Error interno' });
         }
+    }),
+    obtenerSeguimientosPublicos: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { username } = req.params;
+            const Usuario = yield usuario_1.default.findOne({ username });
+            if (!Usuario) {
+                return res.status(404).json({ msg: "Usuario no encontrado" });
+            }
+            const seguimientos = yield seguimientoSerie_1.default.find({ idUsuario: Usuario._id });
+            res.json(seguimientos);
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).json({ msg: "Error obteniendo seguimientos del perfil público" });
+        }
+    }), obtenerOpinionesPublicas: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { username } = req.params;
+            // Buscar al usuario por su nombre
+            const Usuario = yield usuario_1.default.findOne({ username });
+            if (!Usuario) {
+                return res.status(404).json({ msg: 'Usuario no encontrado' });
+            }
+            // Buscar las opiniones de ese usuario
+            const opinionesUsuario = yield opinion_1.Opinion.find({ idUsuario: Usuario._id });
+            // Si no tiene opiniones, devolver un array vacío
+            if (!opinionesUsuario.length) {
+                return res.json({ opiniones: [] });
+            }
+            const opinionesPublicas = opinionesUsuario.map(op => ({
+                id: op._id,
+                idSerie: op.idSerie,
+                estrellas: op.estrellas,
+                opinion: op.opinion,
+                fecha: op.fecha,
+            }));
+            res.json({ opiniones: opinionesPublicas });
+        }
+        catch (err) {
+            console.error('Error obteniendo opiniones públicas:', err);
+            res.status(500).json({ msg: 'Error interno del servidor' });
+        }
     })
-    // obtenerActividadPublica: async (req: Request, res: Response, next: NextFunction) => {
-    //     try {
-    //         const { username } = req.params;
-    //         const Usuario = await usuario.findOne({ username }).populate('actividad');
-    //         if (!Usuario) return res.status(404).json({ msg: 'Usuario no encontrado' });
-    //         res.json(Usuario.actividad);
-    //     } catch (error) {
-    //         console.error(error);
-    //         res.status(500).json({ msg: 'Error interno' });
-    //     }
-    // }
 };

@@ -7,6 +7,8 @@ import { forkJoin } from 'rxjs';
 import { SeguimientoService } from '../../../servicios/seguimiento.service';
 import { seriesService } from '../../../servicios/series.service';
 import { OpinionService } from '../../../servicios/opinion.service';
+import { AuthService } from '../../../servicios/auth.service';
+import { PerfilService } from '../../../servicios/perfil.service';
 
 @Component({
   selector: 'app-actividad-perfil',
@@ -21,28 +23,37 @@ export class ActividadPerfilComponent implements OnInit {
   private seriesService = inject(seriesService);
   private seguimientoService = inject(SeguimientoService);
   private opinionesService = inject(OpinionService);
+  private perfilService = inject(PerfilService);
+  private auth = inject(AuthService);
 
   ngOnInit(): void {
-    if (this.usuario?.id) {
-      this.cargarActividad();
-    }
+    if (!this.usuario) return;
+
+    const usuarioLogueado = this.auth.datosUsuario$();
+    const esMiPerfil = !!(usuarioLogueado && usuarioLogueado.id === this.usuario.id);
+    this.cargarActividad(esMiPerfil);
   }
 
 
 
-  cargarActividad() {
-    const usuarioId = this.usuario.id;
+  cargarActividad(esMiPerfil: boolean) {
+    let seguimientos$;
+    let opiniones$;
 
-    const seguimientos = this.seguimientoService.getSeguimientos();
-    const opiniones = this.opinionesService.obtenerOpinionesUsuario(usuarioId);
+    if (esMiPerfil) {
+      seguimientos$ = this.seguimientoService.getSeguimientos();
+      opiniones$ = this.opinionesService.obtenerOpinionesUsuario(this.usuario.id);
+    } else {
+      seguimientos$ = this.perfilService.obtenerSeguimientosPublicos(this.usuario.username);
+      opiniones$ = this.perfilService.obtenerOpinionesPublicas(this.usuario.username);
+    }
 
-    forkJoin([seguimientos, opiniones]).subscribe({
+    forkJoin([seguimientos$, opiniones$]).subscribe({
       next: ([seguimientos, opiniones]) => {
         const recientesSeg = seguimientos
           .sort((a: any, b: any) => new Date(b.fechaActualizacion).getTime() - new Date(a.fechaActualizacion).getTime())
           .slice(0, 5);
 
-        // se obtienen los detalles de todas las series tanto de las seguidas como de las que se han reseñado
         const idsSeries = [
           ...recientesSeg.map((s: any) => s.idSerieTMDB),
           ...opiniones.map((op: any) => op.idSerie)

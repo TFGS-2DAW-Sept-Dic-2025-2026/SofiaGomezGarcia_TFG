@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { AuthService } from "./auth.service";
+import { mapOneOrManyArgs } from "rxjs/internal/util/mapOneOrManyArgs";
 
 @Injectable({ providedIn: 'root' })
 export class PerfilService {
@@ -70,5 +71,16 @@ export class PerfilService {
   obtenerFavoritasPerfilPublico(username: string) {
     return this.http.get<any>(`${this.apiUrl}/publico/${username}/favoritas`);
   }
+
+  obtenerSeguimientosPublicos(username: string) {
+    return this.http.get<any[]>(`${this.apiUrl}/publico/${username}/seguimientos`);
+  }
+
+  obtenerOpinionesPublicas(username: string) {
+  return this.http.get<{ opiniones: any[] }>(`${this.apiUrl}/publico/${username}/opiniones`)
+    .pipe(
+      map(res => res.opiniones || [])
+    );
+}
 
 }

@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import mongoose, { mongo } from "mongoose";
 import usuario from "../../../modelos/modelos_mongoose_orm/usuario";
 import { Lista } from "../../../modelos/modelos_mongoose_orm/lista";
+import seguimientoSerie from "../../../modelos/modelos_mongoose_orm/seguimientoSerie";
+import { Opinion } from "../../../modelos/modelos_mongoose_orm/opinion";
 
 export default {
     obtenerFavoritas: async (req: Request, res: Response, next: NextFunction) => {
@@ -111,7 +113,7 @@ export default {
         try {
             const { username } = req.params;
             const Usuario = await usuario.findOne({ username })
-                .select('username nombre perfilFavoritas actividad'); // solo los datos que son publicos y que se quieren usar
+                .select('username nombre perfilFavoritas actividad');
 
             if (!Usuario) return res.status(404).json({ msg: 'Usuario no encontrado' });
 
@@ -132,8 +134,52 @@ export default {
             console.error(error);
             res.status(500).json({ msg: 'Error interno' });
         }
+    },
+    obtenerSeguimientosPublicos: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { username } = req.params;
+            const Usuario = await usuario.findOne({ username });
+
+            if (!Usuario) {
+                return res.status(404).json({ msg: "Usuario no encontrado" });
+            }
+
+            const seguimientos = await seguimientoSerie.find({ idUsuario: Usuario._id });
+            res.json(seguimientos);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ msg: "Error obteniendo seguimientos del perfil público" });
+        }
+    }, obtenerOpinionesPublicas: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { username } = req.params;
+
+            const Usuario = await usuario.findOne({ username });
+            if (!Usuario) {
+                return res.status(404).json({ msg: 'Usuario no encontrado' });
+            }
+
+            const opinionesUsuario = await Opinion.find({ idUsuario: Usuario._id });
+
+            if (!opinionesUsuario.length) {
+                return res.json({ opiniones: [] });
+            }
+
+            const opinionesPublicas = opinionesUsuario.map(op => ({
+                id: op._id,
+                idSerie:op.idSerie,  
+                estrellas: op.estrellas,
+                opinion: op.opinion,
+                fecha: op.fecha,
+            }));
+
+            res.json({ opiniones: opinionesPublicas });
+        } catch (err) {
+            console.error('Error obteniendo opiniones públicas:', err);
+            res.status(500).json({ msg: 'Error interno del servidor' });
+        }
     }
 
-   
+
 
 }

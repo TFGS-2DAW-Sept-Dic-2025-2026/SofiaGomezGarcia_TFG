@@ -58,6 +58,8 @@ router.put('/perfil/:id/listas-publicas', perfilController.actualizarListasPubli
 router.get('/lista/publica/:id',perfilController.obtenerListaPublicaPorId);
 router.get('/perfil/publico/:username', perfilController.obtenerPerfilPublico);
 router.get('/perfil/publico/:username/favoritas', perfilController.obtenerFavoritasPublicas);
+router.get('/perfil/publico/:username/seguimientos', perfilController.obtenerSeguimientosPublicos);
+router.get('/perfil/publico/:username/opiniones', perfilController.obtenerOpinionesPublicas);
 //router.get('/perfil/publico/:username/actividad', perfilController.obtenerActividadPublica);
 
 
