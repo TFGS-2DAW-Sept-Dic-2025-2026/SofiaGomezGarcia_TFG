@@ -114,7 +114,7 @@ exports.default = {
         try {
             const { username } = req.params;
             const Usuario = yield usuario_1.default.findOne({ username })
-                .select('username nombre perfilFavoritas actividad'); // solo los datos que son publicos y que se quieren usar
+                .select('username nombre perfilFavoritas actividad');
             if (!Usuario)
                 return res.status(404).json({ msg: 'Usuario no encontrado' });
             res.json(Usuario);
@@ -154,14 +154,11 @@ exports.default = {
     }), obtenerOpinionesPublicas: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { username } = req.params;
-            // Buscar al usuario por su nombre
             const Usuario = yield usuario_1.default.findOne({ username });
             if (!Usuario) {
                 return res.status(404).json({ msg: 'Usuario no encontrado' });
             }
-            // Buscar las opiniones de ese usuario
             const opinionesUsuario = yield opinion_1.Opinion.find({ idUsuario: Usuario._id });
-            // Si no tiene opiniones, devolver un array vacío
             if (!opinionesUsuario.length) {
                 return res.json({ opiniones: [] });
             }

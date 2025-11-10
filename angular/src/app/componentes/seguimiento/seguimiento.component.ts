@@ -50,7 +50,7 @@ export class SeguimientoComponent implements OnInit {
                   return Promise.resolve({ ...serie, seguimiento, siguienteCapitulo: 'Serie completada' });
                 }
 
-                const siguienteNumero = numero + 1;
+                const siguienteNumero = numero;
                 let siguienteTemporada = temporada;
                 let siguienteCapitulo = '';
 
