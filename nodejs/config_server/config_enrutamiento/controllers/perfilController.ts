@@ -167,7 +167,7 @@ export default {
 
             const opinionesPublicas = opinionesUsuario.map(op => ({
                 id: op._id,
-                idSerie:op.idSerie,  
+                idSerie: op.idSerie,
                 estrellas: op.estrellas,
                 opinion: op.opinion,
                 fecha: op.fecha,
@@ -177,6 +177,69 @@ export default {
         } catch (err) {
             console.error('Error obteniendo opiniones públicas:', err);
             res.status(500).json({ msg: 'Error interno del servidor' });
+        }
+    }, seguirUsuario: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { idUsuarioObjetivo } = req.params;
+            const idSeguidor = (req as any).user.id;
+
+            if (!mongoose.Types.ObjectId.isValid(idUsuarioObjetivo)) {
+                return res.status(400).json({ msg: "ID de usuario no válido" });
+            }
+
+            const usuarioObjetivo = await usuario.findById(idUsuarioObjetivo);
+            const seguidor = await usuario.findById(idSeguidor);
+
+            if (!usuarioObjetivo || !seguidor) {
+                return res.status(404).json({ msg: "Usuario no encontrado" });
+            }
+
+            if (usuarioObjetivo.seguidores.includes(idSeguidor)) {
+                return res.status(400).json({ msg: "Ya sigues a este usuario" });
+            }
+
+            usuarioObjetivo.seguidores.push(new mongoose.Types.ObjectId(idSeguidor));
+            seguidor.seguidos.push(new mongoose.Types.ObjectId(idUsuarioObjetivo));
+
+            await usuarioObjetivo.save();
+            await seguidor.save();
+
+            res.status(200).json({ msg: "Usuario seguido correctamente" });
+
+        } catch (error) {
+            console.error("Error al seguir usuario:", error);
+            res.status(500).json({ msg: "Error al seguir usuario" });
+        }
+    }, dejarSeguirUsuario: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { idUsuarioObjetivo } = req.params;
+            const idSeguidor = (req as any).user.id;
+
+            if (!mongoose.Types.ObjectId.isValid(idUsuarioObjetivo)) {
+                return res.status(400).json({ msg: "ID de usuario no válido" });
+            }
+
+            const usuarioObjetivo = await usuario.findById(idUsuarioObjetivo);
+            const seguidor = await usuario.findById(idSeguidor);
+
+            if (!usuarioObjetivo || !seguidor) {
+                return res.status(404).json({ msg: "Usuario no encontrado" });
+            }
+
+            usuarioObjetivo.seguidores = usuarioObjetivo.seguidores.filter(
+                (id: mongoose.Types.ObjectId) => id.toString() !== idSeguidor
+            );
+            seguidor.seguidos = seguidor.seguidos.filter(
+                (id: mongoose.Types.ObjectId) => id.toString() !== idUsuarioObjetivo
+            );
+
+            await usuarioObjetivo.save();
+            await seguidor.save();
+
+            res.status(200).json({ msg: "Has dejado de seguir al usuario" });
+        } catch (error) {
+            console.error("Error al dejar de seguir usuario:", error);
+            res.status(500).json({ msg: "Error al dejar de seguir usuario" });
         }
     }
 

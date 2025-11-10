@@ -255,7 +255,7 @@ html, body {
   background-color: #80CED7;
   color: #001A26;
   border: none;
-  padding: 6px 28px;
+  padding: 6px 0px;
   border-radius: 16px;
   font-size: 1rem;
   font-weight: 600;
@@ -263,7 +263,7 @@ html, body {
 }
 
 .perfil-header .btn-primary:hover {
-  background-color: #007bff;
+  background-color: #00121A;
   color: #fff;
   transform: translateY(-2px) scale(1.05);
 }

@@ -1,0 +1,73 @@
+
+/* Modal Overlay */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Card */
+.modal-card {
+  background: #001a26;
+  color: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  z-index: 1010;
+  transition: all 0.3s ease;
+}
+
+.modal-card h5 {
+  color: #80ced7;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Cancel Button */
+.modal-actions .btn-secondary {
+  background-color: #00121a;
+  color: #80ced7;
+}
+
+.modal-actions .btn-secondary:hover {
+  background-color: #555;
+  color: #80ced7;
+  transform: scale(1.03);
+}
+
+/* Confirm Button */
+.modal-actions .btn-danger {
+  background-color: #80ced7;
+  color: #00121a;
+}
+
+.modal-actions .btn-danger:hover {
+  background-color: #00121a;
+  color: #80ced7;
+  transform: scale(1.03);
+}

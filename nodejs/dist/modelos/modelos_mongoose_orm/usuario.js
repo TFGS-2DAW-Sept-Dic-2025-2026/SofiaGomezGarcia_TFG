@@ -10,7 +10,8 @@ const UsuarioSchema = new mongoose_1.Schema({
     biografia: { type: String, maxlength: 300 },
     fechaRegistro: { type: Date, default: Date.now },
     //relaciones
-    amigos: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "usuario" }], //se guarda el id del amigo y con eso se cargan
+    seguidores: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "usuario" }], //se guarda el id del amigo y con eso se cargan
+    seguidos: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "usuario" }],
     listas: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "lista" }], //referencia a la tabla donde se guardan todas las listas
     favoritas: [{ type: String }], // array de IDs de series externas 
     perfilFavoritas: [{ type: String }],

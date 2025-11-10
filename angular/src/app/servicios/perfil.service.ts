@@ -63,6 +63,28 @@ export class PerfilService {
     );
   }
 
+  seguirUsuario(idUsuarioObjetivo: string): Observable<any> {
+    const token = this.auth.getSessionToken();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post(`${this.apiUrl}/seguir/${idUsuarioObjetivo}`, {}, { headers });
+  }
+
+  dejarSeguirUsuario(idUsuarioObjetivo: string): Observable<any> {
+    const token = this.auth.getSessionToken();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post(`${this.apiUrl}/dejarSeguir/${idUsuarioObjetivo}`, {}, { headers });
+  }
+
 
   obtenerListaPublicaPorId(id: string) {
     return this.http.get<any>(`${this.baseUrl}/lista/publica/${id}`);
@@ -77,10 +99,10 @@ export class PerfilService {
   }
 
   obtenerOpinionesPublicas(username: string) {
-  return this.http.get<{ opiniones: any[] }>(`${this.apiUrl}/publico/${username}/opiniones`)
-    .pipe(
-      map(res => res.opiniones || [])
-    );
-}
+    return this.http.get<{ opiniones: any[] }>(`${this.apiUrl}/publico/${username}/opiniones`)
+      .pipe(
+        map(res => res.opiniones || [])
+      );
+  }
 
 }

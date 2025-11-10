@@ -13,7 +13,8 @@ export interface IUser extends Document {
   refreshToken?: string;
 
   // relaciones
-  amigos: Types.ObjectId[]; // referencia a otros usuarios
+  seguidores: Types.ObjectId[]; // referencia a otros usuarios
+  seguidos: Types.ObjectId[]; // referencia a otros usuarios
   listas: Types.ObjectId[]; // referencia a coleccion Listas
   favoritas: string[];
   perfilFavoritas: string[];
@@ -32,7 +33,8 @@ const UsuarioSchema = new Schema<IUser>(
 
     //relaciones
 
-    amigos: [{ type: Schema.Types.ObjectId, ref: "usuario" }], //se guarda el id del amigo y con eso se cargan
+    seguidores: [{ type: Schema.Types.ObjectId, ref: "usuario" }], //se guarda el id del amigo y con eso se cargan
+    seguidos: [{ type: Schema.Types.ObjectId, ref: "usuario" }],
     listas: [{ type: Schema.Types.ObjectId, ref: "lista" }],//referencia a la tabla donde se guardan todas las listas
     favoritas: [{ type: String }], // array de IDs de series externas 
     perfilFavoritas: [{ type: String }], 

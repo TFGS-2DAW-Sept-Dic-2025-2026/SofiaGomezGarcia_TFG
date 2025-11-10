@@ -5,8 +5,14 @@
         <img [src]="usuario.fotoPerfil || 'recursos/🚬.jpg'" class="avatar-marcado propio-avatar" alt="Avatar" />
         <div class="flex-grow-1">
           <h2 class="nombre-usuario mb-1">{{ usuario.username }}</h2>
-          <p class="text-muted mb-2">{{ usuario.amigos?.length || 0 }} amigos</p>
-          <button class="btn btn-primary btn-sm" (click)="enviarSolicitudAmistad()">Agregar amigo</button>
+          <p class="text-muted mb-2">{{ usuario.seguidores?.length || 0 }} Seguidores</p>
+          
+          <button
+            class="btn btn-sm"
+            [ngClass]="siguiendo ? 'btn-primary' : 'btn-primary'"
+            (click)="toggleSeguir()">
+            {{ siguiendo ? 'Dejar de seguir' : 'Seguir' }}
+          </button>
         </div>
       </div>
 
@@ -17,4 +23,23 @@
 
     <div *ngIf="loading" class="text-center">Cargando perfil...</div>
   </div>
+
+ <button
+  class="btn btn-sm"
+  [ngClass]="siguiendo ? 'btn-primary' : 'btn-primary'"
+  (click)="toggleSeguir()">
+  {{ siguiendo ? 'Dejar de seguir' : 'Seguir' }}
+</button>
+
+<!-- Modal de confirmación -->
+<div class="modal-backdrop" *ngIf="modalVisible">
+  <div class="modal-card shadow p-4">
+    <h5>¿Estás seguro de dejar de seguir a {{ usuarioADejarSeguir?.username }}?</h5>
+    <div class="modal-actions mt-3 d-flex justify-content-end gap-2">
+      <button class="btn btn-secondary" (click)="cancelarDejarSeguir()">Cancelar</button>
+      <button class="btn btn-danger" (click)="confirmarDejarSeguir()">Dejar de seguir</button>
+    </div>
+  </div>
+</div>
+
 </app-layout>

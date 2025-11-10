@@ -192,7 +192,20 @@ export class AuthService {
     return this.getDatosUsuario()?.username || '';
   }
 
+  // Recoger el id del usuario autenticado
+  getUserIdFromToken(): string {
+  const token = this.getSessionToken();
 
+  if (!token) return '';
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.id || payload._id || '';
+  } catch (error) {
+    console.error('Error al decodificar el token JWT:', error);
+    return '';
+  }
+}
 
   /**
    * Actualiza el perfil del usuario

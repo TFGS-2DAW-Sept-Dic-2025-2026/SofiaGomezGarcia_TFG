@@ -60,6 +60,8 @@ router.get('/perfil/publico/:username', perfilController.obtenerPerfilPublico);
 router.get('/perfil/publico/:username/favoritas', perfilController.obtenerFavoritasPublicas);
 router.get('/perfil/publico/:username/seguimientos', perfilController.obtenerSeguimientosPublicos);
 router.get('/perfil/publico/:username/opiniones', perfilController.obtenerOpinionesPublicas);
+router.post('/perfil/seguir/:idUsuarioObjetivo', authMiddleware,perfilController.seguirUsuario);
+router.post('/perfil/dejarSeguir/:idUsuarioObjetivo', authMiddleware,perfilController.dejarSeguirUsuario);
 //router.get('/perfil/publico/:username/actividad', perfilController.obtenerActividadPublica);
 
 
