@@ -24,13 +24,7 @@
     <div *ngIf="loading" class="text-center">Cargando perfil...</div>
   </div>
 
- <button
-  class="btn btn-sm"
-  [ngClass]="siguiendo ? 'btn-primary' : 'btn-primary'"
-  (click)="toggleSeguir()">
-  {{ siguiendo ? 'Dejar de seguir' : 'Seguir' }}
-</button>
-
+ 
 <!-- Modal de confirmación -->
 <div class="modal-backdrop" *ngIf="modalVisible">
   <div class="modal-card shadow p-4">

@@ -35,13 +35,18 @@ export class OpinionSerieComponent {
   }
 
 
-
   irPerfil(username: string) {
-    if (username) {
-      console.log('Username recibido:', username);
+
+    if (!username) return;
+    const usuarioActual = this.auth.getDatosUsuario();
+
+    if (usuarioActual && username === usuarioActual.username) {
+      this.router.navigate(['/perfil']);
+    } else {
       this.router.navigate(['/usuario', username]);
     }
   }
+
 
 
   cargarOpiniones() {
@@ -68,8 +73,8 @@ export class OpinionSerieComponent {
     this.opinionesService.guardarOpinionSerie(this.serieId, this.miOpinion).subscribe({
       next: (nuevaOp) => {
         this.opiniones.push(nuevaOp);
-        this.miOpinion = { titulo: '', estrellas: 5, opinion: '' }; 
-        this.cargarOpiniones(); 
+        this.miOpinion = { titulo: '', estrellas: 5, opinion: '' };
+        this.cargarOpiniones();
       },
       error: (err) => console.error('Error guardando opinión', err)
     });

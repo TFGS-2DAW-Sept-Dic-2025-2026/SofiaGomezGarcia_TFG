@@ -182,9 +182,6 @@ exports.default = {
             if (!mongoose_1.default.Types.ObjectId.isValid(idUsuarioObjetivo)) {
                 return res.status(400).json({ msg: "ID de usuario no válido" });
             }
-            // if (idUsuarioObjetivo === idSeguidor) {
-            //     return res.status(400).json({ msg: "No puedes seguirte a ti mismo" });
-            // }
             const usuarioObjetivo = yield usuario_1.default.findById(idUsuarioObjetivo);
             const seguidor = yield usuario_1.default.findById(idSeguidor);
             if (!usuarioObjetivo || !seguidor) {
