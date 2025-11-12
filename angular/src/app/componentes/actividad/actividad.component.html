@@ -1,0 +1,37 @@
+<app-layout>
+    <main class="actividad-page">
+        <div class="actividad-container">
+            <h2 class="actividad-titulo">Actividad reciente</h2>
+
+            <ng-container *ngIf="actividad.length > 0; else sinActividad">
+                <div *ngFor="let item of actividad" class="actividad-item">
+
+                    <div class="usuario-nombre">{{ item.usuario || 'Usuario' }}</div>
+
+                    <div class="actividad-contenido">
+                        <a *ngIf="item.serie" [routerLink]="['/serie', item.serie?.id || item.serie?.idSerieTMDB]">
+                            <img [src]="'https://image.tmdb.org/t/p/w200' + item.serie?.poster_path"
+                                [alt]="item.serie?.name || 'Serie desconocida'" />
+                        </a>
+
+                        <div class="actividad-info">
+                            <div class="actividad-header">
+                                <a *ngIf="item.serie" class="titulo-serie"
+                                    [routerLink]="['/serie', item.serie?.id || item.serie?.idSerieTMDB]">
+                                    {{ item.serie?.name || 'Serie desconocida' }}
+                                </a>
+                                
+                            </div>
+                            <p class="detalle">{{ item.descripcion || 'Actividad sin descripción' }}</p>
+                            <span class="fecha">{{ item.fecha | date: 'short' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-template #sinActividad>
+                <p class="sin-actividad">No hay actividad reciente.</p>
+            </ng-template>
+        </div>
+    </main>
+</app-layout>

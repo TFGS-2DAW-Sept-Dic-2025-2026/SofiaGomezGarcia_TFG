@@ -16,6 +16,7 @@
       <a class="nav-link" routerLink="/listas" routerLinkActive="active-link">Listas</a>
       <a class="nav-link" routerLink="/seguimiento" routerLinkActive="active-link">Seguimiento</a>
       <a class="nav-link" routerLink="/descubre" routerLinkActive="active-link">Descubre</a>
+      <a class="nav-link" routerLink="/actividad" routerLinkActive="active-link">Actividad</a>
 
       <ng-container *ngIf="!auth.hasValidSession(); else loggedIn">
         <button class="btn" routerLink="/login">Iniciar Sesión</button>
@@ -42,9 +43,8 @@
   </div>
 
 
-  <!-- Contenido de la página -->
-
-  <ng-content></ng-content>
+  <ng-content>
+  </ng-content>
 
 
 

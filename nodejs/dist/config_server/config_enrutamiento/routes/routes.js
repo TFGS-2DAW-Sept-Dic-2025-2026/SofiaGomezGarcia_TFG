@@ -51,6 +51,7 @@ router.get('/perfil/publico/:username/seguimientos', perfilController_1.default.
 router.get('/perfil/publico/:username/opiniones', perfilController_1.default.obtenerOpinionesPublicas);
 router.post('/perfil/seguir/:idUsuarioObjetivo', authMiddleware_1.authMiddleware, perfilController_1.default.seguirUsuario);
 router.post('/perfil/dejarSeguir/:idUsuarioObjetivo', authMiddleware_1.authMiddleware, perfilController_1.default.dejarSeguirUsuario);
+router.get('/perfil/seguidos/:usuarioId', authMiddleware_1.authMiddleware, perfilController_1.default.obtenerUsuariosSeguidos);
 //router.get('/perfil/publico/:username/actividad', perfilController.obtenerActividadPublica);
 // Rutas para las reseñas de las series
 router.get("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesSerie);

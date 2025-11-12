@@ -1,0 +1,125 @@
+.actividad-page {
+  grid-column: 2 / -1;
+  padding: 40px 60px;
+  overflow-y: auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: #00121A;
+}
+
+
+.actividad-container {
+  background-color: #001A26;
+  border-radius: 20px;
+  padding: 30px 40px;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.45);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+.actividad-titulo {
+  color: #80CED7;
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 25px;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+
+
+.actividad-item {
+  display: flex;
+  align-items: flex-start; 
+  gap: 18px;
+  flex-direction: column; 
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  background-color: #002533;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.actividad-contenido {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start; 
+}
+
+.actividad-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 14px rgba(128, 206, 215, 0.4);
+}
+
+.actividad-item img {
+  width: 90px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 3px solid #00121A;
+}
+
+
+.actividad-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+
+.actividad-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.titulo-serie {
+  font-weight: 600;
+  color: #80CED7;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.titulo-serie:hover {
+  color: #00aaff;
+}
+
+.fecha {
+  font-size: 0.85rem;
+  color: #9b9b9b;
+}
+
+
+.detalle {
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+
+.sin-actividad {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  margin-top: 25px;
+  font-size: 1rem;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+
+.usuario-nombre {
+  font-weight: 700;
+  color: #80CED7;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
