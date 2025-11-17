@@ -33,64 +33,62 @@ export class FavoritasPerfilComponent implements OnInit {
 
 
   ngOnInit(): void {
-  if (this.usuario) {
-    this.cargarFavoritas();
-  } else {
-    effect(() => {
-      const user = this.auth.datosUsuario$(); 
+    if (this.usuario) {
+      this.cargarFavoritas();
+    } else {
+      const user = this.auth.datosUsuario$();
       if (user) {
         this.usuario = user;
         this.cargarFavoritas();
       }
-    });
-  }
-}
-
-
-cargarFavoritas() {
-  this.favoritas = [];
-
-  if (this.esMiPerfil) {
-    if (!this.usuario?.id) return;
-    this.perfilService.obtenerFavoritasPerfil(this.usuario.id).subscribe({
-      next: (res: any) => {
-        const ids: string[] = res.favoritas || [];
-        this.cargarDetallesSeries(ids);
-      },
-      error: (err) => console.error('Error obteniendo favoritas del perfil propio:', err)
-    });
-  } 
- 
-  else {
-    if (!this.usuario?.username) return;
-    this.perfilService.obtenerFavoritasPerfilPublico(this.usuario.username).subscribe({
-      next: (res: any) => {
-        const ids: string[] = res.favoritas || [];
-        this.cargarDetallesSeries(ids);
-      },
-      error: (err) => console.error('Error obteniendo favoritas del perfil público:', err)
-    });
-  }
-}
-
-private cargarDetallesSeries(ids: string[]) {
-  if (!ids.length) return;
-  const requests: Observable<any>[] = ids.map(id => this.seriesService.getSeriesByID(id));
-  forkJoin(requests).subscribe({
-    next: (detalles: any[]) => {
-      this.favoritas = detalles.filter(s => s != null);
-    },
-    error: (err) => {
-      console.error('Error cargando detalles de series favoritas:', err);
-      this.favoritas = [];
     }
-  });
-}
+  }
+
+
+  cargarFavoritas() {
+    this.favoritas = [];
+
+    if (this.esMiPerfil) {
+      if (!this.usuario?.id) return;
+      this.perfilService.obtenerFavoritasPerfil(this.usuario.id).subscribe({
+        next: (res: any) => {
+          const ids: string[] = res.favoritas || [];
+          this.cargarDetallesSeries(ids);
+        },
+        error: (err) => console.error('Error obteniendo favoritas del perfil propio:', err)
+      });
+    }
+
+    else {
+      if (!this.usuario?.username) return;
+      this.perfilService.obtenerFavoritasPerfilPublico(this.usuario.username).subscribe({
+        next: (res: any) => {
+          const ids: string[] = res.favoritas || [];
+          this.cargarDetallesSeries(ids);
+        },
+        error: (err) => console.error('Error obteniendo favoritas del perfil público:', err)
+      });
+    }
+  }
+
+  private cargarDetallesSeries(ids: string[]) {
+    if (!ids.length) return;
+    const requests: Observable<any>[] = ids.map(id => this.seriesService.getSeriesByID(id));
+    forkJoin(requests).subscribe({
+      next: (detalles: any[]) => {
+        this.favoritas = detalles.filter(s => s != null);
+      },
+      error: (err) => {
+        console.error('Error cargando detalles de series favoritas:', err);
+        this.favoritas = [];
+      }
+    });
+  }
 
 
   abrirSelector() {
     this.selectorAbierto = true;
-    this.favoritasSeleccionadas = [...this.favoritas]; //se clonan las favoritas actuales
+    this.favoritasSeleccionadas = [...this.favoritas]; 
   }
 
   cerrarSelector() {
@@ -124,11 +122,18 @@ private cargarDetallesSeries(ids: string[]) {
   guardarFavoritas() {
     const idsFavoritas = this.favoritasSeleccionadas.map(s => s.id.toString());
 
-    this.perfilService.actualizarFavoritasPerfil(this.usuario.id, idsFavoritas).subscribe({
+    const idUsuario = this.usuario.id || this.usuario._id; 
+
+    if (!idUsuario) {
+      console.error("No existe ID de usuario para guardar favoritas.");
+      return;
+    }
+
+    this.perfilService.actualizarFavoritasPerfil(idUsuario, idsFavoritas).subscribe({
       next: (res) => {
         this.usuario.perfilFavoritas = idsFavoritas;
         this.favoritas = [...this.favoritasSeleccionadas];
-        this.auth.actualizarDatosUsuario(this.usuario); 
+        this.auth.actualizarDatosUsuario(this.usuario);
         this.cerrarSelector();
       },
       error: (err) => console.error('Error al guardar favoritas:', err)

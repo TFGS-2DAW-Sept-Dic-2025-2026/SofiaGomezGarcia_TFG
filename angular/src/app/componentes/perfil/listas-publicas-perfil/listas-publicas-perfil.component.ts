@@ -13,46 +13,45 @@ import { Router } from '@angular/router';
   templateUrl: './listas-publicas-perfil.component.html',
   styleUrl: './listas-publicas-perfil.component.css'
 })
-export class ListasPublicasPerfilComponent implements OnChanges{
+export class ListasPublicasPerfilComponent implements OnChanges {
+
   @Input() usuario!: any;
   @Input() esMiPerfil = false;
 
-  auth = inject(AuthService);
-  perfilService = inject(PerfilService);
-  listasService = inject(ListasService);
+  private auth = inject(AuthService);
+  private perfilService = inject(PerfilService);
+  private listasService = inject(ListasService);
+  private router = inject(Router);
 
   listasPublicas: any[] = [];
   listasUsuario: any[] = [];
   modalAbierto = false;
 
-
   ngOnChanges(): void {
-  if (this.usuario && this.usuario.username) {
-    this.cargarListasPublicas();
+    if (this.usuario?.username) {
+      this.cargarListasPublicas();
+    }
   }
-}
-
-
-  constructor(private router: Router) {}
-
-
 
   cargarListasPublicas() {
-  if (!this.usuario) return;
+    if (!this.usuario) return;
 
-  const idUsuario = this.usuario.id || this.usuario._id;
-  const username = this.usuario.username;
+    const idUsuario = this.usuario.id || this.usuario._id;
+    const username = this.usuario.username;
 
-  const observable = this.esMiPerfil
-    ? this.perfilService.obtenerListasPublicasPerfil(idUsuario)
-    : this.listasService.obtenerListasPublicasPorUsername(username);
+    const observable = this.esMiPerfil
+      ? this.perfilService.obtenerListasPublicasPerfil(idUsuario)
+      : this.listasService.obtenerListasPublicasPorUsername(username);
 
-  observable.subscribe({
-    next: (res) => this.listasPublicas = res.listasPublicas || [],
-    error: (err) => console.error('Error al cargar listas públicas:', err)
-  });
-}
-
+    observable.subscribe({
+      next: (res) => {
+        this.listasPublicas = res?.listasPublicas || [];
+      },
+      error: (err) => {
+        console.error('Error al cargar listas públicas:', err);
+      }
+    });
+  }
 
   abrirModalListas() {
     this.listasService.getListas().subscribe({
@@ -76,28 +75,29 @@ export class ListasPublicasPerfilComponent implements OnChanges{
   }
 
   guardarListasPublicas() {
-    const ids = this.listasUsuario
+    const idsSeleccionadas = this.listasUsuario
       .filter(l => l.seleccionada)
       .map(l => l._id);
 
-    this.perfilService.actualizarListasPublicasPerfil(this.usuario.id, ids).subscribe({
-      next: () => {
-        this.cargarListasPublicas();
-        this.cerrarModal();
-      },
-      error: (err) => console.error('Error al actualizar listas públicas:', err)
-    });
+    const idUsuario = this.usuario.id || this.usuario._id;
+
+    this.perfilService.actualizarListasPublicasPerfil(idUsuario, idsSeleccionadas)
+      .subscribe({
+        next: () => {
+          this.cargarListasPublicas();
+          this.cerrarModal();
+        },
+        error: (err) => console.error('Error al actualizar listas públicas:', err)
+      });
   }
-
-
 
   verLista(idLista: string) {
-  console.log('ID de la lista clicada:', idLista); 
-  if (idLista) {
-  this.router.navigate(['/listas', idLista], { queryParams: { publica: true } });
-  } else {
-    console.error('El ID de la lista es inválido');
+    if (!idLista) {
+      console.error('El ID de la lista es inválido');
+      return;
+    }
+
+    this.router.navigate(['/listas', idLista], { queryParams: { publica: true } });
   }
-}
 
 }

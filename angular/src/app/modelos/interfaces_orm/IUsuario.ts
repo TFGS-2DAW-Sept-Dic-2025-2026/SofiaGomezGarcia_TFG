@@ -1,7 +1,9 @@
 export default interface IUsuario {
-  id: string,
+   id?: string,
+  _id?: string,
   fotoPerfil?: string,
   username:string,
   email:string,
-  passwordHash:string
+  passwordHash:string,
+  seguidores: []
 }

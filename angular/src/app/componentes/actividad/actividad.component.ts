@@ -33,79 +33,81 @@ export class ActividadComponent implements OnInit {
   }
 
   cargarActividadSeguidores() {
-    const usuario = this.auth.getDatosUsuario();
-    if (!usuario) return;
+  const usuario = this.auth.getDatosUsuario();
 
-    this.actividadService.obtenerUsuariosSeguidos(usuario.id).pipe(
-      switchMap((seguidos: any[]) => {
-        if (!seguidos || seguidos.length === 0) return of([]);
-
-        const observables = seguidos.map((seguido) =>
-          forkJoin({
-            seguimientos: this.perfilService.obtenerSeguimientosPublicos(seguido.username),
-            opiniones: this.perfilService.obtenerOpinionesPublicas(seguido.username)
-          }).pipe(map(res => ({ seguido, ...res })))
-        );
-
-        return forkJoin(observables);
-      }),
-      switchMap((resultados: any[]) => {
-        if (!resultados.length) return of([]);
-
-        let actividadCompuesta: any[] = [];
-
-        resultados.forEach(({ seguido, seguimientos, opiniones }) => {
-          const actSeg = seguimientos.map((s: any) => ({
-            tipo: 'seguimiento',
-            usuario: seguido.username,
-            idUsuario: seguido.id,
-            idSerie: s.idSerieTMDB,
-            fecha: s.fechaActualizacion,
-            estado: s.estado,
-            descripcion: this.generarDescripcion(s)
-          }));
-
-          const actOpin = opiniones.map((o: any) => ({
-            tipo: 'opinion',
-            usuario: seguido.username,
-            idUsuario: seguido.id,
-            idSerie: o.idSerie,
-            fecha: o.fecha,
-            descripcion: 'Ha publicado una reseña'
-          }));
-
-          actividadCompuesta.push(...actSeg, ...actOpin);
-        });
-
-        const idsSeries = [...new Set(actividadCompuesta.map(a => a.idSerie))];
-        if (!idsSeries.length) return of(actividadCompuesta);
-
-        const peticionesSeries = idsSeries.map(id => this.seriesService.getSeriesByID(id));
-
-        return forkJoin(peticionesSeries).pipe(
-          map(seriesDetalles => {
-            const mapaSeries = new Map(seriesDetalles.map((s: any) => [s.id || s.idSerieTMDB, s]));
-
-            return actividadCompuesta
-              .map(item => ({
-                ...item,
-                serie: mapaSeries.get(item.idSerie)
-              }))
-              .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
-          })
-        );
-      })
-    ).subscribe({
-      next: (actividad) => {
-        this.actividad = actividad;
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error cargando actividad:', err);
-        this.cargando = false;
-      }
-    });
+  if (!usuario?.id) {
+    console.warn('No hay usuario logueado o id undefined');
+    this.actividad = [];
+    this.cargando = false;
+    return;
   }
+
+  this.actividadService.obtenerUsuariosSeguidos(usuario.id).pipe(
+    switchMap((seguidos: any[]) => {
+      if (!seguidos || seguidos.length === 0) return of([]);
+
+      const observables = seguidos.map((seguido) =>
+        forkJoin({
+          seguimientos: this.perfilService.obtenerSeguimientosPublicos(seguido.username),
+          opiniones: this.perfilService.obtenerOpinionesPublicas(seguido.username)
+        }).pipe(map(res => ({ seguido, ...res })))
+      );
+
+      return forkJoin(observables);
+    }),
+    switchMap((resultados: any[]) => {
+      if (!resultados.length) return of([]);
+
+      let actividadCompuesta: any[] = [];
+
+      resultados.forEach(({ seguido, seguimientos, opiniones }) => {
+        const actSeg = seguimientos.map((s: any) => ({
+          tipo: 'seguimiento',
+          usuario: seguido.username,
+          idUsuario: seguido.id,
+          idSerie: s.idSerieTMDB,
+          fecha: s.fechaActualizacion,
+          estado: s.estado,
+          descripcion: this.generarDescripcion(s)
+        }));
+
+        const actOpin = opiniones.map((o: any) => ({
+          tipo: 'opinion',
+          usuario: seguido.username,
+          idUsuario: seguido.id,
+          idSerie: o.idSerie,
+          fecha: o.fecha,
+          descripcion: 'Ha publicado una reseña'
+        }));
+
+        actividadCompuesta.push(...actSeg, ...actOpin);
+      });
+
+      const idsSeries = [...new Set(actividadCompuesta.map(a => a.idSerie))];
+      if (!idsSeries.length) return of(actividadCompuesta);
+
+      const peticionesSeries = idsSeries.map(id => this.seriesService.getSeriesByID(id));
+
+      return forkJoin(peticionesSeries).pipe(
+        map(seriesDetalles => {
+          const mapaSeries = new Map(seriesDetalles.map((s: any) => [s.id || s.idSerieTMDB, s]));
+          return actividadCompuesta
+            .map(item => ({ ...item, serie: mapaSeries.get(item.idSerie) }))
+            .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+        })
+      );
+    })
+  ).subscribe({
+    next: (actividad) => {
+      this.actividad = actividad;
+      this.cargando = false;
+    },
+    error: (err) => {
+      console.error('Error cargando actividad:', err);
+      this.cargando = false;
+    }
+  });
+}
 
   generarDescripcion(s: any): string {
     if (s.estado === 'completada') return 'Ha completado una serie';

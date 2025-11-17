@@ -23,7 +23,7 @@ export class PerfilComponent implements OnInit {
   @Input() userId?: string;
 
   usuario!: IUsuario;
-  amigos: IUsuario[] = [];
+  seguidores: IUsuario[] = [];
   esMiPerfil = false;
   fotoSeleccionada?: File;
 
@@ -34,67 +34,64 @@ export class PerfilComponent implements OnInit {
   route = inject(ActivatedRoute);
 
 
-  ngOnInit(): void {
-  this.route.paramMap.subscribe(params => {
-    const username = params.get('username');
-    const miUsername = this.auth.getDatosUsuario()?.username;
+ ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const username = params.get('username');
+      const miUsuario = this.auth.getDatosUsuario();
+      const miUsername = miUsuario?.username;
 
-    if (!username) {
-      
-      this.usuario = this.auth.getDatosUsuario()!;
-      this.esMiPerfil = true;
-      return;
-    }
-
-    if (username === miUsername) {
-     
-      this.usuario = this.auth.getDatosUsuario()!;
-      this.esMiPerfil = true;
-      return;
-    }
-
-    this.esMiPerfil = false;
-    this.cargarUsuarioPorUsername(username);
-  });
-}
-
-
- 
-  cargarUsuario(userId: string) {
-    this.usuariosService.obtenerUsuarioPorID(userId).subscribe({
-      next: (res) => {
-        console.log('Respuesta completa del backend:', res);
-        this.usuario = res.usuario;
-      },
-      error: (err) => {
-        console.error('Error cargando usuario:', err);
+      if (!username || username === miUsername) {
+        this.esMiPerfil = true;
+        this.usuario = miUsuario!;
+        return;
       }
+
+      // Perfil externo
+      this.esMiPerfil = false;
+      if (username) this.cargarUsuarioPorUsername(username);
     });
   }
 
+  cargarUsuario(userId: string) {
+    this.usuariosService.obtenerUsuarioPorID(userId).subscribe({
+      next: (res) => {
+        this.usuario = res.usuario || res;
+        this.seguidores = this.usuario.seguidores || [];
+        console.log('Usuario cargado:', this.usuario);
+      },
+      error: (err) => console.error('Error cargando usuario:', err)
+    });
+  }
 
   cargarUsuarioPorUsername(username: string) {
-  this.usuariosService.obtenerUsuarioPorUsername(username).subscribe({
-    next: (res) => {
-      console.log('Usuario cargado correctamente:', res);
-      this.usuario = res.usuario || res; 
-    },
-    error: (err) => {
-      console.error('Error cargando usuario:', err);
-    }
-  });
-}
+    this.usuariosService.obtenerUsuarioPorUsername(username).subscribe({
+      next: (res) => {
+        this.usuario = res.usuario || res;
+        console.log('Usuario cargado correctamente:', this.usuario);
+      },
+      error: (err) => console.error('Error cargando usuario:', err)
+    });
+  }
 
   onFotoSeleccionada(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.fotoSeleccionada = input.files[0];
-      this.subirFotoPerfil();
+
+      if (this.usuario?.id) {
+        this.subirFotoPerfil();
+      } else {
+        console.warn('Usuario aún no cargado, espera a que termine la petición.');
+      }
     }
   }
 
   subirFotoPerfil() {
-    if (!this.fotoSeleccionada || !this.usuario) return;
+    if (!this.fotoSeleccionada) return;
+    if (!this.usuario?.id) {
+      console.error("No existe ID de usuario para subir la foto.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append('foto', this.fotoSeleccionada);
