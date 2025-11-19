@@ -1,11 +1,10 @@
-
 <app-layout>
 
-  <!-- Contenido principal -->
   <main class="home">
-    <h1>Bienvenido a ShowMeShows</h1>
+
 
     <ng-container *ngIf="auth.hasValidSession(); else noAuth">
+      <h1>Bienvenido a ShowMeShows</h1>
       <div class="series-list">
         <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
           <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" alt="{{ serie.name }}">
@@ -21,7 +20,62 @@
     </ng-container>
 
     <ng-template #noAuth>
-      <p>Por favor, inicia sesión para descubrir series.</p>
+      <div class="welcome-logo">
+        <img src="recursos/Logo.png" alt="ShowMeShows Logo">
+      </div>
+      <section class="welcome-container">
+
+        <div class="hero">
+          <h2>Descubre, sigue y comparte tus series favoritas</h2>
+          <p>Explora miles de series, guarda tu progreso y conecta con otros fans.</p>
+
+          <div class="cta-buttons">
+            <button routerLink="/register" class="btn-primary">Crear cuenta</button>
+            <button routerLink="/login" class="btn-secondary">Iniciar sesión</button>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <i class="icon">📺</i>
+            <h3>Explora series</h3>
+            <p>Información actualizada, tráilers y recomendaciones.</p>
+          </div>
+
+          <div class="feature">
+            <i class="icon">⭐</i>
+            <h3>Guarda tu progreso</h3>
+            <p>Lleva un registro de episodios y temporadas vistas.</p>
+          </div>
+
+          <div class="feature">
+            <i class="icon">💬</i>
+            <h3>Comparte opiniones</h3>
+            <p>Publica reseñas y descubre lo que opina la comunidad.</p>
+          </div>
+
+          <div class="feature">
+            <i class="icon">🧭</i>
+            <h3>Crea listas</h3>
+            <p>Organiza tus series favoritas con listas personalizadas.</p>
+          </div>
+        </div>
+
+        <div class="popular-preview">
+          <h3>Lo más visto esta semana</h3>
+          <div class="preview-grid">
+            <div *ngFor="let serie of series" class="preview-card">
+              <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path">
+            </div>
+          </div>
+        </div>
+
+        <div class="final-cta">
+          <p>Únete gratis y empieza a descubrir tu próxima serie favorita</p>
+          <button routerLink="/register" class="btn-primary">Comenzar</button>
+        </div>
+
+      </section>
     </ng-template>
   </main>
 </app-layout>
