@@ -1,33 +1,45 @@
-<h2>Registro de Usuario</h2>
+<div class="auth-container">
 
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label>Usuario</label>
-    <input type="text" formControlName="username" />
-    <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
-      El usuario debe tener al menos 3 caracteres
-    </div>
+  <div class="auth-card">
+
+    <h2 class="auth-title">Crear Cuenta</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="auth-group">
+        <label class="auth-label">Usuario</label>
+        <input type="text" formControlName="username" class="auth-input" />
+        <div class="auth-error" *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+          Mínimo 3 caracteres
+        </div>
+      </div>
+
+      <div class="auth-group">
+        <label class="auth-label">Email</label>
+        <input type="email" formControlName="email" class="auth-input" />
+        <div class="auth-error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          Email inválido
+        </div>
+      </div>
+
+      <div class="auth-group">
+        <label class="auth-label">Contraseña</label>
+        <input type="password" formControlName="password" class="auth-input" />
+        <div class="auth-error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          Mínimo 6 caracteres
+        </div>
+      </div>
+
+      <button type="submit" class="auth-btn" [disabled]="registerForm.invalid">Registrarse</button>
+    </form>
+
+    <div class="auth-global-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <p class="auth-switch">
+      ¿Ya tienes cuenta?
+      <a routerLink="/login">Inicia sesión</a>
+    </p>
+
   </div>
 
-  <div>
-    <label>Email</label>
-    <input type="email" formControlName="email" />
-    <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-      Introduce un email válido
-    </div>
-  </div>
-
-  <div>
-    <label>Contraseña</label>
-    <input type="password" formControlName="password" />
-    <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-      La contraseña debe tener al menos 6 caracteres
-    </div>
-  </div>
-
-  <button type="submit" [disabled]="registerForm.invalid">Registrarse</button>
-</form>
-
-<div *ngIf="errorMessage" style="color:red">
-  {{ errorMessage }}
 </div>

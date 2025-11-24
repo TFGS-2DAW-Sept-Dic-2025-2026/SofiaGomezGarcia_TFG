@@ -137,10 +137,11 @@ html, body {
 
 .home {
   grid-column: 2 / -1;
-  padding: 0 !important;     /* Quitamos TODO el padding */
+  padding: 0 !important;     
   overflow-y: auto;
   box-sizing: border-box;
   min-height: 100vh;
+  margin-left: 40px;
 }
 
 .user-box {
@@ -437,4 +438,4 @@ html, body {
   color: #80CED7;
 }
 
-/* Estilos para el componente de Actividad */
+/* Estilos para el componente de Registro y Login */

@@ -1,6 +1,6 @@
 <app-layout>
 
-  <main class="home">
+  <main class="home" [class.no-auth]="!auth.hasValidSession()">
 
 
     <ng-container *ngIf="auth.hasValidSession(); else noAuth">
@@ -30,7 +30,7 @@
           <p>Explora miles de series, guarda tu progreso y conecta con otros fans.</p>
 
           <div class="cta-buttons">
-            <button routerLink="/register" class="btn-primary">Crear cuenta</button>
+            <button routerLink="/registro" class="btn-primary">Crear cuenta</button>
             <button routerLink="/login" class="btn-secondary">Iniciar sesión</button>
           </div>
         </div>

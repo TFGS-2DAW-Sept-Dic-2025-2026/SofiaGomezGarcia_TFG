@@ -1,7 +1,7 @@
 <div class="layout">
 
   <!-- Logo -->
-  <div class="logo-container" routerLink="/">
+  <div *ngIf="auth.hasValidSession()" class="logo-container" routerLink="/">
     <img src="recursos/Logo.png" alt="Logo" class="logo">
   </div>
 
@@ -19,8 +19,8 @@
       <a class="nav-link" routerLink="/actividad" routerLinkActive="active-link">Actividad</a>
 
       <ng-container *ngIf="!auth.hasValidSession(); else loggedIn">
-        <button class="btn" routerLink="/login">Iniciar Sesión</button>
-        <button class="btn btn-primary" routerLink="/registro">Registrarse</button>
+        <!-- <button class="btn" routerLink="/login">Iniciar Sesión</button>
+        <button class="btn btn-primary" routerLink="/registro">Registrarse</button> -->
       </ng-container>
 
       <ng-template #loggedIn>
@@ -29,14 +29,14 @@
     </nav>
   </aside>
 
-  
+
 
   <div class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
     <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" [src]="usuario?.fotoPerfil + '?' + usuario?.id"
       alt="Foto de perfil" class="sidebar-avatar" />
 
     <ng-template #defaultAvatar>
-      <img src="recursos/🚬.jpg" alt="Avatar por defecto" class="sidebar-avatar" />
+      <img src="recursos/fotoPerfil.jpg" alt="Avatar por defecto" class="sidebar-avatar" />
     </ng-template>
 
     <span class="user-name">{{ usuario?.username || 'Usuario' }}</span>

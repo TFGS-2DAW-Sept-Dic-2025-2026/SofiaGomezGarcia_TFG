@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../../servicios/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { log } from 'console';
 
 @Component({
   selector: 'app-register',
@@ -13,14 +12,13 @@ import { log } from 'console';
   styleUrls: ['./registro.component.css']
 })
 export class RegisterComponent implements OnInit {
+
   registerForm!: FormGroup;
   errorMessage: string = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -33,51 +31,23 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.registerForm.invalid) return;
 
+    this.errorMessage = '';
+
     this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
         console.log('✅ Registro exitoso', res);
 
-        // 🧩 Usa el manejador del AuthService para guardar token y usuario correctamente
-        this.authService['handleSuccessfulAuth'](res);
+        // Guarda token + user en el auth service
+        if (this.authService['handleSuccessfulAuth']) {
+          this.authService['handleSuccessfulAuth'](res);
+        }
 
-        // 🔁 Navega al perfil o layout principal
-        this.router.navigate(['/perfil']); 
+        // Redirige al perfil o home
+        this.router.navigate(['/perfil']);
       },
       error: (err) => {
-        console.error('❌ Error en el registro:', err);
         this.errorMessage = err.error?.msg || 'Error en el registro';
       }
     });
   }
 }
-
-
-  //   onSubmit(): void {
-  //   if (this.registerForm.invalid) return;
-
-  //   // el register() devuelve un observable
-  //   this.authService.register(this.registerForm.value).subscribe({ 
-  //     next: (res) => {
-
-  //       console.log('Registro exitoso', res.msg);
-  //       this.router.navigate(['/']); 
-  //     },
-  //     error: (err) => {
-  //       this.errorMessage = err.error?.msg || 'Error en el registro';
-  //     }
-  //   });
-  // }
-
-
-  //para hacer visible la password
-
-  // SetRePassVisible() {
-  //   this.repassVisible.set( ! this.repassVisible() );
-  // }
-  // SetPassVisible() {
-  //   this.passVisible.set( ! this.passVisible() );
-  // }
-
-
-
-

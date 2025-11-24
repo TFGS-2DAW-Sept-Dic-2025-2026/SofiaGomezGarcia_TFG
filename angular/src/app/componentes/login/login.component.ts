@@ -12,16 +12,13 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  
   loginForm!: FormGroup;
   errorMessage: string = '';
-auth = inject(AuthService);
 
-
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -33,24 +30,23 @@ auth = inject(AuthService);
   onSubmit(): void {
     if (this.loginForm.invalid) return;
 
-    // Llamada al servicio de autenticación
+    this.errorMessage = '';
+
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
-        // Redirigir al home/dashboard automáticamente
         this.router.navigate(['/']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.msg || 'Error en el login';
+        this.errorMessage = err.error?.msg || 'Error en el inicio de sesión';
       }
     });
   }
 
-  // Opcional: obtener el username directamente del servicio
+  // Para mostrar mensajes o datos del usuario
   get username(): string {
     return this.authService.datosUsuario$()?.username || '';
   }
 
-  // Opcional: verificar si hay sesión activa
   get isAuthenticated(): boolean {
     return this.authService.hasValidSession();
   }

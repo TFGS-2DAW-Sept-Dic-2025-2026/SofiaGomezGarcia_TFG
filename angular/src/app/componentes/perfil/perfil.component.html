@@ -6,7 +6,7 @@
           <img *ngIf="usuario?.fotoPerfil; else placeholderAvatar" [src]="usuario.fotoPerfil + '?' + usuario.id"
             alt="Avatar" class="avatar-marcado propio-avatar">
           <ng-template #placeholderAvatar>
-            <img src="recursos/🚬.jpg" alt="Avatar" class="avatar-marcado propio-avatar">
+            <img src="recursos/fotoPerfil.jpg" alt="Avatar" class="avatar-marcado propio-avatar">
           </ng-template>
         </div>
         <div class="flex-grow-1 d-flex flex-column justify-content-center">

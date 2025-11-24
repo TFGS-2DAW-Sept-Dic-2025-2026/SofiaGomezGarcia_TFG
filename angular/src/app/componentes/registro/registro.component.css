@@ -1,3 +1,128 @@
 label, h2{
     color: white;
 }
+
+.auth-container {
+  grid-column: 2 / -1;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+/* TARJETA */
+.auth-card {
+  background-color: #001A26;
+  padding: 40px 50px;
+  border-radius: 22px;
+  width: 420px;
+  color: white;
+  box-shadow: 0 0 20px rgba(0,0,0,0.35);
+  transform: translateY(10px);
+  animation: slideIn 0.5s ease forwards;
+  border: 2px solid #003445;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* TÍTULO */
+.auth-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #80CED7;
+}
+
+/* INPUT GROUP */
+.auth-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-label {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: #80CED7;
+  letter-spacing: 0.5px;
+}
+
+.auth-input {
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #003445;
+  background-color: #00121A;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+}
+
+.auth-input:focus {
+  border-color: #80CED7;
+  background-color: #001A26;
+}
+
+/* ERRORES */
+.auth-error {
+  margin-top: 6px;
+  color: #ff6b6b;
+  font-size: 0.8rem;
+}
+
+/* BOTÓN PRINCIPAL */
+.auth-btn {
+  width: 100%;
+  background-color: #80CED7;
+  color: #001A26;
+  border: none;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  margin-top: 10px;
+}
+
+.auth-btn:hover:not(:disabled) {
+  background-color: #6bbac4;
+  transform: translateY(-2px);
+}
+
+.auth-btn:disabled {
+  background-color: #335e64;
+  cursor: not-allowed;
+}
+
+/* LINK CAMBIO LOGIN ↔ REGISTRO */
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+  color: #80CED7;
+  font-size: 0.95rem;
+}
+
+.auth-switch a {
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.auth-switch a:hover {
+  color: #80CED7;
+}
+
+/* MENSAJE DE ERROR GENERAL */
+.auth-global-error {
+  margin-top: 15px;
+  color: #ff6b6b;
+  text-align: center;
+  font-size: 0.9rem;
+}

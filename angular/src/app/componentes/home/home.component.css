@@ -177,10 +177,10 @@
 
 /*LOGO*/
 
-.home {
+/* .home {
   padding-top: 0;
   overflow: hidden;
-}
+} */
 
 .welcome-logo {
   margin-top: 0 !important;
@@ -219,7 +219,8 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-:host ::ng-deep .home {
+/* .home.no-auth {
+  margin-top: -60px !important;
   padding-top: 0 !important;
-  margin-top: -60px !important; 
-}
+  overflow: hidden;
+} */
