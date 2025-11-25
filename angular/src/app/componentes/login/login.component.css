@@ -127,3 +127,10 @@ label, h2{
   text-align: center;
   font-size: 0.9rem;
 }
+
+.logo-wrapper {
+  position: absolute;
+  top: 5px;
+  left: 20px;
+  cursor: pointer;
+}
