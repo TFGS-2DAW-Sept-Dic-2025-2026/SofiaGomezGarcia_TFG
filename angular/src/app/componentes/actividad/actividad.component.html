@@ -6,24 +6,43 @@
             <ng-container *ngIf="actividad.length > 0; else sinActividad">
                 <div *ngFor="let item of actividad" class="actividad-item">
 
-                    <div class="usuario-nombre">{{ item.usuario || 'Usuario' }}</div>
+                    <div class="actividad-header-feed">
+                        <img class="actividad-avatar" [src]="item.fotoPerfil || 'recursos/fotoPerfil.jpg'"
+                            alt="{{ item.usuario }}" (click)="irPerfil(item.usuario)" style="cursor: pointer;" />
 
-                    <div class="actividad-contenido">
+                        <span class="usuario-nombre-feed" (click)="irPerfil(item.usuario)" style="cursor: pointer;">
+                            {{ item.usuario || 'Usuario' }}
+                        </span>
+
+                        <span class="fecha">{{ item.fecha | date: 'short' }}</span>
+                    </div>
+
+                    <div class="actividad-contenido-feed">
                         <a *ngIf="item.serie" [routerLink]="['/serie', item.serie?.id || item.serie?.idSerieTMDB]">
-                            <img [src]="'https://image.tmdb.org/t/p/w200' + item.serie?.poster_path"
+                            <img class="actividad-serie-poster"
+                                [src]="'https://image.tmdb.org/t/p/w200' + item.serie?.poster_path"
                                 [alt]="item.serie?.name || 'Serie desconocida'" />
                         </a>
 
-                        <div class="actividad-info">
-                            <div class="actividad-header">
-                                <a *ngIf="item.serie" class="titulo-serie"
+                        <div class="actividad-info-feed">
+                            <!-- Seguimiento -->
+                            <ng-container *ngIf="item.tipo !== 'opinion'">
+                                <a *ngIf="item.serie" class="titulo-serie-feed"
                                     [routerLink]="['/serie', item.serie?.id || item.serie?.idSerieTMDB]">
                                     {{ item.serie?.name || 'Serie desconocida' }}
                                 </a>
-                                
-                            </div>
-                            <p class="detalle">{{ item.descripcion || 'Actividad sin descripción' }}</p>
-                            <span class="fecha">{{ item.fecha | date: 'short' }}</span>
+                                <p class="detalle-feed">{{ item.descripcion }}</p>
+                            </ng-container>
+
+                            <!-- Opinión -->
+                            <ng-container *ngIf="item.tipo === 'opinion'">
+                                <a *ngIf="item.serie" class="titulo-serie-feed"
+                                    [routerLink]="['/serie', item.serie?.id || item.serie?.idSerieTMDB]">
+                                    {{ item.serie?.name || 'Serie desconocida' }}
+                                </a>
+                                <p class="detalle-feed-titulo">{{ item.titulo }}</p>
+                                <p class="detalle-feed">{{ item.descripcion }}</p>
+                            </ng-container>
                         </div>
                     </div>
                 </div>

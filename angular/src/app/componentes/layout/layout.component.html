@@ -5,8 +5,7 @@
     <img src="recursos/Logo.png" alt="Logo" class="logo">
   </div>
 
-
-  <!-- Sidebar -->
+  
   <aside class="sidebar">
     <nav class="navbar">
 
@@ -18,22 +17,19 @@
       <a class="nav-link" routerLink="/descubre" routerLinkActive="active-link">Descubre</a>
       <a class="nav-link" routerLink="/actividad" routerLinkActive="active-link">Actividad</a>
 
-      <ng-container *ngIf="!auth.hasValidSession(); else loggedIn">
-        <!-- <button class="btn" routerLink="/login">Iniciar Sesión</button>
-        <button class="btn btn-primary" routerLink="/registro">Registrarse</button> -->
+      <ng-container *ngIf="auth.hasValidSession()">
+        <button class="btn btn-danger" (click)="auth.logout()">Cerrar Sesión</button>
       </ng-container>
 
-      <ng-template #loggedIn>
-        <button class="btn btn-danger" (click)="auth.logout()">Cerrar Sesión</button>
-      </ng-template>
     </nav>
   </aside>
 
-
-
-  <div class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
-    <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" [src]="usuario?.fotoPerfil + '?' + usuario?.id"
-      alt="Foto de perfil" class="sidebar-avatar" />
+  
+  <div id="sidebarUsuario" class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
+    <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" 
+         [src]="usuario?.fotoPerfil + '?' + usuario?.id"
+         alt="Foto de perfil" 
+         class="sidebar-avatar" />
 
     <ng-template #defaultAvatar>
       <img src="recursos/fotoPerfil.jpg" alt="Avatar por defecto" class="sidebar-avatar" />
@@ -42,10 +38,54 @@
     <span class="user-name">{{ usuario?.username || 'Usuario' }}</span>
   </div>
 
-
-  <ng-content>
-  </ng-content>
-
-
+  
+  <div class="layout-content">
+    <ng-content></ng-content>
+  </div>
 
 </div>
+
+
+<footer class="footer">
+
+  <div class="footer-content">
+
+    <div class="footer-section brand">
+      <img src="recursos/Logo.png" alt="ShowMeShows" class="footer-logo">
+      <p>Descubre, sigue y comparte tus series favoritas.</p>
+    </div>
+
+    <div class="footer-section">
+      <h4>ShowMeShows</h4>
+      <ul>
+        <li><a routerLink="/registro">Crear cuenta</a></li>
+        <li><a routerLink="/login">Iniciar sesión</a></li>
+        <li><a routerLink="/">Explorar series</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Comunidad</h4>
+      <ul>
+        <li><a href="#">Tendencias</a></li>
+        <li><a href="#">Top usuarios</a></li>
+        <li><a href="#">Actividad reciente</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+        <li><a href="#">Cookies</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 ShowMeShows — Todos los derechos reservados</p>
+  </div>
+
+</footer>

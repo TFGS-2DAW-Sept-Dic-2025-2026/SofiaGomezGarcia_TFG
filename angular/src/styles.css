@@ -72,6 +72,91 @@ html, body {
   height: auto;
 }
 
+
+/*ESTILOS FOOTER LAYOUT*/
+
+
+.footer {
+  background: #00121A;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  color: #b6d0d6;
+  border-top: 2px solid #003040;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+}
+
+.footer-section h4 {
+  color: #80CED7;
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin: 0.4rem 0;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #b6d0d6;
+  font-size: 0.95rem;
+  transition: 0.2s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #80CED7;
+}
+
+.footer-logo {
+  width: 120px;
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 0 6px rgba(128,206,215,0.25));
+}
+
+.footer-section.brand p {
+  font-size: 0.95rem;
+  color: #9ab7bd;
+}
+
+
+
+
+.footer-bottom {
+  text-align: center;
+  padding: 1rem 0;
+  background: #000F17;
+  color: #7fa8b0;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  border-top: 1px solid #00232f;
+}
+
+
+
+@media (max-width: 600px) {
+  .footer-content {
+    text-align: center;
+  }
+
+  .footer-logo {
+    margin: 0 auto 1rem;
+  }
+}
+
+
 /* Navegación vertical dentro del sidebar */
 .navbar {
   display: flex;
