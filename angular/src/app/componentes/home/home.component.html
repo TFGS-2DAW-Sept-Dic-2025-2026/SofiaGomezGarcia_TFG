@@ -20,9 +20,19 @@
       <div class="series-list">
         <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
           <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" alt="{{ serie.name }}">
-          <h3>{{ serie.name }}</h3>
-          <p class="mb-1"><strong>Año:</strong> {{ serie.first_air_date | date:'yyyy' }}</p>
-          <p><strong>Puntuación:</strong> {{ serie.vote_average }}/10</p>
+
+          <div class="serie-info">
+            <h3 class="serie-title">{{ serie.name }}</h3>
+
+            <div class="serie-meta">
+              <span class="serie-year">{{ serie.first_air_date | date:'yyyy' }}</span>
+
+              <div class="serie-rating">
+                <span class="stars">⭐</span>
+                <span class="rating-number">{{ serie.vote_average | number:'1.1-1' }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -90,5 +100,5 @@
       </section>
     </ng-template>
   </main>
- 
+
 </app-layout>

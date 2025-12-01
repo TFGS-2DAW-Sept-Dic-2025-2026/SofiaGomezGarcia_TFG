@@ -12,7 +12,6 @@ import { AuthService } from '../../servicios/auth.service';
 export class LayoutComponent {
   auth = inject(AuthService);
 
-
   get usuario() {
     return this.auth.getDatosUsuario();
   }
@@ -22,40 +21,64 @@ export class LayoutComponent {
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
-
-  //Metodo para calcular la posicion del footer y colocar el contenedor del perfil
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    const box = this.document.getElementById("sidebarUsuario");
-    const initialTop = 170 + window.innerHeight * 0.6 + 20; // posición inicial
+    const box = this.document.getElementById("sidebarUsuario") as HTMLElement;
+    const footer = this.document.querySelector("footer") as HTMLElement;
+    const wrapper = this.document.querySelector(".page-wrapper") as HTMLElement;
 
-    if (!box) return;
+    if (!box || !footer || !wrapper) {
+      console.error('Elementos no encontrados:', { box, footer, wrapper });
+      return;
+    }
+
+    
+    wrapper.style.position = 'relative';
+
+    const margin = 20;
+    const spacing = 20;
+    const sidebarTop = 170;
+    const sidebarHeight = window.innerHeight * 0.6;
+    const fixedTop = sidebarTop + sidebarHeight + spacing;
+
+    let ticking = false;
 
     const handleScroll = () => {
-      const footer = this.document.querySelector("footer");
-      if (!footer) return;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const boxHeight = box.offsetHeight;
+          const scrollY = window.scrollY;
+          
+          const footerOffsetTop = footer.offsetTop;
+          
+          const boxBottomIfFixed = scrollY + fixedTop + boxHeight;
 
-      const boxHeight = box.offsetHeight;
+          if (boxBottomIfFixed >= footerOffsetTop - margin) {
+            if (box.style.position !== 'absolute') {
+              box.style.position = 'absolute';
+            }
+            box.style.top = `${footerOffsetTop - boxHeight - margin}px`;
+            box.style.left = '20px';
+          } else {
+           
+            if (box.style.position !== 'fixed') {
+              box.style.position = 'fixed';
+            }
+            box.style.top = `${fixedTop}px`;
+            box.style.left = '20px';
+          }
 
-      // Calcula la posición del footer dinámicamente
-      const footerOffsetTop = footer.getBoundingClientRect().top + window.scrollY;
+          ticking = false;
+        });
 
-      const scrollY = window.scrollY;
-      const maxTop = footerOffsetTop - boxHeight - 20; // 20px margen antes del footer
-
-      if (scrollY + initialTop >= maxTop) {
-        box.style.position = "absolute";
-        box.style.top = `${maxTop}px`;
-      } else {
-        box.style.position = "fixed";
-        box.style.top = `${initialTop}px`;
+        ticking = true;
       }
     };
 
-    // Ejecutar en scroll y al cargar
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll); 
-    setTimeout(handleScroll, 100); 
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+
+    handleScroll();
   }
 }
