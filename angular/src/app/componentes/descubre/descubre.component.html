@@ -1,52 +1,53 @@
 <app-layout>
   <main class="home">
-    <h1>Descubre nuevas series</h1>
 
-    
-    <div class="filter-bar card shadow-sm p-3 mb-4 d-flex flex-wrap align-items-center gap-3">
-     
+    <h1 class="home-title">Descubre nuevas series</h1>
+
+    <!-- Barra de búsqueda y filtros -->
+    <div class="filter-bar">
       <input
         type="text"
-        class="form-control w-auto flex-grow-1"
+        class="filter-input"
         placeholder="Buscar serie..."
         [(ngModel)]="filtros.query"
         (input)="buscarSeries(true)"
       />
 
-      
-      <select class="form-select w-auto" [(ngModel)]="filtros.genero" (change)="buscarSeries(true)">
+      <select class="filter-select" [(ngModel)]="filtros.genero" (change)="buscarSeries(true)">
         <option value="">Todos los géneros</option>
         <option *ngFor="let g of generos" [value]="g.id">{{ g.name }}</option>
       </select>
 
-     
-      <select class="form-select w-auto" [(ngModel)]="filtros.idioma" (change)="buscarSeries(true)">
+      <select class="filter-select" [(ngModel)]="filtros.idioma" (change)="buscarSeries(true)">
         <option value="">Todos los idiomas</option>
         <option *ngFor="let lang of idiomas" [value]="lang.iso">{{ lang.name }}</option>
       </select>
 
-      
-      <select class="form-select w-auto" [(ngModel)]="filtros.plataforma" (change)="buscarSeries(true)">
+      <select class="filter-select" [(ngModel)]="filtros.plataforma" (change)="buscarSeries(true)">
         <option value="">Todas las plataformas</option>
         <option *ngFor="let p of plataformas" [value]="p.provider_id">{{ p.provider_name }}</option>
       </select>
     </div>
 
-   
+    <!-- Lista de series -->
     <div class="series-list">
       <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
-        <img
-          [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path"
-          alt="{{ serie.name }}"
-        />
-        <h3>{{ serie.name }}</h3>
-        <p class="mb-1"><strong>Año:</strong> {{ serie.first_air_date | date:'yyyy' }}</p>
-        <p><strong>Puntuación:</strong> {{ serie.vote_average }}/10</p>
+        <div class="serie-img-container">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" [alt]="serie.name" />
+        </div>
+        <div class="serie-info">
+          <h3 class="serie-title">{{ serie.name }}</h3>
+          <div class="serie-meta">
+            <span class="serie-year" *ngIf="serie.first_air_date">{{ serie.first_air_date | date:'yyyy' }}</span>
+            <span class="serie-rating">⭐ {{ serie.vote_average | number:'1.1-1' }}</span>
+          </div>
+        </div>
       </div>
     </div>
 
     <div *ngIf="loading" class="loading">
       <p>Cargando series...</p>
     </div>
+
   </main>
 </app-layout>

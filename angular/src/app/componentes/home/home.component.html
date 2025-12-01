@@ -6,16 +6,23 @@
     <ng-container *ngIf="auth.hasValidSession(); else noAuth">
       <h1>Bienvenido a ShowMeShows</h1>
 
-      <div class="carousel">
-        <div class="slide" *ngFor="let serie of series | slice:0:3">
-          <img class="hero-bg" [src]="'https://image.tmdb.org/t/p/original' + serie.backdrop_path">
-          <div class="hero-info">
-            <h2>{{ serie.name }}</h2>
-            <p>{{ serie.overview }}</p>
-            <button [routerLink]="['/serie', serie.id]" class="btn-primary">Ver detalles</button>
+
+      <div class="carousel" *ngIf="series.length > 0">
+        <div class="slides-wrapper">
+          <div class="slide" *ngFor="let serie of series | slice:0:3; let i = index"
+            [class.active]="i === currentSlide">
+            <img class="hero-bg" [src]="'https://image.tmdb.org/t/p/original' + serie.backdrop_path"
+              alt="{{ serie.name }}">
+            <div class="hero-info" *ngIf="i === currentSlide">
+              <h2>{{ serie.name }}</h2>
+              <p>{{ serie.overview }}</p>
+              <button [routerLink]="['/serie', serie.id]" class="btn-primary">Ver detalles</button>
+            </div>
           </div>
         </div>
+
       </div>
+
 
       <div class="series-list">
         <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
