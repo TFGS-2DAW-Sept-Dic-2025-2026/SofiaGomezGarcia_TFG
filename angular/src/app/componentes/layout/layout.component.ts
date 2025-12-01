@@ -22,63 +22,53 @@ export class LayoutComponent {
   ) { }
 
   ngAfterViewInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
+  if (!isPlatformBrowser(this.platformId)) return;
 
-    const box = this.document.getElementById("sidebarUsuario") as HTMLElement;
-    const footer = this.document.querySelector("footer") as HTMLElement;
-    const wrapper = this.document.querySelector(".page-wrapper") as HTMLElement;
+  const box = this.document.getElementById("sidebarUsuario") as HTMLElement;
+  const sidebar = this.document.querySelector("aside.sidebar") as HTMLElement;
+  const footer = this.document.querySelector("footer") as HTMLElement;
 
-    if (!box || !footer || !wrapper) {
-      console.error('Elementos no encontrados:', { box, footer, wrapper });
-      return;
+  if (!box || !sidebar || !footer) return;
+
+  const margin = 20; // margen entre box y footer
+
+  const handleScroll = () => {
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const footerRect = footer.getBoundingClientRect();
+    const scrollY = window.scrollY;
+
+    const sidebarTop = sidebar.offsetTop; // top relativo al documento
+    const sidebarHeight = sidebar.offsetHeight;
+    const boxHeight = box.offsetHeight;
+
+    // Top fijo debajo del sidebar
+    const fixedTop = sidebarTop + sidebarHeight + margin;
+
+    // Top máximo antes del footer
+    const maxTop = footer.offsetTop - boxHeight - margin;
+
+    if (scrollY + boxHeight + margin >= maxTop) {
+      // Cuando llegamos al footer
+      box.style.position = 'absolute';
+      box.style.top = `${maxTop}px`;
+    } else {
+      // Fijo debajo del sidebar
+      box.style.position = 'fixed';
+      // top relativo al viewport
+      const viewportTop = sidebarRect.bottom + margin;
+      box.style.top = `${viewportTop}px`;
     }
 
-    
-    wrapper.style.position = 'relative';
+    // Mantener alineado horizontalmente con el sidebar
+    const sidebarLeft = sidebarRect.left + window.scrollX;
+    box.style.left = `${sidebarLeft}px`;
+  };
 
-    const margin = 20;
-    const spacing = 20;
-    const sidebarTop = 170;
-    const sidebarHeight = window.innerHeight * 0.6;
-    const fixedTop = sidebarTop + sidebarHeight + spacing;
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('resize', handleScroll);
 
-    let ticking = false;
+  // Ejecutar al cargar
+  handleScroll();
+}
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const boxHeight = box.offsetHeight;
-          const scrollY = window.scrollY;
-          
-          const footerOffsetTop = footer.offsetTop;
-          
-          const boxBottomIfFixed = scrollY + fixedTop + boxHeight;
-
-          if (boxBottomIfFixed >= footerOffsetTop - margin) {
-            if (box.style.position !== 'absolute') {
-              box.style.position = 'absolute';
-            }
-            box.style.top = `${footerOffsetTop - boxHeight - margin}px`;
-            box.style.left = '20px';
-          } else {
-           
-            if (box.style.position !== 'fixed') {
-              box.style.position = 'fixed';
-            }
-            box.style.top = `${fixedTop}px`;
-            box.style.left = '20px';
-          }
-
-          ticking = false;
-        });
-
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
-
-    handleScroll();
-  }
 }

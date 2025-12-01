@@ -54,7 +54,7 @@ html, body {
   top:170px;
   grid-column: 1 / 2;
   width: 220px;
-  height: 60vh;
+  height: 320px;
   background-color: #001A26;
   display: flex;
   flex-direction: column;
@@ -116,8 +116,8 @@ html, body {
 
 .footer {
   background: #00121A;
-  margin-top: 4rem;
-  padding-top: 2rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
   color: #b6d0d6;
   border-top: 2px solid #003040;
 }
@@ -125,7 +125,7 @@ html, body {
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 2rem;
