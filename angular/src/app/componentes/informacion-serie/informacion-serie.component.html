@@ -11,18 +11,18 @@
       </div>
 
       <div class="info-container">
-  <h1 class="fw-bold text-primary serie-title">{{ serie.name }}</h1>
-  <p class="lead text-light serie-overview">
-    <strong>Sinopsis:</strong> {{ serie.overview }}
-  </p>
+        <h1 class="fw-bold text-primary serie-title">{{ serie.name }}</h1>
+        <p class="lead text-light serie-overview">
+          <strong>Sinopsis:</strong> {{ serie.overview }}
+        </p>
 
-  <div class="serie-meta">
-    <span><strong>Fecha de estreno:</strong> {{ serie.first_air_date }}</span>
-    <span><strong>Puntuación:</strong> {{ serie.vote_average }} ⭐</span>
-  </div>
+        <div class="serie-meta">
+          <span><strong>Fecha de estreno:</strong> {{ serie.first_air_date }}</span>
+          <span><strong>Puntuación:</strong> {{ serie.vote_average }} ⭐</span>
+        </div>
 
         <div class="mt-4 btn-group" *ngIf="auth.hasValidSession()">
-          <button class="btn">
+          <button class="btn" (click)="abrirTrailer()">
             <i class="bi bi-play-circle"></i> Ver Tráiler
           </button>
 
@@ -72,6 +72,7 @@
       </div>
     </ng-container>
 
+
     <ng-template #sinListas>
       <p class="sin-listas">No tienes listas creadas aún.</p>
     </ng-template>
@@ -84,6 +85,28 @@
 
 
   </div>
+
+<div class="modal-overlay" *ngIf="mostrarTrailer" (click)="cerrarTrailer()"></div>
+<div class="modal-trailer" *ngIf="mostrarTrailer">
+  <div class="trailer-content">
+    
+    <button class="btn-close-trailer" (click)="cerrarTrailer()">×</button>
+
+    <iframe
+      *ngIf="youtubeURL"
+      width="100%"
+      height="400"
+      [src]="youtubeURL"
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+
+    <p *ngIf="!youtubeURL" class="text-light mt-3">
+      No se encontró un tráiler disponible 
+    </p>
+
+  </div>
+</div>
 
 
 

@@ -154,6 +154,27 @@ export default {
             console.error(error);
             res.status(500).json({ error: "Error obteniendo detalles de la temporada" });
         }
+    },
+    obtenerTrailer: async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        const url = `${BASE_URL}/tv/${id}/videos?api_key=${API_KEY}&language=es-ES`;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Error obteniendo videos");
+
+        const data = await response.json();
+
+        const trailer = data.results.find(
+            (v: any) => v.type === "Trailer" && v.site === "YouTube"
+        );
+
+        res.json({ key: trailer ? trailer.key : null });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error obteniendo trailer" });
     }
+}
 
 }
