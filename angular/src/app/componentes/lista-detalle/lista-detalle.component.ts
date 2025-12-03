@@ -11,7 +11,7 @@ import { PerfilService } from '../../servicios/perfil.service';
 @Component({
   selector: 'app-lista-detalle',
   standalone: true,
-  imports: [CommonModule, RouterModule,LayoutComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent],
   templateUrl: './lista-detalle.component.html',
   styleUrls: ['./lista-detalle.component.css']
 })
@@ -27,11 +27,15 @@ export class ListaDetalleComponent implements OnInit {
   lista: any = null;
   loading = true;
 
-  ngOnInit() {
-   
-    this.isLoggedIn = this.auth.hasValidSession();
+  userId = '';
+  dioLike = false;
 
-    
+  ngOnInit() {
+    this.isLoggedIn = this.auth.hasValidSession();
+    if (this.isLoggedIn) {
+      this.userId = this.auth.getUserIdFromToken(); // obtener id de usuario
+    }
+
     const idLista = this.route.snapshot.paramMap.get('id');
     this.esPublica = this.route.snapshot.queryParamMap.get('publica') === 'true';
 
@@ -48,6 +52,15 @@ export class ListaDetalleComponent implements OnInit {
     observable.subscribe({
       next: (res) => {
         this.lista = res;
+
+        // Inicializar likes si no existen
+        if (this.lista.likes === undefined) this.lista.likes = 0;
+        if (!this.lista.usuariosQueDieronLike) this.lista.usuariosQueDieronLike = [];
+
+        // Verificar si el usuario ya dio like
+        if (this.userId) {
+          this.dioLike = this.lista.usuariosQueDieronLike.includes(this.userId);
+        }
 
         if (this.lista.series?.length) {
           const observables = this.lista.series.map((serieId: string) =>
@@ -99,6 +112,16 @@ export class ListaDetalleComponent implements OnInit {
         error: (err) => console.error('Error al eliminar serie:', err)
       });
   }
-}
 
- 
+  toggleLike() {
+    if (!this.lista?._id || !this.userId) return;
+
+    this.listasService.darLike(this.lista._id).subscribe({
+      next: (res) => {
+        this.lista.likes = res.likes;
+        this.dioLike = res.dioLike;
+      },
+      error: (err) => console.error("Error al dar like:", err)
+    });
+  }
+}

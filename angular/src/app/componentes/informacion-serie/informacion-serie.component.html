@@ -55,7 +55,7 @@
 
   </main>
 
-  <div class="modal-overlay" *ngIf="mostrarModalListas" (click)="cerrarModalListas()"></div>
+  <div class="modal-overlay-listas" *ngIf="mostrarModalListas" (click)="cerrarModalListas()"></div>
 
   <div class="modal-selector" *ngIf="mostrarModalListas">
     <h4>Agregar "{{ serie.name }}" a una lista</h4>
@@ -64,10 +64,13 @@
       <div class="listas-grid">
         <div *ngFor="let lista of listasUsuarioConEstado" class="lista-item"
           [ngClass]="{ 'contiene-serie': lista.contieneSerie }"
-          (click)="!lista.contieneSerie && agregarSerieALista(lista._id)">
-          <i class="bi bi-collection"></i>
+          (click)="!lista.contieneSerie && agregarSerieALista(lista._id)"
+          [title]="lista.contieneSerie ? 'Esta serie ya está en esta lista' : ''">
+
+          <i class="bi" [ngClass]="lista.contieneSerie ? 'bi-check-circle-fill text-success' : 'bi-collection'"></i>
           <span>{{ lista.nombre }}</span>
-          <span *ngIf="lista.contieneSerie" class="badge-agregada">Ya agregada</span>
+
+          <span *ngIf="lista.contieneSerie" class="badge-agregada">Agregada</span>
         </div>
       </div>
     </ng-container>
@@ -86,27 +89,21 @@
 
   </div>
 
-<div class="modal-overlay" *ngIf="mostrarTrailer" (click)="cerrarTrailer()"></div>
-<div class="modal-trailer" *ngIf="mostrarTrailer">
-  <div class="trailer-content">
-    
-    <button class="btn-close-trailer" (click)="cerrarTrailer()">×</button>
+  <div class="modal-overlay" *ngIf="mostrarTrailer" (click)="cerrarTrailer()"></div>
+  <div class="modal-trailer" *ngIf="mostrarTrailer">
+    <div class="trailer-content">
 
-    <iframe
-      *ngIf="youtubeURL"
-      width="100%"
-      height="400"
-      [src]="youtubeURL"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+      <button class="btn-close-trailer" (click)="cerrarTrailer()">×</button>
 
-    <p *ngIf="!youtubeURL" class="text-light mt-3">
-      No se encontró un tráiler disponible 
-    </p>
+      <iframe *ngIf="youtubeURL" width="100%" height="400" [src]="youtubeURL" frameborder="0" allowfullscreen>
+      </iframe>
 
+      <p *ngIf="!youtubeURL" class="text-light mt-3">
+        No se encontró un tráiler disponible
+      </p>
+
+    </div>
   </div>
-</div>
 
 
 

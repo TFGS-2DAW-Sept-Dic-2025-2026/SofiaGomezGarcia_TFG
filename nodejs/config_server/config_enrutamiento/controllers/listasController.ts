@@ -27,7 +27,7 @@ export default {
 
             await nuevaLista.save();
 
-            
+
             await usuario.findByIdAndUpdate(usuarioCreador, {
                 $push: { listas: nuevaLista._id },
             })
@@ -63,7 +63,7 @@ export default {
     agregarSerieALista: async (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            const { id } = req.params; 
+            const { id } = req.params;
             const { idSerie } = req.body;
             const usuarioCreador = (req as any).user?.id;
 
@@ -97,7 +97,7 @@ export default {
     },
     eliminarSerieDeLista: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id } = req.params; 
+            const { id } = req.params;
             const { idSerie } = req.body;
             const usuarioCreador = (req as any).user?.id;
 
@@ -134,7 +134,7 @@ export default {
     eliminarLista: async (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            const { id } = req.params; 
+            const { id } = req.params;
             const usuarioCreador = (req as any).user?.id;
 
             if (!usuarioCreador) {
@@ -161,7 +161,7 @@ export default {
     },
     obtenerListaPorId: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id } = req.params; 
+            const { id } = req.params;
             const usuarioCreador = (req as any).user?.id;
             if (!usuarioCreador) {
                 return res.status(401).json({ msg: 'Usuario no autenticado' });
@@ -222,12 +222,58 @@ export default {
 
             const listasPublicas = await Lista.find({
                 _id: { $in: Usuario?.listasPublicas }
-            }).populate('series'); 
+            }).populate('series');
 
             return res.json({ listasPublicas });
         } catch (error) {
             console.error('Error obteniendo listas públicas por username:', error);
             return res.status(500).json({ mensaje: 'Error interno del servidor' });
+        }
+    },
+    darLikeLista: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const idLista = req.params.id;
+            const idUsuario = (req as any).user?.id;
+
+            if (!idUsuario) {
+                return res.status(401).json({ msg: 'Usuario no autenticado' });
+            }
+
+            if (!idLista) {
+                return res.status(400).json({ msg: 'ID de la lista es obligatorio' });
+            }
+
+            const lista = await Lista.findById(idLista);
+            if (!lista) {
+                return res.status(404).json({ msg: 'Lista no encontrada' });
+            }
+
+            // Inicializamos los campos si no existen
+            if (!lista.usuariosQueDieronLike) lista.usuariosQueDieronLike = [];
+            if (lista.likes === undefined) lista.likes = 0;
+
+            const yaDioLike = lista.usuariosQueDieronLike.includes(idUsuario);
+
+            if (yaDioLike) {
+                
+                lista.usuariosQueDieronLike = lista.usuariosQueDieronLike.filter(u => u.toString() !== idUsuario);
+                lista.likes = Math.max(0, lista.likes - 1);
+            } else {
+                
+                lista.usuariosQueDieronLike.push(idUsuario);
+                lista.likes += 1;
+            }
+
+            await lista.save();
+
+            res.status(200).json({
+                likes: lista.likes,
+                dioLike: !yaDioLike
+            });
+
+        } catch (error) {
+            console.log("Error al dar like a la lista:", error);
+            res.status(500).json({ msg: 'Error al dar like a la lista', error });
         }
     }
 

@@ -155,15 +155,15 @@
   padding: 20px 0;
 }
 
-/* Modal */
-.modal-overlay {
+/* Overlay del modal de listas */
+.modal-overlay-listas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.75);
-  z-index: 10;
+  z-index: 1000;
 }
 
 .modal-selector {
@@ -175,19 +175,18 @@
   color: #fff;
   padding: 25px;
   border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  z-index: 20;
+  z-index: 1010; 
   width: 500px;
   max-height: 80vh;
   overflow-y: auto;
 }
+
 
 .modal-selector h4 {
   color: #80CED7;
   margin-bottom: 20px;
   text-align: center;
 }
-
 .lista-item {
   display: flex;
   align-items: center;
@@ -212,14 +211,28 @@
   color: #80CED7;
 }
 
+
 .lista-item.contiene-serie {
-  background-color: #263b49 !important;
-  color: #001a26 !important;
-  cursor: not-allowed;
-  pointer-events: none;
+  background-color: #263b49;
+  color: #80CED7;
+  cursor: default; 
   transform: none !important;
   border: 1px solid #263b49;
 }
+
+.badge-agregada {
+  margin-left: auto;
+  color: #FFD166;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.lista-item.contiene-serie:hover {
+  background-color: #263b49; 
+  border: 1px solid #263b49;
+  transform: none;
+}
+
 
 .badge-agregada {
   margin-left: 10px;
@@ -249,7 +262,7 @@ button.cancelar {
   color: #fff;
 }
 
-/* Responsivo */
+
 @media (max-width: 992px) {
   .serie-content {
     flex-direction: column;

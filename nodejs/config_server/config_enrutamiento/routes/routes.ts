@@ -35,6 +35,7 @@ router.get("/listas/:id", listasController.obtenerListaPorId);
 router.delete("/listas/:id", listasController.eliminarLista);
 router.get('/listas/conEstado/:idSerie', listasController.obtenerListasConEstado);
 router.get('/usuarios/:username/listasPublicas', listasController.obtenerListasPublicasPorUsername);
+router.post("/listas/:id/like", listasController.darLikeLista);
 
 
 //Rutas para componente descubrir series

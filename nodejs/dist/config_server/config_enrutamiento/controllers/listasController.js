@@ -203,5 +203,45 @@ exports.default = {
             console.error('Error obteniendo listas públicas por username:', error);
             return res.status(500).json({ mensaje: 'Error interno del servidor' });
         }
+    }),
+    darLikeLista: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        try {
+            const idLista = req.params.id;
+            const idUsuario = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+            if (!idUsuario) {
+                return res.status(401).json({ msg: 'Usuario no autenticado' });
+            }
+            if (!idLista) {
+                return res.status(400).json({ msg: 'ID de la lista es obligatorio' });
+            }
+            const lista = yield lista_1.Lista.findById(idLista);
+            if (!lista) {
+                return res.status(404).json({ msg: 'Lista no encontrada' });
+            }
+            // Inicializamos los campos si no existen
+            if (!lista.usuariosQueDieronLike)
+                lista.usuariosQueDieronLike = [];
+            if (lista.likes === undefined)
+                lista.likes = 0;
+            const yaDioLike = lista.usuariosQueDieronLike.includes(idUsuario);
+            if (yaDioLike) {
+                lista.usuariosQueDieronLike = lista.usuariosQueDieronLike.filter(u => u.toString() !== idUsuario);
+                lista.likes = Math.max(0, lista.likes - 1);
+            }
+            else {
+                lista.usuariosQueDieronLike.push(idUsuario);
+                lista.likes += 1;
+            }
+            yield lista.save();
+            res.status(200).json({
+                likes: lista.likes,
+                dioLike: !yaDioLike
+            });
+        }
+        catch (error) {
+            console.log("Error al dar like a la lista:", error);
+            res.status(500).json({ msg: 'Error al dar like a la lista', error });
+        }
     })
 };

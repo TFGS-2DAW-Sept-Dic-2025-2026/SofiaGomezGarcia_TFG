@@ -5,11 +5,11 @@ const mongoose_1 = require("mongoose");
 const ListaSchema = new mongoose_1.Schema({
     nombre: { type: String, required: true },
     descripcion: { type: String },
-    // Relación con el usuario
     usuarioCreador: { type: mongoose_1.Schema.Types.ObjectId, ref: "usuario", required: true },
-    // IDs de series externas
     series: [{ type: String }],
     publica: { type: Boolean, default: false },
+    likes: { type: Number, default: 0 },
+    usuariosQueDieronLike: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "usuario" }],
     fechaCreacion: { type: Date, default: Date.now }
 }, {
     timestamps: true

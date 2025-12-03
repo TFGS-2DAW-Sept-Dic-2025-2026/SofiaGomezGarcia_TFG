@@ -5,9 +5,16 @@
 
       <div class="lista-header">
         <h2 class="lista-title">{{ lista.nombre }}</h2>
-        <p class="lista-desc">{{ lista.descripcion || 'Sin descripción' }}</p>
+
+        <button *ngIf="isLoggedIn" class="btn-like" [class.disabled]="lista.usuarioCreador === userId"
+          (click)="lista.usuarioCreador !== userId ? toggleLike() : null">
+          <i class="bi"
+            [ngClass]="dioLike && lista.usuarioCreador !== userId ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+          <span>{{ lista.likes }}</span>
+        </button>
       </div>
 
+      
       <div *ngIf="loading" class="loading">
         <div class="spinner-border text-warning" role="status"></div>
         <p>Cargando series...</p>
