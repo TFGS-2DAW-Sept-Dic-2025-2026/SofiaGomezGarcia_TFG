@@ -156,16 +156,157 @@
   border-radius: 12px;
   padding: 8px 20px;
   border: none;
-  transition: background 0.2s, transform 0.2s;
+  
 }
 
 .btn-crear:hover {
   background-color: #00121A;
   color: #80CED7;
-  transform: translateY(-2px);
+  
 }
 
 .text-modal {
    margin-bottom: 20px;
    margin-top: 20px;
+}
+
+.modal-crear-lista {
+  animation: popIn 0.25s ease;
+}
+
+@keyframes popIn {
+  0% { transform: translate(-50%, -45%) scale(0.9); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Contenedor */
+.modal-crear-lista {
+  background-color: #001A26;
+  border-radius: 22px;
+  padding: 25px 30px;
+  width: 420px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(128, 206, 215, 0.2);
+}
+
+/* Header */
+.modal-content h5 {
+  color: #80CED7;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Botón cerrar elegante */
+.btn-cerrar {
+  background: rgba(128, 206, 215, 0.12);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(128, 206, 215, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-cerrar:hover {
+  background: #ff4d4d;
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+/* Inputs Modernos */
+.input-dark {
+  background: #002434;
+  border: 1px solid #0a3a48;
+  color: #e3f8fa;
+  border-radius: 14px;
+  padding: 12px 15px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.input-dark::placeholder {
+  color: #8fbcc3;
+}
+
+.input-dark:focus {
+  background: #003545;
+  border-color: #80CED7;
+  box-shadow: 0 0 8px rgba(128, 206, 215, 0.4);
+  transform: scale(1.02);
+}
+
+
+.input-dark textarea {
+  resize: none;
+}
+
+
+.form-label {
+  color: #9bd9df !important;
+  font-weight: 500;
+}
+
+
+.btn-crear {
+  background-color: #80CED7;
+  color: #00121A;
+  font-weight: 700;
+  border-radius: 16px;
+  padding: 10px 26px;
+  font-size: 1rem;
+}
+
+.btn-crear:hover {
+  background-color: #00121A;
+  color: #80CED7;
+  cursor: pointer;
+
+}
+
+.modal-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.modal-field .form-label {
+  padding-left: 2px;
+  font-size: 0.95rem;
+}
+
+
+.modal-field .input-dark {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.modal-field textarea.input-dark {
+  min-height: 90px;
+}
+
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

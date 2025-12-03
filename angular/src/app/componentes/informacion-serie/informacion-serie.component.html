@@ -6,39 +6,41 @@
 
     <div class="serie-content">
       <div class="poster-container">
-        <img [src]="'https://image.tmdb.org/t/p/w500' + serie.poster_path" alt="{{ serie.name }}"
+        <img [src]="'https://image.tmdb.org/t/p/original' + serie.poster_path" alt="{{ serie.name }}"
           class="poster rounded-4 shadow-lg" />
       </div>
 
       <div class="info-container">
-        <h1 class="fw-bold text-primary mb-3">{{ serie.name }}</h1>
-        <p class="lead text-light mb-4">
-          <strong>Sinopsis:</strong> {{ serie.overview }}
-        </p>
+  <h1 class="fw-bold text-primary serie-title">{{ serie.name }}</h1>
+  <p class="lead text-light serie-overview">
+    <strong>Sinopsis:</strong> {{ serie.overview }}
+  </p>
 
-        <p><strong>Fecha de estreno:</strong> {{ serie.first_air_date }}</p>
-        <p><strong>Puntuación:</strong> <span class="text-warning">{{ serie.vote_average }} ⭐</span></p>
+  <div class="serie-meta">
+    <span><strong>Fecha de estreno:</strong> {{ serie.first_air_date }}</span>
+    <span><strong>Puntuación:</strong> {{ serie.vote_average }} ⭐</span>
+  </div>
 
-        <div class="mt-4 d-flex gap-3 flex-wrap" *ngIf="auth.hasValidSession()">
-          <button class="btn btn-outline-light">
+        <div class="mt-4 btn-group" *ngIf="auth.hasValidSession()">
+          <button class="btn">
             <i class="bi bi-play-circle"></i> Ver Tráiler
           </button>
-          <button class="btn" [class.btn-warning]="!isFavorite" [class.btn-danger]="isFavorite"
-            (click)="toggleFavorite()">
+
+          <button class="btn" [ngClass]="{'active': isFavorite}" (click)="toggleFavorite()">
             <i class="bi" [ngClass]="isFavorite ? 'bi-star-fill' : 'bi-star'"></i>
             {{ isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos' }}
           </button>
 
-          <button class="btn" [class.btn-success]="!isFollowing" [class.btn-danger]="isFollowing"
-            (click)="toggleSeguimiento()">
+          <button class="btn" [ngClass]="{'active': isFollowing}" (click)="toggleSeguimiento()">
             <i class="bi" [ngClass]="isFollowing ? 'bi-check-circle-fill' : 'bi-plus-circle'"></i>
             {{ isFollowing ? 'Dejar de Seguir' : 'Seguir Serie' }}
           </button>
 
-          <button class="btn btn-warning text-dark" (click)="abrirModalListas()">
+          <button class="btn" (click)="abrirModalListas()">
             <i class="bi bi-star-fill"></i> Agregar a Lista
           </button>
         </div>
+
 
         <p *ngIf="!auth.hasValidSession()" class="text-light mt-3">
           Inicia sesión para interactuar con tus favoritos y listas.

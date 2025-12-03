@@ -37,7 +37,7 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
-  height: 420px;
+  height: 390px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
 

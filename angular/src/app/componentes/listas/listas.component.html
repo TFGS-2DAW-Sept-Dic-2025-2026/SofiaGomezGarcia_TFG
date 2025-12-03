@@ -1,7 +1,6 @@
 <app-layout>
   <main class="listas-page" *ngIf="isLoggedIn; else noAuth">
 
-    <!-- Header -->
     <div class="listas-header text-center mb-5">
       <h2 class="titulo-seccion mb-3">Mis listas</h2>
       <button class="btn-crear-lista-centrado" (click)="abrirModal()">
@@ -9,18 +8,17 @@
       </button>
     </div>
 
-    <!-- Cargando -->
+    
     <div *ngIf="loading" class="text-center mt-5">
       <div class="spinner-border text-info" role="status"></div>
       <p class="mt-3 text-light">Cargando tus listas...</p>
     </div>
 
-    <!-- Listas -->
+   
     <div *ngIf="!loading && listas.length > 0" class="listas-grid centradas">
-      <!-- <div *ngFor="let lista of listas" class="lista-card-horizontal" (click)="irADetalle(lista._id)"> 
-        Cambiar la navegacion del metodo
-        -->
-        <div *ngFor="let lista of listas" class="lista-card-horizontal" [routerLink]="['/listas', lista._id]" (click)="$event.stopPropagation()">
+      
+      <div *ngFor="let lista of listas" class="lista-card-horizontal" [routerLink]="['/listas', lista._id]"
+        (click)="$event.stopPropagation()">
         <div class="lista-info">
           <h3>{{ lista.nombre }}</h3>
           <p>{{ lista.descripcion || 'Sin descripción' }}</p>
@@ -33,15 +31,12 @@
       </div>
     </div>
 
-    <!-- Sin listas -->
     <div *ngIf="!loading && listas.length === 0" class="text-center mt-5 text-light">
       <p class="fs-5">No tienes listas creadas aún. ¡Crea tu primera lista arriba! </p>
     </div>
   </main>
 
-  <!-- Modal Crear Lista 
-    Mejorar el diseño visual del modal
-  -->
+
   <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()"></div>
 
   <div class="modal-crear-lista" *ngIf="mostrarModal">
@@ -51,24 +46,27 @@
         <button type="button" class="btn-cerrar" (click)="cerrarModal()">×</button>
       </div>
 
-      <form (ngSubmit)="crearLista()" #formLista="ngForm">
-        <div class="mb-3">
+      <form (ngSubmit)="crearLista()" #formLista="ngForm" class="modal-form-wrapper">
+
+        <div class="modal-field">
           <label class="form-label text-light">Nombre</label>
-          <input type="text" class="form-control input-dark" [(ngModel)]="nuevaLista.nombre" name="nombre" required />
+          <input type="text" class="form-control input-dark" [(ngModel)]="nuevaLista.nombre" name="nombre" required
+            placeholder="Nombre de la lista" />
         </div>
-        <div class="mb-3">
-          <label class="form-label text-light text-modal">Descripción</label>
-          <textarea class="form-control input-dark " [(ngModel)]="nuevaLista.descripcion" name="descripcion"
-            rows="2"></textarea>
+
+        <div class="modal-field">
+          <label class="form-label text-light">Descripción</label>
+          <textarea class="form-control input-dark" [(ngModel)]="nuevaLista.descripcion" name="descripcion" rows="2"
+            placeholder="Descripción opcional"></textarea>
         </div>
-        <div class="text-end">
-          <button type="submit" class="btn-crear text-modal">Crear</button>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn-crear">Crear</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- No autenticado -->
   <ng-template #noAuth>
     <div class="text-center py-5 text-light">
       <p>Por favor, inicia sesión para crear y gestionar tus listas de series.</p>

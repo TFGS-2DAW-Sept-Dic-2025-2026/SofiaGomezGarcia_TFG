@@ -63,22 +63,27 @@ export class ListasComponent {
 
 
   crearLista() {
-    const { nombre, descripcion } = this.nuevaLista;
-    if (!nombre.trim()) return console.log('se ha creado la lista correctamente'); // cambiar el alert por un mensaje en el html
-    this.listasService.crearLista(nombre, descripcion).subscribe({
-      next: (nueva) => {
-        this.listas.push(nueva);
-        this.nuevaLista = { nombre: '', descripcion: '' };
-      },
-      error: (err) => {
-        console.error('Error al crear lista', err);
-      }
-    });
-  }
+  const { nombre, descripcion } = this.nuevaLista;
+
+  if (!nombre.trim()) return;
+
+  this.listasService.crearLista(nombre, descripcion).subscribe({
+    next: (nueva) => {
+      this.listas.push(nueva);
+
+      this.nuevaLista = { nombre: '', descripcion: '' };
+
+      this.cerrarModal();
+    },
+    error: (err) => {
+      console.error('Error al crear lista', err);
+    }
+  });
+}
 
 
   eliminarLista(idLista: string) {
-    if (!confirm('¿Seguro que quieres eliminar esta lista?')) return; // cambiar el confirm por un modal en el html
+    if (!confirm('¿Seguro que quieres eliminar esta lista?')) return; 
 
     this.listasService.eliminarLista(idLista).subscribe({
       next: () => {

@@ -3,19 +3,16 @@
   <main class="lista-detalle home">
     <div *ngIf="lista && (isLoggedIn || esPublica); else noAuth" class="container">
 
-      <!-- Título y descripción -->
       <div class="lista-header">
         <h2 class="lista-title">{{ lista.nombre }}</h2>
         <p class="lista-desc">{{ lista.descripcion || 'Sin descripción' }}</p>
       </div>
 
-      <!-- Spinner -->
       <div *ngIf="loading" class="loading">
         <div class="spinner-border text-warning" role="status"></div>
         <p>Cargando series...</p>
       </div>
 
-      <!-- Series -->
       <div *ngIf="!loading && lista.series.length > 0" class="series-list">
         <div *ngFor="let serie of lista.series" class="serie-card">
           <div class="serie-img-container" [routerLink]="['/serie', serie.id]">
@@ -34,14 +31,13 @@
         </div>
       </div>
 
-      <!-- Lista vacía -->
+
       <div *ngIf="!loading && lista.series.length === 0" class="text-center mt-5">
         <p class="text-muted fs-5">No hay series en esta lista aún 🎬</p>
       </div>
 
     </div>
 
-    <!-- No autenticado -->
     <ng-template #noAuth>
       <div class="text-center mt-5">
         <p>Por favor, inicia sesión para ver tus listas.</p>
