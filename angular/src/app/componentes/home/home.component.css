@@ -1,27 +1,21 @@
-
-.series-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-top: 20px;
+/* =========================================
+   1. CONFIGURACIÓN GLOBAL Y CONTENEDORES
+   ========================================= */
+.page-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2.5vw;
   width: 100%;
+  overflow-x: hidden; 
 }
 
-.serie-card {
-  background: #001A26;
-  padding: 0px;
-  border-radius: 8px;
+.welcome-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0;
   text-align: center;
+  animation: fadeIn 0.6s ease;
   color: #fff;
-  transition: transform 0.2s;
-  box-sizing: border-box;
-}
-.serie-card:hover { transform: scale(1.05); }
-
-.serie-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
 }
 
 .loading {
@@ -30,19 +24,9 @@
   font-size: 16px;
 }
 
-
-
-
-.welcome-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0; 
-  text-align: center;
-  animation: fadeIn 0.6s ease;
-  color: #fff;
-}
-
-
+/* =========================================
+   2. HERO Y TIPOGRAFÍA
+   ========================================= */
 .hero h2 {
   font-size: 2.4rem;
   margin-bottom: 0.5rem;
@@ -56,12 +40,29 @@
   margin-bottom: 1.8rem;
 }
 
+.welcome-logo {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-logo img {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: fadeInScale 0.8s ease forwards;
+}
+
+/* =========================================
+   3. BOTONES (Consolidado)
+   ========================================= */
 .cta-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
-
 
 .btn-primary,
 .btn-secondary {
@@ -73,7 +74,6 @@
   font-weight: 600;
   transition: 0.3s ease;
 }
-
 
 .btn-primary {
   background-color: #80CED7;
@@ -87,7 +87,6 @@
   border: 2px solid #80CED7;
 }
 
-
 .btn-secondary {
   background-color: #001A26;
   color: #80CED7;
@@ -98,388 +97,6 @@
   background-color: #80CED7;
   color: #001A26;
   transform: scale(1.05);
-}
-
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 2rem;
-  margin: 3rem 0;
-}
-
-.feature {
-  background: #001A26;
-  border-radius: 20px;
-  padding: 1.8rem;
-  box-shadow: 0px 4px 14px rgba(0,0,0,0.4);
-  transition: transform 0.25s ease;
-  color: #fff;
-}
-
-.feature:hover {
-  transform: translateY(-4px) scale(1.02);
-}
-
-.feature .icon {
-  font-size: 2.2rem;
-  margin-bottom: 0.8rem;
-  color: #80CED7;
-}
-
-.feature h3 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-  color: #80CED7;
-}
-
-.feature p {
-  color: #b6d0d6;
-  font-size: 0.95rem;
-}
-
-.popular-preview {
-  margin: 3rem 0 2rem;
-}
-
-.popular-preview h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: #80CED7;
-}
-
-.preview-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
-}
-
-.preview-card img {
-  width: 100%;
-  border-radius: 16px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
-  transition: transform 0.3s ease;
-}
-
-.preview-card img:hover {
-  transform: scale(1.05);
-}
-
-
-.final-cta {
-  margin-top: 3rem;
-}
-
-.final-cta p {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #b6d0d6;
-}
-
-/*LOGO*/
-
-/* .home {
-  padding-top: 0;
-  overflow: hidden;
-} */
-
-.welcome-logo {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  display: flex;
-  justify-content: center;
-}
-
-.welcome-logo img {
-  max-width: 500px;       
-  width: 100%;
-  height: auto;
-  display: block;
-  animation: fadeInScale 0.8s ease forwards;
-}
-
-/* ======== ANIMACIÓN SUAVE ======== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ======== RESPONSIVE ======== */
-@media (max-width: 600px) {
-  .hero h2 {
-    font-size: 1.9rem;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-  }
-}
-
-@keyframes fadeInScale {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/*ESTILOS PROVISIONALES*/
-
-.carousel {
-  position: relative;
-  /* width: 100%; */
-  height: 400px;
-  overflow: hidden;
-  border-radius: 12px;
-  margin-bottom: 40px;
-}
-
-.slides-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-}
-
-.slide.active {
-  opacity: 1;
-  z-index: 2;
-}
-
-.hero-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.55);
-  z-index: 1;
-}
-
-.hero-info {
-  position: relative;
-  z-index: 3;
-  max-width: 600px;
-  margin: 0 0 60px 40px;
-  color: white;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
-}
-
-.hero-info h2 {
-  font-size: 2.2rem;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.hero-info p {
-  font-size: 1rem;
-  max-height: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 15px;
-}
-
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
-  background: rgba(0,0,0,0.4);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  padding: 0.3rem 0.6rem;
-  cursor: pointer;
-  z-index: 5;
-  transition: background 0.3s;
-}
-
-.carousel-arrow:hover {
-  background: rgba(0,0,0,0.7);
-}
-
-.carousel-arrow.left {
-  left: 20px;
-}
-
-.carousel-arrow.right {
-  right: 20px;
-}
-
-@media (max-width: 768px) {
-  .carousel {
-    height: 250px;
-  }
-
-  .hero-info {
-    margin-left: 20px;
-    margin-bottom: 40px;
-  }
-
-  .hero-info h2 {
-    font-size: 1.6rem;
-  }
-
-  .hero-info p {
-    font-size: 0.9rem;
-  }
-}
-
-
-/* ================================
-   RESPONSIVE
-=================================== */
-
-@media (max-width: 768px) {
-  .hero h2 {
-    font-size: 1.9rem;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-  }
-
-  .carousel {
-    height: 250px;
-  }
-
-  .hero-info h2 {
-    font-size: 1.6rem;
-  }
-}
-
-@media (max-width: 500px) {
-  .features {
-    grid-template-columns: 1fr;
-  }
-
-  .preview-grid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  }
-}
-
-
-/*Nuevos diseños*/
-.serie-card {
-  background: #001A26;
-  border-radius: 14px;
-  overflow: hidden;
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-  display: flex;
-  flex-direction: column;
-}
-
-.serie-card:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-}
-
-.serie-card {
-  background: #001A26;
-  border-radius: 14px;
-  overflow: hidden;
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-  display: flex;
-  flex-direction: column;
-  height: 390px; 
-}
-
-.serie-info {
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-
-.serie-title {
-  font-size: 1.1rem;
-  margin: 0;
-  font-weight: 600;
-  color: #80CED7;
-  text-align: left;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;   
-  -webkit-box-orient: vertical;
-}
-
-.serie-meta {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.serie-year {
-  font-size: 0.9rem;
-  color: #9dbcc4;
-}
-
-.serie-rating {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.stars {
-  font-size: 1rem;
-  color: #FFD700; 
-}
-
-.rating-number {
-  font-size: 0.9rem;
-  color: #b6d0d6;
-}
-
-
-
-/* ============================
-   HOME SECTIONS
-============================= */
-
-
-
-/* ============================
-   HOME SECTIONS - RESPONSIVE
-============================= */
-
-.home-section {
-  margin: 40px 0;
-  width: 100%;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #80CED7;
-  margin-bottom: 15px;
-  padding: 0 10px;
-}
-
-.section-header h2 {
-  font-size: 1.6rem;
-  font-weight: 700;
 }
 
 .ver-mas-btn {
@@ -498,9 +115,17 @@
   color: #001A26;
 }
 
-/* ==========================================
-   SERIE CARDS - Tamaño Base
-   ========================================== */
+/* =========================================
+   4. TARJETAS DE SERIES (Optimizado y Corregido para Scroll)
+   ========================================= */
+.series-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  width: 100%;
+}
+
 .serie-card {
   background: #001A26;
   border-radius: 14px;
@@ -511,12 +136,10 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   display: flex;
   flex-direction: column;
-  
-  /* Tamaño desktop */
-  min-width: 200px;
-  max-width: 200px;
+  width: 200px; 
   height: 390px;
-  flex-shrink: 0;
+  flex: 0 0 200px; 
+  scroll-snap-align: center; 
 }
 
 .serie-card:hover {
@@ -524,20 +147,20 @@
   box-shadow: 0 6px 20px rgba(0,0,0,0.45);
 }
 
-/* Contenedor de imagen */
 .serie-img-container {
   width: 100%;
-  height: 300px;
+  height: 300px; 
   overflow: hidden;
 }
 
-.serie-img-container img {
+.serie-img-container img,
+.serie-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 0;
 }
 
-/* Info de la serie */
 .serie-info {
   padding: 12px 16px;
   display: flex;
@@ -551,14 +174,12 @@
   font-weight: 600;
   color: #80CED7;
   text-align: left;
-  
-  /* Truncar a 2 líneas */
+  line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  line-height: 1.3;
 }
 
 .serie-meta {
@@ -582,159 +203,177 @@
   color: #FFD700;
 }
 
-.stars {
-  font-size: 1rem;
-  color: #FFD700;
+.stars { color: #FFD700; }
+.rating-number { color: #b6d0d6; }
+
+/* =========================================
+   5. FEATURES & PREVIEWS
+   ========================================= */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
 }
 
-.rating-number {
-  font-size: 0.9rem;
-  color: #b6d0d6;
+.feature {
+  background: #001A26;
+  border-radius: 20px;
+  padding: 1.8rem;
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.4);
+  transition: transform 0.25s ease;
+  color: #fff;
 }
 
-/* ==========================================
-   RESPONSIVE BREAKPOINTS
-   ========================================== */
+.feature:hover { transform: translateY(-4px) scale(1.02); }
 
-/* Desktop Grande (1600px+) */
-@media (min-width: 1600px) {
-  .scroll-wrapper {
-    max-width: 1550px;
-    margin: 0 auto;
-  }
+.feature .icon { font-size: 2.2rem; margin-bottom: 0.8rem; color: #80CED7; }
+.feature h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #80CED7; }
+.feature p { color: #b6d0d6; font-size: 0.95rem; }
+
+.popular-preview { margin: 3rem 0 2rem; }
+.popular-preview h3 { font-size: 1.5rem; margin-bottom: 1.5rem; color: #80CED7; }
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
 }
 
-/* Laptops medianos (1400px - 1200px) */
-@media (max-width: 1400px) {
-  .serie-card {
-    min-width: 180px;
-    max-width: 180px;
-    height: 370px;
-  }
-  
-  .serie-img-container {
-    height: 280px;
-  }
-  
-  .scroll-row {
-    gap: 14px;
-  }
+.preview-card img {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
 }
 
-/* Tablets y laptops pequeños (1200px - 768px) */
-@media (max-width: 1200px) {
-  .serie-card {
-    min-width: 170px;
-    max-width: 170px;
-    height: 360px;
-  }
-  
-  .serie-img-container {
-    height: 270px;
-  }
-  
-  .section-header h2 {
-    font-size: 1.5rem;
-  }
+.preview-card img:hover { transform: scale(1.05); }
+
+.final-cta { margin-top: 3rem; }
+.final-cta p { font-size: 1.2rem; margin-bottom: 1rem; color: #b6d0d6; }
+
+/* =========================================
+   6. CAROUSEL & SCROLL WRAPPERS (Corregido)
+   ========================================= */
+
+.home-section { margin: 40px 0; width: 75vw; }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #80CED7;
+  margin-bottom: 15px;
+  padding: 0 50px; 
+}
+.section-header h2 { font-size: 1.6rem; font-weight: 700; }
+
+.scroll-wrapper {
+  position: relative;
+  overflow: clip;
+  width: 100%;
 }
 
-/* Tablets (768px - 480px) */
-@media (max-width: 768px) {
-  .serie-card {
-    min-width: 200px; /* ✅ MANTENER tamaño original para forzar scroll */
-    max-width: 200px;
-    height: 380px;
-  }
+.scroll-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 16px;
+  scroll-snap-type: x mandatory; 
+  padding: 10px 50px;
   
-  .serie-img-container {
-    height: 290px;
-  }
-  
-  .serie-title {
-    font-size: 1rem;
-  }
-  
-  .section-header h2 {
-    font-size: 1.3rem;
-  }
-  
-  .scroll-row {
-    gap: 14px;
-  }
-  
-  .scroll-wrapper {
-    padding: 0 8px 12px;
-  }
+  scrollbar-width: none; 
 }
 
-/* Móviles (480px - 360px) */
-@media (max-width: 480px) {
-  .serie-card {
-    min-width: 190px; /* ✅ MUY grande para forzar scroll */
-    max-width: 190px;
-    height: 370px;
-  }
-  
-  .serie-img-container {
-    height: 280px;
-  }
-  
-  .serie-title {
-    font-size: 0.95rem;
-  }
-  
-  .serie-info {
-    padding: 10px 14px;
-  }
-  
-  .section-header {
-    padding: 0 5px;
-  }
-  
-  .section-header h2 {
-    font-size: 1.2rem;
-  }
-  
-  .scroll-wrapper {
-    padding: 0 5px 12px;
-  }
-  
-  .scroll-row {
-    gap: 12px;
-  }
-  
-  .ver-mas-btn {
-    padding: 5px 10px;
-    font-size: 0.9rem;
-  }
+.scroll-row::-webkit-scrollbar { display: none; }
+
+.carousel {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 40px;
+}
+.slides-wrapper { position: relative; width: 100%; height: 100%; }
+.slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; display: flex; align-items: flex-end; justify-content: flex-start; }
+.slide.active { opacity: 1; z-index: 2; }
+.hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55); z-index: 1; }
+.hero-info { position: relative; z-index: 3; max-width: 600px; margin: 0 0 60px 40px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }
+.hero-info h2 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; }
+.hero-info p { font-size: 1rem; max-height: 120px; overflow: hidden; text-overflow: ellipsis; margin-bottom: 15px; }
+
+
+/* =========================================
+   7. FLECHAS DE NAVEGACIÓN (Corregido y Optimizado)
+   ========================================= */
+/* Estilos comunes para todas las flechas */
+.carousel-arrow, .scroll-arrow, .btn-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  cursor: pointer;
+  z-index: 30; 
+  color: #80CED7;
+  transition: all 0.25s ease;
 }
 
-/* Móviles muy pequeños (< 360px) */
-@media (max-width: 360px) {
-  .serie-card {
-    min-width: 180px; /* ✅ Grande incluso en pantallas pequeñas */
-    max-width: 180px;
-    height: 350px;
-  }
-  
-  .serie-img-container {
-    height: 260px;
-  }
-  
-  .scroll-row {
-    gap: 10px;
-  }
-  
-  .section-header h2 {
-    font-size: 1.1rem;
-  }
+
+.carousel-arrow {
+  font-size: 2rem;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.3rem 0.6rem;
+  z-index: 5;
+}
+.carousel-arrow:hover { background: rgba(0,0,0,0.7); }
+.carousel-arrow.left { left: 20px; }
+.carousel-arrow.right { right: 20px; }
+
+
+.btn-arrow {
+  width: 48px; height: 48px;
+  background: rgba(0, 0, 0, 0.75); 
+  backdrop-filter: blur(8px); 
+  border: 2px solid rgba(128, 206, 215, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  overflow: hidden;
+  z-index: 30;
 }
 
-/* ==========================================
-   OTRAS SECCIONES
-   ========================================== */
+.btn-arrow .icon {
+  width: 26px; height: 26px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
 
-/* PLACEHOLDER CARDS */
+.btn-arrow.left { 
+  left: 5px; 
+}
+
+.btn-arrow.right { 
+  right: 5px; 
+}
+
+.btn-arrow:hover {
+  background: rgba(0, 0, 0, 0.95);
+  border-color: #80CED7;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 15px rgba(128, 206, 215, 1);
+}
+.btn-arrow:active { transform: translateY(-50%) scale(0.95); }
+
+
+/* =========================================
+   8. COMPONENTES EXTRA (Reviews, Placeholders, Listas)
+   ========================================= */
 .scroll-card {
   background: #001A26;
   min-width: 160px;
@@ -745,25 +384,17 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   transition: transform 0.2s;
 }
-
-.scroll-card:hover {
-  transform: scale(1.05);
-}
+.scroll-card:hover { transform: scale(1.05); }
 
 .placeholder-img {
-  width: 100%;
-  height: 200px;
+  width: 100%; height: 200px;
   background: #012736;
   border-radius: 8px;
   margin-bottom: 10px;
 }
+.placeholder-title { color: #80CED7; font-size: 0.95rem; }
 
-.placeholder-title {
-  color: #80CED7;
-  font-size: 0.95rem;
-}
 
-/* REVIEWS */
 .reviews-row {
   display: flex;
   gap: 16px;
@@ -772,7 +403,6 @@
   scrollbar-width: thin;
   scrollbar-color: #80CED7 #003346;
 }
-
 .review-card {
   background: #001A26;
   padding: 14px;
@@ -782,213 +412,123 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   color: #fff;
 }
+.review-user { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.avatar { width: 32px; height: 32px; background: #80CED7; border-radius: 50%; }
+.avatar.big { width: 70px; height: 70px; }
+.username { color: #80CED7; font-weight: 600; }
+.review-text { font-size: 0.9rem; margin-bottom: 8px; }
+.review-serie { color: #9dbcc4; font-size: 0.85rem; }
 
-.review-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
 
-.avatar {
-  width: 32px;
-  height: 32px;
-  background: #80CED7;
-  border-radius: 50%;
-}
-
-.avatar.big {
-  width: 70px;
-  height: 70px;
-}
-
-.username {
-  color: #80CED7;
-  font-weight: 600;
-}
-
-.review-text {
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-}
-
-.review-serie {
-  color: #9dbcc4;
-  font-size: 0.85rem;
-}
-
-/* TOP USER */
 .top-user-card {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: #001A26;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  display: flex; align-items: center; gap: 14px;
+  background: #001A26; padding: 20px;
+  border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
-
-.top-user-info h3 {
-  margin: 0;
-  color: #80CED7;
-}
-
-.top-user-info p {
-  margin: 0;
-  color: #9dbcc4;
-}
-
+.top-user-info h3 { margin: 0; color: #80CED7; }
+.top-user-info p { margin: 0; color: #9dbcc4; }
 
 .listas-grid-home {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
 }
-
 .lista-publica-card {
-  background: #001A26;
-  padding: 16px;
-  border-radius: 14px;
-  color: #fff;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  background: #001A26; padding: 16px;
+  border-radius: 14px; color: #fff;
+  text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   transition: transform 0.2s;
 }
+.lista-publica-card:hover { transform: translateY(-2px); }
+.likes { margin-top: 8px; color: #80CED7; font-weight: 600; }
 
-.lista-publica-card:hover {
-  transform: translateY(-2px);
+/* =========================================
+   9. ANIMACIONES
+   ========================================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.likes {
-  margin-top: 8px;
-  color: #80CED7;
-  font-weight: 600;
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
 
+/* =========================================
+   10. MEDIA QUERIES (Corregidas y Consolidadas)
+   ========================================= */
 
-.scroll-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+
+@media (min-width: 1600px) {
+ 
 }
 
-.scroll-row {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 16px;
-  padding: 10px 0;
+/* Laptops Medianos (1400px - 1200px) */
+@media (max-width: 1400px) {
+  .serie-card { width: 180px; height: 370px; flex: 0 0 180px; }
+  .serie-img-container { height: 280px; }
+  .scroll-row { gap: 14px; }
 }
 
-.scroll-row::-webkit-scrollbar {
-  display: none;
-}
-
-.scroll-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  z-index: 10;
-  transition: background 0.3s;
-}
-
-.scroll-arrow:hover {
-  background: rgba(0,0,0,0.9);
-}
-
-.scroll-arrow.left {
-  left: 0;
-}
-
-.scroll-arrow.right {
-  right: 0;
-}
-
-.serie-card {
-  min-width: 180px;
-  max-width: 200px;
-  flex: 0 0 auto;
-  background: #001A26;
-  border-radius: 14px;
-  overflow: hidden;
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-  display: flex;
-  flex-direction: column;
-}
-
-.serie-card:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+/* Tablets Landscape / Laptops Pequeños (1200px - 769px) */
+@media (max-width: 1200px) {
+  .serie-card { width: 170px; height: 360px; flex: 0 0 170px; }
+  .serie-img-container { height: 270px; }
+  .section-header h2 { font-size: 1.5rem; }
 }
 
 
-.btn-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  border: none;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
-  border: 2px solid rgba(128, 206, 215, 0.4);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  appearance: none;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.25s ease;
-  color: #80CED7;
-  overflow: hidden;
-}
+/* TABLETS PORTRAIT Y MÓVILES GRANDES (max-width: 768px) */
 
-
-
-.btn-arrow .icon {
-  width: 26px;
-  height: 26px;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2.5;
+@media (max-width: 768px) {
+  .page-container {
+    padding: 0 10px; 
+  }
   
+  
+  .btn-arrow {
+    display: none; 
+  }
+  
+  .scroll-row {
+    padding: 10px 10px; 
+  }
+  
+  .section-header {
+    padding: 0 10px; 
+  }
+
+ 
+  .serie-card {
+    
+    flex: 0 0 calc(50% - 6px); 
+    width: calc(50% - 6px);
+    min-width: 140px; 
+    height: auto; 
+  }
+
+  .serie-img-container {
+    height: auto;
+    aspect-ratio: 2 / 3; 
+  }
+  
+  .serie-title {
+    -webkit-line-clamp: 3; 
+    font-size: 0.95rem;
+  }
+  
+  .hero-info {
+    margin: 0 20px 40px 20px;
+  }
 }
 
-.btn-arrow.left { 
-  left: -10px; 
-}
-
-.btn-arrow.right { 
-  right: -10px; 
-}
-
-.btn-arrow:hover {
-  background: rgba(0, 0, 0, 0.75);
-  border-color: #80CED7;
-  transform: translateY(-50%) scale(1.12);
-  box-shadow: 0 0 10px rgba(128, 206, 215, 0.9);
-}
-
-.btn-arrow:active {
-  transform: translateY(-50%) scale(0.95);
-}
-
-.page-container {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 20px;
-  width: 100%;
+/* MÓVILES PEQUEÑOS (max-width: 480px) */
+@media (max-width: 480px) {
+  .serie-card {
+    flex: 0 0 150px; 
+    width: 150px;
+  }
+  .section-header h2 { font-size: 1.2rem; }
+  .ver-mas-btn { padding: 5px 10px; font-size: 0.9rem; }
 }

@@ -260,11 +260,12 @@ html, body {
 
 .home {
   grid-column: 2 / -1;
-  padding: 0 !important;     
-  overflow-y: auto;
+  padding-left: 40px !important; /* Usa Padding en lugar de Margin */
+  padding-right: 20px !important; /* Añade espacio a la derecha para que no se pegue */
   box-sizing: border-box;
   min-height: 100vh;
-  margin-left: 40px;
+  width: 100%;
+  position: relative;
 }
 
 .user-box {

@@ -145,7 +145,7 @@ export class HomeComponent implements OnInit {
 
 scrollLeft() {
   this.scrollContainer.nativeElement.scrollBy({
-    left: -250, // ajusta según el ancho de tus cards
+    left: -250, 
     behavior: 'smooth'
   });
 }
