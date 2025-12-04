@@ -41,7 +41,7 @@
               </svg>
             </button>
             <div class="scroll-row" #scrollContainer>
-              <div class="serie-card" *ngFor="let t of tendencias">
+              <div class="serie-card" *ngFor="let t of tendencias" [routerLink]="['/serie', t.id]">
                 <div class="serie-img-container">
                   <img [src]="'https://image.tmdb.org/t/p/w300' + t.poster_path" [alt]="t.name" />
                 </div>

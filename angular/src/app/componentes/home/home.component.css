@@ -264,7 +264,7 @@
   align-items: center;
   color: #80CED7;
   margin-bottom: 15px;
-  padding: 0 50px; 
+  padding: 0 0px; 
 }
 .section-header h2 { font-size: 1.6rem; font-weight: 700; }
 
@@ -280,8 +280,8 @@
   scroll-behavior: smooth;
   gap: 16px;
   scroll-snap-type: x mandatory; 
-  padding: 10px 50px;
-  
+  padding: 10px 0px;
+
   scrollbar-width: none; 
 }
 
@@ -355,11 +355,11 @@
 }
 
 .btn-arrow.left { 
-  left: 5px; 
+  left: 7px; 
 }
 
 .btn-arrow.right { 
-  right: 5px; 
+  right: 7px; 
 }
 
 .btn-arrow:hover {
