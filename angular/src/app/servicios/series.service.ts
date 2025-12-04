@@ -50,4 +50,8 @@ export class seriesService {
   return this.http.get(`${this.apiUrl}/serie/${id}/trailer`);
 }
 
+getTrending() {
+  return this.http.get<any>(`${this.apiUrl}/tendencias`);
+}
+
 }

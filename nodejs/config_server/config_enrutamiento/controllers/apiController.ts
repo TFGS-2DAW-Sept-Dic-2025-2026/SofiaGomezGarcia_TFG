@@ -141,8 +141,8 @@ export default {
     },
     obtenerTemporada: async (req: Request, res: Response) => {
         try {
-            const idSerie = req.params.id;              
-            const numeroTemporada = req.params.seasonNumber; 
+            const idSerie = req.params.id;
+            const numeroTemporada = req.params.seasonNumber;
             const url = `${BASE_URL}/tv/${idSerie}/season/${numeroTemporada}?api_key=${API_KEY}&language=es-ES`;
             const response = await fetch(url);
             if (!response.ok) {
@@ -156,25 +156,41 @@ export default {
         }
     },
     obtenerTrailer: async (req: Request, res: Response) => {
-    try {
-        const id = req.params.id;
-        const url = `${BASE_URL}/tv/${id}/videos?api_key=${API_KEY}&language=es-ES`;
+        try {
+            const id = req.params.id;
+            const url = `${BASE_URL}/tv/${id}/videos?api_key=${API_KEY}&language=es-ES`;
+
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Error obteniendo videos");
+
+            const data = await response.json();
+
+            const trailer = data.results.find(
+                (v: any) => v.type === "Trailer" && v.site === "YouTube"
+            );
+
+            res.json({ key: trailer ? trailer.key : null });
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Error obteniendo trailer" });
+        }
+    },
+    obtenerTendencias: async (req: Request, res: Response) => {
+        try {
+        const url = `${BASE_URL}/trending/tv/day?api_key=${API_KEY}&language=es-ES`;
 
         const response = await fetch(url);
-        if (!response.ok) throw new Error("Error obteniendo videos");
+        if (!response.ok) throw new Error("Error obteniendo tendencias");
 
         const data = await response.json();
 
-        const trailer = data.results.find(
-            (v: any) => v.type === "Trailer" && v.site === "YouTube"
-        );
-
-        res.json({ key: trailer ? trailer.key : null });
+        res.json(data);
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error obteniendo trailer" });
+        res.status(500).json({ error: "Error obteniendo tendencias" });
     }
-}
+    }
 
 }

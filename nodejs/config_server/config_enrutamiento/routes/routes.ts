@@ -17,6 +17,7 @@ router.get("/obtenerSeries", apiController.obtenerSeries);
 router.get("/serie/:id", apiController.obtenerSeriePorID);
 router.get('/serie/:id/temporada/:seasonNumber', apiController.obtenerTemporada);
 router.get("/serie/:id/trailer", apiController.obtenerTrailer);
+router.get("/tendencias", apiController.obtenerTendencias);
 
 //Rutas para favoritos
 

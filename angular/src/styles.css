@@ -6,7 +6,7 @@ html, body {
   height: 100% !important;
   width: 100% !important;
   background-color: #00121A !important;
-
+  overflow-x: hidden; /* Solo aquí, no repetir en otros elementos */
 }
 
 /*ESTILOS GLOBALES DEL LAYOUT*/

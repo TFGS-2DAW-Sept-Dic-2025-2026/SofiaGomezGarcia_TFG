@@ -4,6 +4,7 @@
 
 
     <ng-container *ngIf="auth.hasValidSession(); else noAuth">
+      <div class="page-container">
       <h1>Bienvenido a ShowMeShows</h1>
 
 
@@ -23,8 +24,134 @@
 
       </div>
 
+      <!-- ================================
+          SECCIONES PARA USUARIO LOGUEADO
+          ================================ -->
 
-      <div class="series-list">
+
+      <section class="home-section">
+        <div class="section-header">
+          <h2>📈 En Tendencia</h2>
+        </div>
+
+        <div class="scroll-wrapper">
+          <button class="btn-arrow left" (click)="scrollLeft()" title="Anterior">
+            <svg viewBox="0 0 24 24" class="icon">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="scroll-row" #scrollContainer>
+            <div class="serie-card" *ngFor="let t of tendencias">
+              <div class="serie-img-container">
+                <img [src]="'https://image.tmdb.org/t/p/w300' + t.poster_path" [alt]="t.name" />
+              </div>
+              <div class="serie-info">
+                <h3 class="serie-title">{{ t.name }}</h3>
+                <div class="serie-meta">
+                  <span class="serie-year" *ngIf="t.first_air_date">{{ t.first_air_date | date:'yyyy' }}</span>
+                  <span class="serie-rating">⭐ {{ t.vote_average | number:'1.1-1' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn-arrow right" (click)="scrollRight()" title="Siguiente">
+            <svg viewBox="0 0 24 24" class="icon">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+
+
+      <!-- ⭐ POPULAR EN SHOWMESHOWS -->
+      <section class="home-section">
+        <div class="section-header">
+          <h2>🔥 Popular en ShowMeShows</h2>
+        </div>
+
+        <div class="scroll-row">
+          <div class="scroll-card" *ngFor="let p of [1,2,3,4,5]">
+            <div class="placeholder-img"></div>
+            <h4 class="placeholder-title">Serie popular</h4>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ⭐ DESCUBRIR SERIES -->
+      <section class="home-section">
+        <div class="section-header">
+          <h2>🧭 Descubrir nuevas series</h2>
+          <button routerLink="/descubrir" class="ver-mas-btn">Ver más</button>
+        </div>
+
+        <div class="scroll-row">
+          <div class="scroll-card" *ngFor="let d of [1,2,3,4]">
+            <div class="placeholder-img"></div>
+            <h4 class="placeholder-title">Nueva serie</h4>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ⭐ ÚLTIMAS RESEÑAS -->
+      <section class="home-section">
+        <div class="section-header">
+          <h2>📝 Últimas reseñas</h2>
+        </div>
+
+        <div class="reviews-row">
+          <div class="review-card" *ngFor="let r of [1,2,3]">
+            <div class="review-user">
+              <div class="avatar"></div>
+              <span class="username">UsuarioX</span>
+            </div>
+
+            <p class="review-text">"Reseña de ejemplo para mostrar cómo quedará la sección visualmente."</p>
+
+            <span class="review-serie">Serie comentada</span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ⭐ USUARIO CON MÁS RESEÑAS -->
+      <section class="home-section">
+        <div class="section-header">
+          <h2>🏆 Usuario con más reseñas</h2>
+        </div>
+
+        <div class="top-user-card">
+          <div class="avatar big"></div>
+
+          <div class="top-user-info">
+            <h3>Nombre del usuario</h3>
+            <p>250 reseñas publicadas</p>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ⭐ LISTAS PÚBLICAS CON MÁS LIKES -->
+      <section class="home-section">
+        <div class="section-header">
+          <h2>📚 Listas públicas con más likes</h2>
+          <button routerLink="/listas-publicas" class="ver-mas-btn">Ver más</button>
+        </div>
+
+        <div class="listas-grid-home">
+          <div class="lista-publica-card" *ngFor="let l of [1,2,3,4]">
+            <h4>Nombre de la lista</h4>
+            <p class="likes">❤️ 120 likes</p>
+          </div>
+        </div>
+      </section>
+
+
+</div>
+
+      <!-- <div class="series-list">
         <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
           <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" alt="{{ serie.name }}">
 
@@ -41,11 +168,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div *ngIf="loading" class="loading">
+      <!-- <div *ngIf="loading" class="loading">
         <p>Cargando más series...</p>
-      </div>
+      </div> -->
     </ng-container>
 
     <ng-template #noAuth>

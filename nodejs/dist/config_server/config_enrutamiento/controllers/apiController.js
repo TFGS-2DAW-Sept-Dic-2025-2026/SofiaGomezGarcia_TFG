@@ -165,5 +165,19 @@ exports.default = {
             console.error(error);
             res.status(500).json({ error: "Error obteniendo trailer" });
         }
+    }),
+    obtenerTendencias: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const url = `${BASE_URL}/trending/tv/day?api_key=${API_KEY}&language=es-ES`;
+            const response = yield fetch(url);
+            if (!response.ok)
+                throw new Error("Error obteniendo tendencias");
+            const data = yield response.json();
+            res.json(data);
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Error obteniendo tendencias" });
+        }
     })
 };

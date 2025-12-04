@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { CommonModule } from '@angular/common';
@@ -19,18 +19,22 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
 
   series: any[] = [];
+  tendencias: any[] = [];
   currentPage = 1;
   totalPages = 1;
   loading = false;
+  cardsPerView = 0;
 
   currentSlide = 0;
   autoplaySub: Subscription | undefined;
 
   ngOnInit() {
     this.isLoggedIn = this.auth.hasValidSession();
+    
 
     if (this.isLoggedIn) {
       this.resetAndLoadTopSeries();
+      this.cargarTendencias();
     } else {
       this.cargarSoloPrimeraPagina();
     }
@@ -45,6 +49,15 @@ export class HomeComponent implements OnInit {
     this.totalPages = 1;
     this.loadSeries();
   }
+
+  cargarTendencias() {
+  this.servicioSeries.getTrending().subscribe({
+    next: (res) => {
+      this.tendencias = res.results.slice(0, 20); 
+    },
+    error: (err) => console.error("Error cargando tendencias", err)
+  });
+}
 
   loadSeries() {
     if (!this.isLoggedIn) return;
@@ -126,4 +139,24 @@ export class HomeComponent implements OnInit {
       this.autoplaySub.unsubscribe();
     }
   }
+
+  
+  @ViewChild('scrollContainer', { read: ElementRef }) scrollContainer!: ElementRef<HTMLDivElement>;
+
+scrollLeft() {
+  this.scrollContainer.nativeElement.scrollBy({
+    left: -250, // ajusta según el ancho de tus cards
+    behavior: 'smooth'
+  });
+}
+
+scrollRight() {
+  this.scrollContainer.nativeElement.scrollBy({
+    left: 250,
+    behavior: 'smooth'
+  });
+}
+
+
+
 }
