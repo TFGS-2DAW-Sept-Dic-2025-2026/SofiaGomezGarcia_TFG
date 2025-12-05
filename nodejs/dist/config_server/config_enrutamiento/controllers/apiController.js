@@ -23,13 +23,18 @@ exports.default = {
             if (!query) {
                 return res.status(400).json({ error: "Debes introducir una Serie" });
             }
-            const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(query)}&page=1`;
+            const page = req.query.page || 1;
+            const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(query)}&page=${page}`;
             const response = yield fetch(url);
             if (!response.ok) {
                 throw new Error(`Error en TMDb: ${response.statusText}`);
             }
             const data = yield response.json();
-            res.json(data.results);
+            res.json({
+                page: data.page,
+                total_pages: data.total_pages,
+                results: data.results
+            });
         }
         catch (error) {
             console.error(error);

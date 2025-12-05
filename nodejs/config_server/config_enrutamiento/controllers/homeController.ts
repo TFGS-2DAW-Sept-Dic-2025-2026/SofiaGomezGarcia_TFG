@@ -112,53 +112,74 @@ export default {
                 return res.status(400).json({ error: "ID de usuario es obligatorio" });
             }
 
-            
             const usuario = await Usuario.findById(idUsuario)
-                .populate("listas") 
+                .populate("listas")
                 .lean();
 
             if (!usuario) return res.status(404).json({ error: "Usuario no encontrado" });
 
+            // 1️⃣ IDs a excluir
             const idsExcluidos = new Set<string>();
 
             if (Array.isArray(usuario.favoritas)) {
-                usuario.favoritas.forEach(id => {
-                    idsExcluidos.add(String(id));
-                });
+                usuario.favoritas.forEach(id => idsExcluidos.add(String(id)));
             }
 
             const seguimientos = await seguimientoSerie.find({ idUsuario }, "idSerieTMDB").lean();
             seguimientos.forEach(s => idsExcluidos.add(String(s.idSerieTMDB)));
 
             if (Array.isArray(usuario.listas)) {
-                usuario.listas.forEach((lista: any) => {
-                    if (Array.isArray(lista.series)) {
-                        lista.series.forEach((id: string) => idsExcluidos.add(String(id)));
+                usuario.listas.forEach(lista => {
+                    if (Array.isArray(lista)) {
+                        lista.forEach((id: string) => idsExcluidos.add(String(id)));
                     }
                 });
             }
 
-            const generos = [10759, 35, 18, 80, 9648, 16, 10765];
-            const generosElegidos = generos.sort(() => 0.5 - Math.random()).slice(0, 5);
+            // 2️⃣ Géneros aleatorios
+            const generos = [10759, 35, 18, 80, 9648, 10765]; // 16 animacion quitado
+            const generosElegidos = generos.sort(() => 0.5 - Math.random()).slice(0, 3);
 
-            const promises = generosElegidos.map(genre =>
-                fetch(`${BASE_URL}/discover/tv?api_key=${API_KEY}&language=es-ES&with_genres=${genre}&sort_by=popularity.desc`)
-                    .then(resp => (resp.ok ? resp.json() : null))
-                    .catch(() => null)
-            );
+            const TOTAL_PAGINAS = 5;
+            const allPromises: Promise<any>[] = [];
 
-            const resultados = await Promise.all(promises);
+            // 3️⃣ Llamadas a TMDB
+            for (const genre of generosElegidos) {
+                for (let page = 1; page <= TOTAL_PAGINAS; page++) {
+                    allPromises.push(
+                        fetch(`${BASE_URL}/discover/tv?api_key=${API_KEY}&language=es-ES&with_genres=${genre}&sort_by=popularity.desc&page=${page}`)
+                            .then(r => (r.ok ? r.json() : null))
+                            .catch(() => null)
+                    );
+                }
+            }
 
-            // Unificar resultados
-            let series: any[] = [];
+            const resultados = await Promise.all(allPromises);
+
+            // 4️⃣ Unificar todos los resultados en un MAP para evitar duplicados
+            const seriesMap = new Map<number, any>(); // <id TMDB, datos>
+
             resultados.forEach(r => {
-                if (r?.results) series.push(...r.results);
+                if (r?.results) {
+                    r.results.forEach((serie: any) => {
+                        if (!seriesMap.has(serie.id)) {
+                            seriesMap.set(serie.id, serie);
+                        }
+                    });
+                }
             });
 
+            // Convertir a array
+            let series = [...seriesMap.values()];
+
+            // 5️⃣ Filtrar excluidas por usuario
             series = series.filter(s => !idsExcluidos.has(String(s.id)));
 
-            series = series.sort(() => 0.5 - Math.random()).slice(0, 15);
+            // 6️⃣ Aleatorizar y limitar
+            const MAX_RECOMENDADAS = 30; // 🔥 Cambia esto si quieres más/menos
+            series = series.sort(() => 0.5 - Math.random()).slice(0, MAX_RECOMENDADAS);
 
+            // 7️⃣ Guardar fecha última visita
             await Usuario.findByIdAndUpdate(idUsuario, {
                 ultimaVezVistoEnDescubrir: new Date()
             });
@@ -170,5 +191,4 @@ export default {
             return res.status(500).json({ error: "Error cargando series para descubrir" });
         }
     }
-
 }

@@ -84,7 +84,6 @@ exports.default = {
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 20)
                 .map(([id, puntos]) => ({ id, puntos }));
-            // Obtener datos de TMDB en paralelo (limitado a top 20)
             const tmdbPromises = popularesOrdenadas.map(item => fetch(`${BASE_URL}/tv/${item.id}?api_key=${API_KEY}&language=es-ES`)
                 .then(resp => (resp.ok ? resp.json() : null))
                 .catch(() => null));
@@ -103,48 +102,57 @@ exports.default = {
                 return res.status(400).json({ error: "ID de usuario es obligatorio" });
             }
             const usuario = yield usuario_1.default.findById(idUsuario)
-                .populate("listas") // ahora listas tienen un campo "series"
+                .populate("listas")
                 .lean();
             if (!usuario)
                 return res.status(404).json({ error: "Usuario no encontrado" });
-            // 1️⃣ IDs de series ya vistas / en seguimiento / listas / favoritas
+            // 1️⃣ IDs a excluir
             const idsExcluidos = new Set();
-            // ⭐ Favoritas (simple array de strings)
             if (Array.isArray(usuario.favoritas)) {
-                usuario.favoritas.forEach(id => {
-                    idsExcluidos.add(String(id));
-                });
+                usuario.favoritas.forEach(id => idsExcluidos.add(String(id)));
             }
-            // ⭐ Seguiendo / Completadas
             const seguimientos = yield seguimientoSerie_1.default.find({ idUsuario }, "idSerieTMDB").lean();
             seguimientos.forEach(s => idsExcluidos.add(String(s.idSerieTMDB)));
-            // ⭐ Listas del usuario (ya vienen pobladas)
             if (Array.isArray(usuario.listas)) {
-                usuario.listas.forEach((lista) => {
-                    if (Array.isArray(lista.series)) {
-                        lista.series.forEach((id) => idsExcluidos.add(String(id)));
+                usuario.listas.forEach(lista => {
+                    if (Array.isArray(lista)) {
+                        lista.forEach((id) => idsExcluidos.add(String(id)));
                     }
                 });
             }
-            // 2️⃣ Selección de géneros aleatorios
-            const generos = [10759, 35, 18, 80, 9648, 16, 10765]; // acción, comedia, drama, etc.
+            // 2️⃣ Géneros aleatorios
+            const generos = [10759, 35, 18, 80, 9648, 10765]; // 16 animacion quitado
             const generosElegidos = generos.sort(() => 0.5 - Math.random()).slice(0, 3);
-            // 3️⃣ Llamadas a TMDB (discover)
-            const promises = generosElegidos.map(genre => fetch(`${BASE_URL}/discover/tv?api_key=${API_KEY}&language=es-ES&with_genres=${genre}&sort_by=popularity.desc`)
-                .then(resp => (resp.ok ? resp.json() : null))
-                .catch(() => null));
-            const resultados = yield Promise.all(promises);
-            // Unificar resultados
-            let series = [];
+            const TOTAL_PAGINAS = 5;
+            const allPromises = [];
+            // 3️⃣ Llamadas a TMDB
+            for (const genre of generosElegidos) {
+                for (let page = 1; page <= TOTAL_PAGINAS; page++) {
+                    allPromises.push(fetch(`${BASE_URL}/discover/tv?api_key=${API_KEY}&language=es-ES&with_genres=${genre}&sort_by=popularity.desc&page=${page}`)
+                        .then(r => (r.ok ? r.json() : null))
+                        .catch(() => null));
+                }
+            }
+            const resultados = yield Promise.all(allPromises);
+            // 4️⃣ Unificar todos los resultados en un MAP para evitar duplicados
+            const seriesMap = new Map(); // <id TMDB, datos>
             resultados.forEach(r => {
-                if (r === null || r === void 0 ? void 0 : r.results)
-                    series.push(...r.results);
+                if (r === null || r === void 0 ? void 0 : r.results) {
+                    r.results.forEach((serie) => {
+                        if (!seriesMap.has(serie.id)) {
+                            seriesMap.set(serie.id, serie);
+                        }
+                    });
+                }
             });
-            // 4️⃣ Filtrar series ya vistas / favoritas / listas / siguiendo
+            // Convertir a array
+            let series = [...seriesMap.values()];
+            // 5️⃣ Filtrar excluidas por usuario
             series = series.filter(s => !idsExcluidos.has(String(s.id)));
-            // 5️⃣ Aleatorizar y limitar a 10
-            series = series.sort(() => 0.5 - Math.random()).slice(0, 10);
-            // 6️⃣ Guardar fecha de última visita
+            // 6️⃣ Aleatorizar y limitar
+            const MAX_RECOMENDADAS = 30; // 🔥 Cambia esto si quieres más/menos
+            series = series.sort(() => 0.5 - Math.random()).slice(0, MAX_RECOMENDADAS);
+            // 7️⃣ Guardar fecha última visita
             yield usuario_1.default.findByIdAndUpdate(idUsuario, {
                 ultimaVezVistoEnDescubrir: new Date()
             });

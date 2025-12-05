@@ -60,42 +60,42 @@ export class DescubreComponent {
     });
   }
 
-   buscarSeries(reset: boolean = false) {
-  if (this.loading) return;
+  buscarSeries(reset: boolean = false) {
+    if (this.loading) return;
 
-  if (reset) {
-    this.series = [];     
-    this.currentPage = 1;  
+    if (reset) {
+      this.series = [];
+      this.currentPage = 1;
+    }
+
+    this.loading = true;
+
+    const filtrosConPagina = { ...this.filtros, page: this.currentPage };
+
+    this.servicioSeries.buscarSeries(filtrosConPagina).subscribe({
+      next: (res) => {
+        this.series.push(...res.results);
+        this.totalPages = res.total_pages;
+        this.loading = false;
+        this.currentPage++;
+      },
+      error: (err) => {
+        console.error('Error al buscar series:', err);
+        this.loading = false;
+      },
+    });
   }
-
-  this.loading = true;
-
-  const filtrosConPagina = { ...this.filtros, page: this.currentPage };
-
-  this.servicioSeries.buscarSeries(filtrosConPagina).subscribe({
-    next: (res) => {
-      this.series.push(...res.results);
-      this.totalPages = res.total_pages;
-      this.loading = false;
-      this.currentPage++;
-    },
-    error: (err) => {
-      console.error('Error al buscar series:', err);
-      this.loading = false;
-    },
-  });
-}
 
   @HostListener('window:scroll', [])
-  onScroll(): void {
-    const scrollTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
+onScroll(): void {
+  const scrollTop = window.scrollY;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
 
-    if (scrollTop + windowHeight >= documentHeight - 100) {
-      if (this.currentPage <= this.totalPages) {
-        this.buscarSeries(); 
-      }
+  if (scrollTop + windowHeight >= documentHeight - 100) {
+    if (this.currentPage <= this.totalPages) {
+      this.buscarSeries();
     }
   }
+}
 }

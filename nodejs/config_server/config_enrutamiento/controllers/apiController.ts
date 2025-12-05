@@ -17,7 +17,8 @@ export default {
                 return res.status(400).json({ error: "Debes introducir una Serie" });
             }
 
-            const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(query)}&page=1`;
+            const page = req.query.page || 1;
+            const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(query)}&page=${page}`;
 
             const response = await fetch(url);
             if (!response.ok) {
@@ -25,7 +26,11 @@ export default {
             }
 
             const data = await response.json();
-            res.json(data.results);
+            res.json({
+                page: data.page,
+                total_pages: data.total_pages,
+                results: data.results
+            });
 
         } catch (error) {
             console.error(error);
@@ -178,19 +183,19 @@ export default {
     },
     obtenerTendencias: async (req: Request, res: Response) => {
         try {
-        const url = `${BASE_URL}/trending/tv/day?api_key=${API_KEY}&language=es-ES`;
+            const url = `${BASE_URL}/trending/tv/day?api_key=${API_KEY}&language=es-ES`;
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Error obteniendo tendencias");
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Error obteniendo tendencias");
 
-        const data = await response.json();
+            const data = await response.json();
 
-        res.json(data);
+            res.json(data);
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error obteniendo tendencias" });
-    }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Error obteniendo tendencias" });
+        }
     }
 
 }

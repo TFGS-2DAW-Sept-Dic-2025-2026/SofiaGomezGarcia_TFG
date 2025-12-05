@@ -30,36 +30,30 @@ export class LayoutComponent {
 
   if (!box || !sidebar || !footer) return;
 
-  const margin = 20; // margen entre box y footer
+  const margin = 20; 
 
   const handleScroll = () => {
     const sidebarRect = sidebar.getBoundingClientRect();
     const footerRect = footer.getBoundingClientRect();
     const scrollY = window.scrollY;
 
-    const sidebarTop = sidebar.offsetTop; // top relativo al documento
+    const sidebarTop = sidebar.offsetTop; 
     const sidebarHeight = sidebar.offsetHeight;
     const boxHeight = box.offsetHeight;
 
-    // Top fijo debajo del sidebar
     const fixedTop = sidebarTop + sidebarHeight + margin;
 
-    // Top máximo antes del footer
     const maxTop = footer.offsetTop - boxHeight - margin;
 
     if (scrollY + boxHeight + margin >= maxTop) {
-      // Cuando llegamos al footer
       box.style.position = 'absolute';
       box.style.top = `${maxTop}px`;
     } else {
-      // Fijo debajo del sidebar
       box.style.position = 'fixed';
-      // top relativo al viewport
       const viewportTop = sidebarRect.bottom + margin;
       box.style.top = `${viewportTop}px`;
     }
 
-    // Mantener alineado horizontalmente con el sidebar
     const sidebarLeft = sidebarRect.left + window.scrollX;
     box.style.left = `${sidebarLeft}px`;
   };
@@ -67,7 +61,6 @@ export class LayoutComponent {
   window.addEventListener('scroll', handleScroll, { passive: true });
   window.addEventListener('resize', handleScroll);
 
-  // Ejecutar al cargar
   handleScroll();
 }
 
