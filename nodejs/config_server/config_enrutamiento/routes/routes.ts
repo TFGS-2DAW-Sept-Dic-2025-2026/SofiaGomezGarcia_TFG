@@ -7,6 +7,7 @@ import seguimientoController from "../controllers/seguimientoController";
 import perfilController from "../controllers/perfilController";
 import opinionesController from "../controllers/opinionesController";
 import usuariosController from "../controllers/usuariosController";
+import homeController from "../controllers/homeController";
 
 
 const router = Router();
@@ -79,5 +80,8 @@ router.get("/opiniones/:idUsuario", authMiddleware, opinionesController.obtenerO
 router.get("/usuarios", authMiddleware, usuariosController.obtenerUsuarios);
 router.get("/usuarios/:idUsuario", authMiddleware, usuariosController.obtenerUsuariosByID);
 router.get("/:username/username", authMiddleware, usuariosController.obtenerUsuariosPorUsername);
+
+// Rutas para el home
+router.get("/series/populares", homeController.obtenerPopulares);
 
 export default router;

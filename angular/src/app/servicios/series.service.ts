@@ -47,11 +47,16 @@ export class seriesService {
   }
 
   getTrailer(id: string): Observable<any> {
-  return this.http.get(`${this.apiUrl}/serie/${id}/trailer`);
-}
+    return this.http.get(`${this.apiUrl}/serie/${id}/trailer`);
+  }
 
-getTrending() {
-  return this.http.get<any>(`${this.apiUrl}/tendencias`);
-}
+  getTrending() {
+    return this.http.get<any>(`${this.apiUrl}/tendencias`);
+  }
+
+
+  getPopular() {
+    return this.http.get<any[]>(`${this.apiUrl}/series/populares`);
+  }
 
 }

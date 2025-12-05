@@ -31,7 +31,7 @@
 
         <section class="home-section">
           <div class="section-header">
-            <h2>📈 En Tendencia</h2>
+            <h2>En Tendencia</h2>
           </div>
 
           <div class="scroll-wrapper">
@@ -64,19 +64,42 @@
 
 
 
-        <!-- ⭐ POPULAR EN SHOWMESHOWS -->
+        <!-- POPULAR EN SHOWMESHOWS -->
         <section class="home-section">
           <div class="section-header">
-            <h2>🔥 Popular en ShowMeShows</h2>
+            <h2>Popular en ShowMeShows</h2>
           </div>
 
-          <div class="scroll-row">
-            <div class="scroll-card" *ngFor="let p of [1,2,3,4,5]">
-              <div class="placeholder-img"></div>
-              <h4 class="placeholder-title">Serie popular</h4>
+          <div class="scroll-wrapper">
+            <button class="btn-arrow left" (click)="scrollHorizontal('populares', 'left')" title="Anterior">
+              <svg viewBox="0 0 24 24" class="icon">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <div class="scroll-row" #scrollPopulares>
+              <div class="serie-card" *ngFor="let p of populares" [routerLink]="['/serie', p.id]">
+                <div class="serie-img-container">
+                  <img [src]="'https://image.tmdb.org/t/p/w300' + p.poster_path" [alt]="p.name">
+                </div>
+                <div class="serie-info">
+                  <h3 class="serie-title">{{ p.name }}</h3>
+                  <div class="serie-meta">
+                    <span class="serie-year" *ngIf="p.first_air_date">{{ p.first_air_date | date:'yyyy' }}</span>
+                    <span class="serie-rating">⭐ {{ p.vote_average | number:'1.1-1' }}</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <button class="btn-arrow right" (click)="scrollHorizontal('populares', 'right')" title="Siguiente">
+              <svg viewBox="0 0 24 24" class="icon">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
         </section>
+
 
 
         <!-- ⭐ DESCUBRIR SERIES -->

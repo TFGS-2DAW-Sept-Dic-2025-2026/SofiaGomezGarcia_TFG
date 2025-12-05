@@ -30,7 +30,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = this.auth.hasValidSession();
-    
+
+    this.cargarPopulares();  // ← AÑADIDO
 
     if (this.isLoggedIn) {
       this.resetAndLoadTopSeries();
@@ -51,13 +52,13 @@ export class HomeComponent implements OnInit {
   }
 
   cargarTendencias() {
-  this.servicioSeries.getTrending().subscribe({
-    next: (res) => {
-      this.tendencias = res.results.slice(0, 20); 
-    },
-    error: (err) => console.error("Error cargando tendencias", err)
-  });
-}
+    this.servicioSeries.getTrending().subscribe({
+      next: (res) => {
+        this.tendencias = res.results.slice(0, 20);
+      },
+      error: (err) => console.error("Error cargando tendencias", err)
+    });
+  }
 
   loadSeries() {
     if (!this.isLoggedIn) return;
@@ -72,7 +73,7 @@ export class HomeComponent implements OnInit {
         this.currentPage++;
         this.loading = false;
 
-       
+
         if (this.series.length > 0 && !this.autoplaySub) {
           this.startAutoplay();
         }
@@ -140,22 +141,69 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  
+
   @ViewChild('scrollContainer', { read: ElementRef }) scrollContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollTendencias', { read: ElementRef }) scrollTendencias!: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollPopulares', { read: ElementRef }) scrollPopulares!: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollDescubre', { read: ElementRef }) scrollDescubre!: ElementRef<HTMLDivElement>;
 
-scrollLeft() {
-  this.scrollContainer.nativeElement.scrollBy({
-    left: -250, 
-    behavior: 'smooth'
-  });
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: -250,
+      behavior: 'smooth'
+    });
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: 250,
+      behavior: 'smooth'
+    });
+  }
+
+
+  scrollHorizontal(
+  section: 'tendencias' | 'populares' | 'descubre',
+  direction: 'left' | 'right',
+  distance: number = 300
+) {
+  let element: HTMLElement;
+
+  switch (section) {
+    case 'tendencias':
+      element = this.scrollTendencias.nativeElement;
+      break;
+    case 'populares':
+      element = this.scrollPopulares.nativeElement;
+      break;
+    case 'descubre':
+      element = this.scrollDescubre.nativeElement;
+      break;
+    default:
+      return; // sección no válida
+  }
+
+  const amount = direction === 'left' ? -distance : distance;
+  element.scrollBy({ left: amount, behavior: 'smooth' });
 }
 
-scrollRight() {
-  this.scrollContainer.nativeElement.scrollBy({
-    left: 250,
-    behavior: 'smooth'
-  });
-}
+
+
+
+  // =========================
+  // Populares
+  // =========================
+
+  populares: any[] = [];
+
+  cargarPopulares() {
+    this.servicioSeries.getPopular().subscribe({
+      next: res => this.populares = res,
+      error: err => console.error("Error populares", err)
+    });
+  }
+
+
 
 
 

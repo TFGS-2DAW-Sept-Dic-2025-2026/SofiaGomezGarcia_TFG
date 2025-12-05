@@ -12,6 +12,7 @@ const seguimientoController_1 = __importDefault(require("../controllers/seguimie
 const perfilController_1 = __importDefault(require("../controllers/perfilController"));
 const opinionesController_1 = __importDefault(require("../controllers/opinionesController"));
 const usuariosController_1 = __importDefault(require("../controllers/usuariosController"));
+const homeController_1 = __importDefault(require("../controllers/homeController"));
 const router = (0, express_1.Router)();
 //Rutas para buscar y obtener series
 router.get("/obtenerSeries", apiController_1.default.obtenerSeries);
@@ -65,4 +66,6 @@ router.get("/opiniones/:idUsuario", authMiddleware_1.authMiddleware, opinionesCo
 router.get("/usuarios", authMiddleware_1.authMiddleware, usuariosController_1.default.obtenerUsuarios);
 router.get("/usuarios/:idUsuario", authMiddleware_1.authMiddleware, usuariosController_1.default.obtenerUsuariosByID);
 router.get("/:username/username", authMiddleware_1.authMiddleware, usuariosController_1.default.obtenerUsuariosPorUsername);
+// Rutas para el home
+router.get("/series/populares", homeController_1.default.obtenerPopulares);
 exports.default = router;
