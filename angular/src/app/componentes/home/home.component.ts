@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { seriesService } from '../../servicios/series.service';
 import { LayoutComponent } from '../layout/layout.component';
 import { Subscription, timer } from 'rxjs';
+import { OpinionService } from '../../servicios/opinion.service';
+
 
 @Component({
   selector: 'app-home',
@@ -15,6 +17,7 @@ import { Subscription, timer } from 'rxjs';
 export class HomeComponent implements OnInit {
   auth = inject(AuthService);
   servicioSeries = inject(seriesService);
+  opinionService = inject(OpinionService);
 
   isLoggedIn = false;
 
@@ -28,18 +31,18 @@ export class HomeComponent implements OnInit {
   currentSlide = 0;
   autoplaySub: Subscription | undefined;
 
-  ngOnInit() {
-    this.isLoggedIn = this.auth.hasValidSession();
-
-    this.cargarPopulares();  // ← AÑADIDO
-
-    if (this.isLoggedIn) {
-      this.resetAndLoadTopSeries();
-      this.cargarTendencias();
-    } else {
-      this.cargarSoloPrimeraPagina();
-    }
+  
+ngOnInit() {
+  this.isLoggedIn = this.auth.hasValidSession();
+  this.cargarPopulares();
+  if (this.isLoggedIn) {
+    this.resetAndLoadTopSeries();
+    this.cargarTendencias();
+    this.cargarDescubrir(); 
+  } else {
+    this.cargarSoloPrimeraPagina();
   }
+}
 
   // =========================
   // CARGA DE SERIES
@@ -163,29 +166,29 @@ export class HomeComponent implements OnInit {
 
 
   scrollHorizontal(
-  section: 'tendencias' | 'populares' | 'descubre',
-  direction: 'left' | 'right',
-  distance: number = 300
-) {
-  let element: HTMLElement;
+    section: 'tendencias' | 'populares' | 'descubre',
+    direction: 'left' | 'right',
+    distance: number = 300
+  ) {
+    let element: HTMLElement;
 
-  switch (section) {
-    case 'tendencias':
-      element = this.scrollTendencias.nativeElement;
-      break;
-    case 'populares':
-      element = this.scrollPopulares.nativeElement;
-      break;
-    case 'descubre':
-      element = this.scrollDescubre.nativeElement;
-      break;
-    default:
-      return; // sección no válida
+    switch (section) {
+      case 'tendencias':
+        element = this.scrollTendencias.nativeElement;
+        break;
+      case 'populares':
+        element = this.scrollPopulares.nativeElement;
+        break;
+      case 'descubre':
+        element = this.scrollDescubre.nativeElement;
+        break;
+      default:
+        return; 
+    }
+
+    const amount = direction === 'left' ? -distance : distance;
+    element.scrollBy({ left: amount, behavior: 'smooth' });
   }
-
-  const amount = direction === 'left' ? -distance : distance;
-  element.scrollBy({ left: amount, behavior: 'smooth' });
-}
 
 
 
@@ -203,8 +206,19 @@ export class HomeComponent implements OnInit {
     });
   }
 
+ // =========================
+  // Descubrir
+  // =========================
 
 
+  descubrirSeries: any[] = [];
+
+  cargarDescubrir() {
+    this.opinionService.getDiscover().subscribe({
+      next: res => this.descubrirSeries = res,
+      error: err => console.error("Error cargando descubrir series", err)
+    });
+  }
 
 
 }

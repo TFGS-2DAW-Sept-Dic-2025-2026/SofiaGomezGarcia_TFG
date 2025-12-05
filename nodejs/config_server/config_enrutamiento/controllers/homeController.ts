@@ -90,7 +90,6 @@ export default {
                 .slice(0, 20)
                 .map(([id, puntos]) => ({ id, puntos }));
 
-            // Obtener datos de TMDB en paralelo (limitado a top 20)
             const tmdbPromises = popularesOrdenadas.map(item =>
                 fetch(`${BASE_URL}/tv/${item.id}?api_key=${API_KEY}&language=es-ES`)
                     .then(resp => (resp.ok ? resp.json() : null))
@@ -105,94 +104,71 @@ export default {
             return res.status(500).json({ error: "Error obteniendo series populares" });
         }
 
-        //     try {
-        //         // ===== 1. OPINIONES =====
-        //         const opiniones = await Opinion.aggregate([
-        //             {
-        //                 $group: {
-        //                     _id: "$idSerie",
-        //                     puntos: {
-        //                         $sum: { $add: [4, "$meGusta"] } // 4 por op + me gusta
-        //                     }
-        //                 }
-        //             }
-        //         ]);
+    }, descubrirSeries: async (req: Request, res: Response) => {
+        try {
+            const idUsuario = (req as any).user?.id;
 
-        //         // ===== 2. FAVORITOS =====
-        //         const favoritos = await Usuario.aggregate([
-        //             { $unwind: "$favoritas" },
-        //             {
-        //                 $group: {
-        //                     _id: "$favoritas.idSerie",
-        //                     puntos: { $sum: 5 }
-        //                 }
-        //             }
-        //         ]);
+            if (!idUsuario) {
+                return res.status(400).json({ error: "ID de usuario es obligatorio" });
+            }
 
-        //         // ===== 3. SERIES SEGUIDAS =====
-        //         const seguimiento = await seguimientoSerie.aggregate([
-        //             {
-        //                 $group: {
-        //                     _id: "$idSerieTMDB",
-        //                     puntos: {
-        //                         $sum: {
-        //                             $cond: [
-        //                                 { $eq: ["$estado", "completada"] },
-        //                                 6,
-        //                                 4
-        //                             ]
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         ]);
+            
+            const usuario = await Usuario.findById(idUsuario)
+                .populate("listas") 
+                .lean();
 
-        //         // ===== 4. LISTAS =====
-        //         const listas = await Lista.aggregate([
-        //             { $unwind: "$series" },
-        //             {
-        //                 $group: {
-        //                     _id: "$series",
-        //                     puntos: { $sum: 3 }
-        //                 }
-        //             }
-        //         ]);
+            if (!usuario) return res.status(404).json({ error: "Usuario no encontrado" });
 
-        //         // ===== 5. UNIFICAR TODO =====
-        //         const mapa = new Map();
+            const idsExcluidos = new Set<string>();
 
-        //         const añadir = (arr: any[]) => {
-        //             arr.forEach(a => {
-        //                 mapa.set(a._id, (mapa.get(a._id) || 0) + a.puntos);
-        //             });
-        //         }
+            if (Array.isArray(usuario.favoritas)) {
+                usuario.favoritas.forEach(id => {
+                    idsExcluidos.add(String(id));
+                });
+            }
 
-        //         añadir(opiniones);
-        //         añadir(favoritos);
-        //         añadir(seguimiento);
-        //         añadir(listas);
+            const seguimientos = await seguimientoSerie.find({ idUsuario }, "idSerieTMDB").lean();
+            seguimientos.forEach(s => idsExcluidos.add(String(s.idSerieTMDB)));
 
-        //         // Convertimos a array ordenado
-        //         const populares = [...mapa.entries()]
-        //             .sort((a,b) => b[1] - a[1])
-        //             .slice(0, 20) // top 20
-        //             .map(([id, puntos]) => ({ id, puntos }));
+            if (Array.isArray(usuario.listas)) {
+                usuario.listas.forEach((lista: any) => {
+                    if (Array.isArray(lista.series)) {
+                        lista.series.forEach((id: string) => idsExcluidos.add(String(id)));
+                    }
+                });
+            }
 
-        //         // ===== 6. obtener datos reales de TMDB =====
-        //         const results = [];
-        //         for (const serie of populares) {
-        //             const url = `${BASE_URL}/tv/${serie.id}?api_key=${API_KEY}&language=es-ES`;
-        //             const resp = await fetch(url);
-        //             const data = await resp.json();
-        //             results.push(data);
-        //         }
+            const generos = [10759, 35, 18, 80, 9648, 16, 10765];
+            const generosElegidos = generos.sort(() => 0.5 - Math.random()).slice(0, 5);
 
-        //         res.json(results);
+            const promises = generosElegidos.map(genre =>
+                fetch(`${BASE_URL}/discover/tv?api_key=${API_KEY}&language=es-ES&with_genres=${genre}&sort_by=popularity.desc`)
+                    .then(resp => (resp.ok ? resp.json() : null))
+                    .catch(() => null)
+            );
 
-        //     } catch (error) {
-        //         console.error(error);
-        //         res.status(500).json({ error: "Error obteniendo series populares" });
-        //     }
-        // }
+            const resultados = await Promise.all(promises);
+
+            // Unificar resultados
+            let series: any[] = [];
+            resultados.forEach(r => {
+                if (r?.results) series.push(...r.results);
+            });
+
+            series = series.filter(s => !idsExcluidos.has(String(s.id)));
+
+            series = series.sort(() => 0.5 - Math.random()).slice(0, 15);
+
+            await Usuario.findByIdAndUpdate(idUsuario, {
+                ultimaVezVistoEnDescubrir: new Date()
+            });
+
+            return res.json(series);
+
+        } catch (error) {
+            console.error("Error en descubrirSeries:", error);
+            return res.status(500).json({ error: "Error cargando series para descubrir" });
+        }
     }
+
 }

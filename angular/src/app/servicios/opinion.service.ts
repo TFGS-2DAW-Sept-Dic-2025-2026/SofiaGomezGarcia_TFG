@@ -36,4 +36,8 @@ export class OpinionService {
   return this.http.get<any[]>(`${this.apiUrl}/opiniones/${idUsuario}`, { headers: this.getHeaders() });
 }
 
+getDiscover(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/series/descubrirNuevas`, { headers: this.getHeaders() });
+  }
+
 }

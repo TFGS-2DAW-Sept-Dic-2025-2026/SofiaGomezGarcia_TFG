@@ -83,5 +83,6 @@ router.get("/:username/username", authMiddleware, usuariosController.obtenerUsua
 
 // Rutas para el home
 router.get("/series/populares", homeController.obtenerPopulares);
+router.get("/series/descubrirNuevas", authMiddleware, homeController.descubrirSeries);
 
 export default router;

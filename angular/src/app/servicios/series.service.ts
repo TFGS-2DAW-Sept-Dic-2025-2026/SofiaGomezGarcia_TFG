@@ -59,4 +59,6 @@ export class seriesService {
     return this.http.get<any[]>(`${this.apiUrl}/series/populares`);
   }
 
+  
+
 }

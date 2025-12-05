@@ -109,11 +109,32 @@
             <button routerLink="/descubrir" class="ver-mas-btn">Ver más</button>
           </div>
 
-          <div class="scroll-row">
-            <div class="scroll-card" *ngFor="let d of [1,2,3,4]">
-              <div class="placeholder-img"></div>
-              <h4 class="placeholder-title">Nueva serie</h4>
+          <div class="scroll-wrapper">
+            <button class="btn-arrow left" (click)="scrollHorizontal('descubre', 'left')" title="Anterior">
+              <svg viewBox="0 0 24 24" class="icon">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <div class="scroll-row" #scrollDescubre>
+              <div class="serie-card" *ngFor="let d of descubrirSeries" [routerLink]="['/serie', d.id]">
+                <div class="serie-img-container">
+                  <img [src]="'https://image.tmdb.org/t/p/w300' + d.poster_path" [alt]="d.name">
+                </div>
+                <div class="serie-info">
+                  <h3 class="serie-title">{{ d.name }}</h3>
+                  <div class="serie-meta">
+                    <span class="serie-year" *ngIf="d.first_air_date">{{ d.first_air_date | date:'yyyy' }}</span>
+                    <span class="serie-rating">⭐ {{ d.vote_average | number:'1.1-1' }}</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <button class="btn-arrow right" (click)="scrollHorizontal('descubre', 'right')" title="Siguiente">
+              <svg viewBox="0 0 24 24" class="icon">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
         </section>
 
