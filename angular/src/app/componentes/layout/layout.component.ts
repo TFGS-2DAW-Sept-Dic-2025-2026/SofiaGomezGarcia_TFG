@@ -1,4 +1,4 @@
-import { Component, Inject, inject, PLATFORM_ID } from '@angular/core';
+import { Component, HostListener, Inject, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
@@ -63,5 +63,17 @@ export class LayoutComponent {
 
   handleScroll();
 }
+
+@HostListener('window:scroll', [])
+onScroll() {
+  const scroll = window.scrollY;
+  const logo = document.querySelector('.logo-container') as HTMLElement;
+
+  if (!logo) return;
+
+  // Aplica un translateY en lugar de cambiar top/position
+  logo.style.transform = `translateY(${scroll}px)`;
+}
+
 
 }

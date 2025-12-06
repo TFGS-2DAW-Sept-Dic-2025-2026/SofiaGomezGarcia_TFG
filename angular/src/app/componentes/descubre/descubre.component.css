@@ -1,3 +1,13 @@
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  /* height: 100% !important; */
+  /* width: 100% !important; */
+  min-height: 100px;
+  background-color: #00121A !important;
+  overflow-x: hidden; /* Solo aquí, no repetir en otros elementos */
+}
+
 .home {
   margin-left: 40px;
   padding: 20px 0;
