@@ -132,4 +132,13 @@ label, h2{
   top: 5px;
   left: 20px;
   cursor: pointer;
+  width: 220px;
+  height: 220px;
 }
+
+.logo {
+  cursor: pointer;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+} 

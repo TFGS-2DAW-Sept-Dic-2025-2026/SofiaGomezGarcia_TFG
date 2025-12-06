@@ -1,18 +1,20 @@
 <div class="page-wrapper">
   <div class="layout">
 
-
-    <div *ngIf="auth.hasValidSession()" class="logo-container" routerLink="/">
-      <img src="recursos/Logo.png" alt="Logo" class="logo">
-    </div>
+    <app-sidebar></app-sidebar>
 
 
-    <aside class="sidebar">
+    <!-- <div class="logo-container" routerLink="/">
+      <div *ngIf="auth.hasValidSession()">
+        <img src="recursos/Logo.png" alt="Logo" class="logo">
+      </div>
+
+
       <nav class="navbar">
 
         <a class="nav-link" routerLink="/" routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: true }">Home</a>
-          <a class="nav-link" routerLink="/listas" routerLinkActive="active-link">Listas</a>
+        <a class="nav-link" routerLink="/listas" routerLinkActive="active-link">Listas</a>
         <a class="nav-link" routerLink="/favoritas" routerLinkActive="active-link">Favoritos</a>
         <a class="nav-link" routerLink="/seguimiento" routerLinkActive="active-link">Seguimiento</a>
         <a class="nav-link" routerLink="/descubre" routerLinkActive="active-link">Descubre</a>
@@ -23,18 +25,22 @@
         </ng-container>
 
       </nav>
-    </aside>
 
-    <div id="sidebarUsuario" class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
-      <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" [src]="usuario?.fotoPerfil + '?' + usuario?.id"
-        alt="Foto de perfil" class="sidebar-avatar" />
+      <div id="sidebarUsuario" class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
+        <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" [src]="usuario?.fotoPerfil + '?' + usuario?.id"
+          alt="Foto de perfil" class="sidebar-avatar" />
 
-      <ng-template #defaultAvatar>
-        <img src="recursos/fotoPerfil.jpg" alt="Avatar por defecto" class="sidebar-avatar" />
-      </ng-template>
+        <ng-template #defaultAvatar>
+          <img src="recursos/fotoPerfil.jpg" alt="Avatar por defecto" class="sidebar-avatar" />
+        </ng-template>
 
-      <span class="user-name">{{ usuario?.username || 'Usuario' }}</span>
-    </div>
+        <span class="user-name">{{ usuario?.username || 'Usuario' }}</span>
+      </div>
+    </div> -->
+
+
+
+
 
     <div class="layout-content">
       <ng-content></ng-content>

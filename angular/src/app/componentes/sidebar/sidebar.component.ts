@@ -2,16 +2,15 @@ import { Component, HostListener, Inject, inject, PLATFORM_ID } from '@angular/c
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
-  selector: 'app-layout',
-  standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent],
-  templateUrl: './layout.component.html',
+  selector: 'app-sidebar',
+  imports: [CommonModule, RouterModule],
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css'
 })
-export class LayoutComponent {
-  auth = inject(AuthService);
+export class SidebarComponent {
+auth = inject(AuthService);
 
   get usuario() {
     return this.auth.getDatosUsuario();
@@ -23,6 +22,5 @@ export class LayoutComponent {
   ) { }
 
   
-
 
 }

@@ -106,18 +106,18 @@ ngOnInit() {
   // =========================
   // SCROLL INFINITO
   // =========================
-  @HostListener('window:scroll', [])
-  onScroll(): void {
-    if (!this.isLoggedIn) return;
+  // @HostListener('window:scroll', [])
+  // onScroll(): void {
+  //   if (!this.isLoggedIn) return;
 
-    const scrollTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
+  //   const scrollTop = window.scrollY;
+  //   const windowHeight = window.innerHeight;
+  //   const documentHeight = document.documentElement.scrollHeight;
 
-    if (scrollTop + windowHeight >= documentHeight - 100) {
-      this.loadSeries();
-    }
-  }
+  //   if (scrollTop + windowHeight >= documentHeight - 100) {
+  //     this.loadSeries();
+  //   }
+  // }
 
   // =========================
   // CARRUSEL
