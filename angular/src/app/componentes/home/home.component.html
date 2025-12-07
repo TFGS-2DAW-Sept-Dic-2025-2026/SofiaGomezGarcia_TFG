@@ -175,7 +175,8 @@
           </div>
 
           <div class="top-users-row">
-            <div *ngFor="let u of topUsuarios" class="top-user-card">
+            <div *ngFor="let u of topUsuarios" class="top-user-card"
+            (click)="irPerfil(u.username)" style="cursor: pointer;">
 
               <img [src]="u.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar big" />
 

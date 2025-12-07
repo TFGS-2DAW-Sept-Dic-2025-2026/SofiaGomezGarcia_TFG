@@ -116,7 +116,6 @@ exports.default = {
             for (const op of opiniones) {
                 const resp = yield fetch(`https://api.themoviedb.org/3/tv/${op.idSerie}?api_key=${API_KEY}&language=es-ES`);
                 const data = yield resp.json();
-                console.log("DATA TMDB:", data);
                 opinionesConNombre.push(Object.assign(Object.assign({}, op.toObject()), { nombreSerie: data.name || data.original_name || "[Sin nombre]" }));
             }
             res.status(200).json(opinionesConNombre);
@@ -139,16 +138,19 @@ exports.default = {
                 { $limit: 3 },
                 {
                     $lookup: {
-                        from: "usuarios",
+                        from: "usuarios", // nombre exacto de tu colección de usuarios
                         localField: "_id",
                         foreignField: "_id",
                         as: "usuario"
                     }
                 },
-                { $unwind: "$usuario" },
+                {
+                    $addFields: {
+                        usuario: { $arrayElemAt: ["$usuario", 0] } // si no encuentra, queda null
+                    }
+                },
                 {
                     $project: {
-                        _id: 0,
                         idUsuario: "$usuario._id",
                         username: "$usuario.username",
                         fotoPerfil: "$usuario.fotoPerfil",

@@ -136,42 +136,46 @@ export default {
       res.status(500).json({ msg: "Error al obtener opiniones recientes" });
     }
   },
-  obtenerUsuariosMasOpiniones: async (req: Request, res: Response) => {
-    try {
-      const topUsuarios = await Opinion.aggregate([
-        {
-          $group: {
-            _id: "$idUsuario",
-            totalOpiniones: { $sum: 1 }
-          }
-        },
-        { $sort: { totalOpiniones: -1 } },
-        { $limit: 3 },
-        {
-          $lookup: {
-            from: "usuarios",
-            localField: "_id",
-            foreignField: "_id",
-            as: "usuario"
-          }
-        },
-        { $unwind: "$usuario" },
-        {
-          $project: {
-            _id: 0,
-            idUsuario: "$usuario._id",
-            username: "$usuario.username",
-            fotoPerfil: "$usuario.fotoPerfil",
-            totalOpiniones: 1
-          }
+ obtenerUsuariosMasOpiniones: async (req: Request, res: Response) => {
+  try {
+    const topUsuarios = await Opinion.aggregate([
+      {
+        $group: {
+          _id: "$idUsuario",
+          totalOpiniones: { $sum: 1 }
         }
-      ]);
+      },
+      { $sort: { totalOpiniones: -1 } },
+      { $limit: 3 },
+      {
+        $lookup: {
+          from: "usuarios",          
+          localField: "_id",
+          foreignField: "_id",
+          as: "usuario"
+        }
+      },
+      {
+        $addFields: {
+          usuario: { $arrayElemAt: ["$usuario", 0] }  
+        }
+      },
+      {
+        $project: {
+          idUsuario: "$usuario._id",
+          username: "$usuario.username",
+          fotoPerfil: "$usuario.fotoPerfil",
+          totalOpiniones: 1
+        }
+      }
+    ]);
 
-      res.status(200).json(topUsuarios);
-    } catch (error) {
-      console.error("Error al obtener usuarios con más opiniones:", error);
-      res.status(500).json({ msg: "Error al obtener usuarios con más opiniones" });
-    }
+    res.status(200).json(topUsuarios);
+  } catch (error) {
+    console.error("Error al obtener usuarios con más opiniones:", error);
+    res.status(500).json({ msg: "Error al obtener usuarios con más opiniones" });
   }
+}
+
 
 }
