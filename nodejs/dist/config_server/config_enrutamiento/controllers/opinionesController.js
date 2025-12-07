@@ -8,8 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const opinion_1 = require("../../../modelos/modelos_mongoose_orm/opinion");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const BASE_URL = "https://api.themoviedb.org/3";
+const API_KEY = process.env.TMDB_API_KEY;
 exports.default = {
     obtenerOpinionesSerie: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -97,6 +104,63 @@ exports.default = {
         catch (error) {
             console.error("Error al obtener opiniones del usuario:", error);
             res.status(500).json({ msg: "Error al obtener opiniones del usuario" });
+        }
+    }),
+    obtenerOpinionesRecientes: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const opiniones = yield opinion_1.Opinion.find()
+                .populate("idUsuario", "username fotoPerfil")
+                .sort({ fecha: -1 })
+                .limit(3);
+            const opinionesConNombre = [];
+            for (const op of opiniones) {
+                const resp = yield fetch(`https://api.themoviedb.org/3/tv/${op.idSerie}?api_key=${API_KEY}&language=es-ES`);
+                const data = yield resp.json();
+                console.log("DATA TMDB:", data);
+                opinionesConNombre.push(Object.assign(Object.assign({}, op.toObject()), { nombreSerie: data.name || data.original_name || "[Sin nombre]" }));
+            }
+            res.status(200).json(opinionesConNombre);
+        }
+        catch (error) {
+            console.error("Error al obtener opiniones recientes:", error);
+            res.status(500).json({ msg: "Error al obtener opiniones recientes" });
+        }
+    }),
+    obtenerUsuariosMasOpiniones: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const topUsuarios = yield opinion_1.Opinion.aggregate([
+                {
+                    $group: {
+                        _id: "$idUsuario",
+                        totalOpiniones: { $sum: 1 }
+                    }
+                },
+                { $sort: { totalOpiniones: -1 } },
+                { $limit: 3 },
+                {
+                    $lookup: {
+                        from: "usuarios",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "usuario"
+                    }
+                },
+                { $unwind: "$usuario" },
+                {
+                    $project: {
+                        _id: 0,
+                        idUsuario: "$usuario._id",
+                        username: "$usuario.username",
+                        fotoPerfil: "$usuario.fotoPerfil",
+                        totalOpiniones: 1
+                    }
+                }
+            ]);
+            res.status(200).json(topUsuarios);
+        }
+        catch (error) {
+            console.error("Error al obtener usuarios con más opiniones:", error);
+            res.status(500).json({ msg: "Error al obtener usuarios con más opiniones" });
         }
     })
 };

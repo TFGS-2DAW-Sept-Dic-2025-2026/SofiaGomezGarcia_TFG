@@ -146,15 +146,23 @@
           </div>
 
           <div class="reviews-row">
-            <div class="review-card" *ngFor="let r of [1,2,3]">
-              <div class="review-user">
-                <div class="avatar"></div>
-                <span class="username">UsuarioX</span>
+            <div class="review-card" *ngFor="let r of ultimasOpiniones">
+
+              <!-- Perfil del usuario -->
+              <div class="review-user" (click)="irPerfil(r.idUsuario?.username)" style="cursor: pointer;">
+                <img [src]="r.idUsuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar" />
+                <span class="username">{{ r.idUsuario?.username }}</span>
               </div>
 
-              <p class="review-text">"Reseña de ejemplo para mostrar cómo quedará la sección visualmente."</p>
+              <!-- Opinión -->
+              <p class="review-text">"{{ r.opinion }}"</p>
 
-              <span class="review-serie">Serie comentada</span>
+              <!-- Serie -->
+              <span class="review-serie" [routerLink]="['/serie', r.idSerie]"
+                style="cursor: pointer; text-decoration: none;">
+                {{ r.nombreSerie }}
+              </span>
+
             </div>
           </div>
         </section>
@@ -163,15 +171,18 @@
         <!-- ⭐ USUARIO CON MÁS RESEÑAS -->
         <section class="home-section">
           <div class="section-header">
-            <h2>🏆 Usuario con más reseñas</h2>
+            <h2>🏆 Usuarios con más reseñas</h2>
           </div>
 
-          <div class="top-user-card">
-            <div class="avatar big"></div>
+          <div class="top-users-row">
+            <div *ngFor="let u of topUsuarios" class="top-user-card">
 
-            <div class="top-user-info">
-              <h3>Nombre del usuario</h3>
-              <p>250 reseñas publicadas</p>
+              <img [src]="u.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar big" />
+
+              <div class="top-user-info">
+                <h3>{{ u.username }}</h3>
+                <p>{{ u.totalOpiniones }} reseñas publicadas</p>
+              </div>
             </div>
           </div>
         </section>

@@ -8,9 +8,9 @@ import { AuthService } from './auth.service';
 })
 export class OpinionService {
 
-  private apiUrl = 'http://localhost:5000'; 
+  private apiUrl = 'http://localhost:5000';
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   private getHeaders(): HttpHeaders {
     const token = this.auth.getSessionToken();
@@ -33,11 +33,21 @@ export class OpinionService {
   }
 
   obtenerOpinionesUsuario(idUsuario: string) {
-  return this.http.get<any[]>(`${this.apiUrl}/opiniones/${idUsuario}`, { headers: this.getHeaders() });
-}
+    return this.http.get<any[]>(`${this.apiUrl}/opiniones/${idUsuario}`, { headers: this.getHeaders() });
+  }
 
-getDiscover(): Observable<any[]> {
+  getDiscover(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/series/descubrirNuevas`, { headers: this.getHeaders() });
   }
+
+  getUltimasOpiniones(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/opiniones/recientes`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  getTopUsuarios() {
+  return this.http.get<any[]>(`${this.apiUrl}/opiniones/topUsuarios`);
+}
 
 }

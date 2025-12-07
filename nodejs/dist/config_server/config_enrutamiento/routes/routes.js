@@ -61,6 +61,8 @@ router.get('/perfil/seguidos/:usuarioId', authMiddleware_1.authMiddleware, perfi
 router.get("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesSerie);
 router.post("/series/:idSerie/opiniones", authMiddleware_1.authMiddleware, opinionesController_1.default.crearOpinion);
 router.post("/opiniones/:idOpinion/meGusta", authMiddleware_1.authMiddleware, opinionesController_1.default.meGustaOpinion);
+router.get("/opiniones/recientes", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesRecientes);
+router.get("/opiniones/topUsuarios", opinionesController_1.default.obtenerUsuariosMasOpiniones);
 router.get("/opiniones/:idUsuario", authMiddleware_1.authMiddleware, opinionesController_1.default.obtenerOpinionesUsuario);
 // Rutas para obtener los usuarios
 router.get("/usuarios", authMiddleware_1.authMiddleware, usuariosController_1.default.obtenerUsuarios);

@@ -532,3 +532,28 @@
   .section-header h2 { font-size: 1.2rem; }
   .ver-mas-btn { padding: 5px 10px; font-size: 0.9rem; }
 }
+
+.top-users-row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;          /* espacio entre tarjetas */
+  overflow-x: auto;   /* por si hay muchos */
+  padding: 10px 0;
+}
+
+.top-user-card {
+  display: flex;
+  align-items: center;
+  background: #1e1e1e;
+  border-radius: 10px;
+  padding: 12px;
+  min-width: 220px; /* para que todas tengan el mismo tamaño */
+  gap: 10px;
+}
+
+.avatar.big {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}

@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, inject, OnInit, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { CommonModule } from '@angular/common';
 import { seriesService } from '../../servicios/series.service';
@@ -18,11 +18,14 @@ export class HomeComponent implements OnInit {
   auth = inject(AuthService);
   servicioSeries = inject(seriesService);
   opinionService = inject(OpinionService);
+  router = inject(Router);
 
   isLoggedIn = false;
 
   series: any[] = [];
   tendencias: any[] = [];
+  ultimasOpiniones: any[] = [];
+  topUsuarios: any[] = [];
   currentPage = 1;
   totalPages = 1;
   loading = false;
@@ -31,18 +34,20 @@ export class HomeComponent implements OnInit {
   currentSlide = 0;
   autoplaySub: Subscription | undefined;
 
-  
-ngOnInit() {
-  this.isLoggedIn = this.auth.hasValidSession();
-  this.cargarPopulares();
-  if (this.isLoggedIn) {
-    this.resetAndLoadTopSeries();
-    this.cargarTendencias();
-    this.cargarDescubrir(); 
-  } else {
-    this.cargarSoloPrimeraPagina();
+
+  ngOnInit() {
+    this.isLoggedIn = this.auth.hasValidSession();
+    this.cargarPopulares();
+    if (this.isLoggedIn) {
+      this.resetAndLoadTopSeries();
+      this.cargarTendencias();
+      this.cargarDescubrir();
+      this.cargarUltimasOpiniones();
+      this.cargarTopUsuarios();
+    } else {
+      this.cargarSoloPrimeraPagina();
+    }
   }
-}
 
   // =========================
   // CARGA DE SERIES
@@ -103,21 +108,6 @@ ngOnInit() {
     });
   }
 
-  // =========================
-  // SCROLL INFINITO
-  // =========================
-  // @HostListener('window:scroll', [])
-  // onScroll(): void {
-  //   if (!this.isLoggedIn) return;
-
-  //   const scrollTop = window.scrollY;
-  //   const windowHeight = window.innerHeight;
-  //   const documentHeight = document.documentElement.scrollHeight;
-
-  //   if (scrollTop + windowHeight >= documentHeight - 100) {
-  //     this.loadSeries();
-  //   }
-  // }
 
   // =========================
   // CARRUSEL
@@ -183,7 +173,7 @@ ngOnInit() {
         element = this.scrollDescubre.nativeElement;
         break;
       default:
-        return; 
+        return;
     }
 
     const amount = direction === 'left' ? -distance : distance;
@@ -206,7 +196,7 @@ ngOnInit() {
     });
   }
 
- // =========================
+  // =========================
   // Descubrir
   // =========================
 
@@ -219,6 +209,40 @@ ngOnInit() {
       error: err => console.error("Error cargando descubrir series", err)
     });
   }
+
+  // =========================
+  // Reseñas recientes
+  // =========================
+
+  cargarUltimasOpiniones() {
+    this.opinionService.getUltimasOpiniones().subscribe({
+      next: res => this.ultimasOpiniones = res,
+      error: err => console.error("Error cargando últimas opiniones", err)
+    });
+  }
+
+  irPerfil(username: string) {
+
+    if (!username) return;
+    const usuarioActual = this.auth.getDatosUsuario();
+
+    if (usuarioActual && username === usuarioActual.username) {
+      this.router.navigate(['/perfil']);
+    } else {
+      this.router.navigate(['/usuario', username]);
+    }
+  }
+
+  // =========================
+  // Top Usuarios
+  // =========================
+
+  cargarTopUsuarios() {
+  this.opinionService.getTopUsuarios().subscribe({
+    next: res => this.topUsuarios = res,
+    error: err => console.error("Error cargando usuarios top", err)
+  });
+}
 
 
 }
