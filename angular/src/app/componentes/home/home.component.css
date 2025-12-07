@@ -625,3 +625,22 @@
   font-size: 14px;
   opacity: 0.8;
 }
+
+
+.review-user-rating {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.review-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-rating {
+  font-weight: 600;
+  color: #FFD700; 
+}

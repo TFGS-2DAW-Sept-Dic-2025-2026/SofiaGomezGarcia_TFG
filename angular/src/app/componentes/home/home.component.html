@@ -141,31 +141,38 @@
 
         <!-- ⭐ ÚLTIMAS RESEÑAS -->
         <section class="home-section">
-          <div class="section-header">
-            <h2>📝 Últimas reseñas</h2>
-          </div>
+  <div class="section-header">
+    <h2>📝 Últimas reseñas</h2>
+  </div>
 
-          <div class="reviews-row">
-            <div class="review-card" *ngFor="let r of ultimasOpiniones">
+  <div class="reviews-row">
+    <div class="review-card" *ngFor="let r of ultimasOpiniones">
 
-              <!-- Perfil del usuario -->
-              <div class="review-user" (click)="irPerfil(r.idUsuario?.username)" style="cursor: pointer;">
-                <img [src]="r.idUsuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar" />
-                <span class="username">{{ r.idUsuario?.username }}</span>
-              </div>
+      <!-- Perfil del usuario y puntuación -->
+      <div class="review-user-rating" (click)="irPerfil(r.idUsuario?.username)" style="cursor: pointer;">
+        <div class="review-user">
+          <img [src]="r.idUsuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar" />
+          <span class="username">{{ r.idUsuario?.username }}</span>
+        </div>
+        <div class="review-rating">
+          <span>{{ r.estrellas || r.puntuacion }} ⭐</span>
+        </div>
+      </div>
 
-              <!-- Opinión -->
-              <p class="review-text">"{{ r.opinion }}"</p>
+      <!-- Opinión -->
+      <p class="review-text">"{{ r.opinion }}"</p>
 
-              <!-- Serie -->
-              <span class="review-serie" [routerLink]="['/serie', r.idSerie]"
-                style="cursor: pointer; text-decoration: none;">
-                {{ r.nombreSerie }}
-              </span>
+      <!-- Serie -->
+      <span class="review-serie" [routerLink]="['/serie', r.idSerie]"
+        style="cursor: pointer; text-decoration: none;">
+        {{ r.nombreSerie }}
+      </span>
 
-            </div>
-          </div>
-        </section>
+    </div>
+  </div>
+</section>
+
+
 
 
         <!-- ⭐ USUARIO CON MÁS RESEÑAS -->

@@ -1,17 +1,3 @@
-/* .sidebar {
-  width: 220px;
-  height: 320px;
-  background-color: #001A26;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  border-radius: 26px;
-  position: fixed; 
-  top: 0;
-  
-  box-sizing: border-box;
-} */
 
 .sidebar{
     position: fixed;
@@ -76,4 +62,11 @@
     box-sizing: border-box;
     border-radius: 26px;
 
+}
+
+.sidebar-usuario .user-name {
+  white-space: nowrap;        
+  overflow: hidden;           
+  text-overflow: ellipsis;   
+  max-width: 120px;           
 }

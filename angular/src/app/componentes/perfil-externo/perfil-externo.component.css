@@ -71,3 +71,10 @@
   color: #80ced7;
   transform: scale(1.03);
 }
+
+.perfil-header .nombre-usuario {
+  white-space: nowrap;        /* Evita que el texto haga wrap */
+  overflow: hidden;           /* Oculta el exceso de texto */
+  text-overflow: ellipsis;    /* Muestra puntos suspensivos (…) */
+  max-width: 250px;           /* Ajusta según el ancho disponible del header */
+}
