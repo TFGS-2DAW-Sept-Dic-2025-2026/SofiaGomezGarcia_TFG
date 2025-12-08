@@ -138,7 +138,7 @@ exports.default = {
                 { $limit: 3 },
                 {
                     $lookup: {
-                        from: "usuarios", // nombre exacto de tu colección de usuarios
+                        from: "usuarios",
                         localField: "_id",
                         foreignField: "_id",
                         as: "usuario"
@@ -146,7 +146,7 @@ exports.default = {
                 },
                 {
                     $addFields: {
-                        usuario: { $arrayElemAt: ["$usuario", 0] } // si no encuentra, queda null
+                        usuario: { $arrayElemAt: ["$usuario", 0] }
                     }
                 },
                 {

@@ -28,16 +28,18 @@ router.get("/favoritas", authMiddleware, favoritosController.obtenerFavoritos);
 
 //Rutas para listas
 
-router.use("/listas", authMiddleware); // Aplica el middleware de autenticación a todas las rutas de listas
+router.use("/listas", authMiddleware); 
 router.post("/listas", listasController.crearLista);
 router.get("/listas", listasController.obtenerListas);
 router.post("/listas/:id/agregar", listasController.agregarSerieALista);
-router.post("/listas/:id/eliminar", listasController.eliminarSerieDeLista); // Cambiado a POST para enviar el idSerie en el body
+router.post("/listas/:id/eliminar", listasController.eliminarSerieDeLista); 
 router.get("/listas/:id", listasController.obtenerListaPorId);
 router.delete("/listas/:id", listasController.eliminarLista);
 router.get('/listas/conEstado/:idSerie', listasController.obtenerListasConEstado);
 router.get('/usuarios/:username/listasPublicas', listasController.obtenerListasPublicasPorUsername);
+router.get('/usuarios/:id', usuariosController.obtenerUsuariosByID);
 router.post("/listas/:id/like", listasController.darLikeLista);
+router.get("/listas/publicas/populares", listasController.obtenerListasPublicasPopulares);
 
 
 //Rutas para componente descubrir series

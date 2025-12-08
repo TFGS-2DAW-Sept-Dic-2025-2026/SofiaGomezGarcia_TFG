@@ -180,6 +180,8 @@ export default {
 
         }
     },
+
+
     obtenerListasConEstado: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const usuarioCreador = (req as any).user?.id;
@@ -255,11 +257,11 @@ export default {
             const yaDioLike = lista.usuariosQueDieronLike.includes(idUsuario);
 
             if (yaDioLike) {
-                
+
                 lista.usuariosQueDieronLike = lista.usuariosQueDieronLike.filter(u => u.toString() !== idUsuario);
                 lista.likes = Math.max(0, lista.likes - 1);
             } else {
-                
+
                 lista.usuariosQueDieronLike.push(idUsuario);
                 lista.likes += 1;
             }
@@ -275,6 +277,36 @@ export default {
             console.log("Error al dar like a la lista:", error);
             res.status(500).json({ msg: 'Error al dar like a la lista', error });
         }
+    },
+    obtenerListasPublicasPopulares: async (req: Request, res: Response) => {
+        try {
+            const listas = await Lista.find({ publica: true })
+                .populate('usuarioCreador', 'username fotoPerfil')
+                .populate('series', '_id')
+                .sort({ likes: -1 })
+                .limit(3);
+
+            const listasHome = listas.map(l => ({
+                id: l._id,
+                nombre: l.nombre,
+                descripcion: l.descripcion,
+                likes: l.likes ?? 0,
+                seriesCount: l.series?.length || 0,
+                usuario: l.usuarioCreador
+                    ? {
+                        username: (l.usuarioCreador as any).username,
+                        fotoPerfil: (l.usuarioCreador as any).fotoPerfil
+                    }
+                    : null
+            }));
+
+
+            res.status(200).json(listasHome);
+        } catch (error) {
+            console.error("Error al obtener listas públicas populares:", error);
+            res.status(500).json({ msg: "Error al obtener listas públicas populares" });
+        }
     }
+
 
 }

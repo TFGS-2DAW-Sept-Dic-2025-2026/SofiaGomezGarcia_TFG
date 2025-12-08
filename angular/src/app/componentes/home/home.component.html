@@ -105,7 +105,7 @@
         <!-- ⭐ DESCUBRIR SERIES -->
         <section class="home-section">
           <div class="section-header">
-            <h2>🧭 Descubrir nuevas series</h2>
+            <h2>Descubrir nuevas series</h2>
             <button routerLink="/descubre" class="ver-mas-btn">Ver más</button>
           </div>
 
@@ -141,36 +141,36 @@
 
         <!-- ⭐ ÚLTIMAS RESEÑAS -->
         <section class="home-section">
-  <div class="section-header">
-    <h2>📝 Últimas reseñas</h2>
-  </div>
+          <div class="section-header">
+            <h2>Últimas reseñas</h2>
+          </div>
 
-  <div class="reviews-row">
-    <div class="review-card" *ngFor="let r of ultimasOpiniones">
+          <div class="reviews-row">
+            <div class="review-card" *ngFor="let r of ultimasOpiniones">
 
-      <!-- Perfil del usuario y puntuación -->
-      <div class="review-user-rating" (click)="irPerfil(r.idUsuario?.username)" style="cursor: pointer;">
-        <div class="review-user">
-          <img [src]="r.idUsuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar" />
-          <span class="username">{{ r.idUsuario?.username }}</span>
-        </div>
-        <div class="review-rating">
-          <span>{{ r.estrellas || r.puntuacion }} ⭐</span>
-        </div>
-      </div>
+              <!-- Perfil del usuario y puntuación -->
+              <div class="review-user-rating" (click)="irPerfil(r.idUsuario?.username)" style="cursor: pointer;">
+                <div class="review-user">
+                  <img [src]="r.idUsuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar" />
+                  <span class="username">{{ r.idUsuario?.username }}</span>
+                </div>
+                <div class="review-rating">
+                  <span>{{ r.estrellas || r.puntuacion }} ⭐</span>
+                </div>
+              </div>
 
-      <!-- Opinión -->
-      <p class="review-text">"{{ r.opinion }}"</p>
+              <!-- Opinión -->
+              <p class="review-text">"{{ r.opinion }}"</p>
 
-      <!-- Serie -->
-      <span class="review-serie" [routerLink]="['/serie', r.idSerie]"
-        style="cursor: pointer; text-decoration: none;">
-        {{ r.nombreSerie }}
-      </span>
+              <!-- Serie -->
+              <span class="review-serie" [routerLink]="['/serie', r.idSerie]"
+                style="cursor: pointer; text-decoration: none;">
+                {{ r.nombreSerie }}
+              </span>
 
-    </div>
-  </div>
-</section>
+            </div>
+          </div>
+        </section>
 
 
 
@@ -178,12 +178,12 @@
         <!-- ⭐ USUARIO CON MÁS RESEÑAS -->
         <section class="home-section">
           <div class="section-header">
-            <h2>🏆 Usuarios con más reseñas</h2>
+            <h2>Usuarios con más reseñas</h2>
           </div>
 
           <div class="top-users-row">
-            <div *ngFor="let u of topUsuarios" class="top-user-card"
-            (click)="irPerfil(u.username)" style="cursor: pointer;">
+            <div *ngFor="let u of topUsuarios" class="top-user-card" (click)="irPerfil(u.username)"
+              style="cursor: pointer;">
 
               <img [src]="u.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar big" />
 
@@ -199,43 +199,30 @@
         <!-- ⭐ LISTAS PÚBLICAS CON MÁS LIKES -->
         <section class="home-section">
           <div class="section-header">
-            <h2>📚 Listas públicas con más likes</h2>
+            <h2>Listas públicas con más likes</h2>
             <button routerLink="/listas-publicas" class="ver-mas-btn">Ver más</button>
           </div>
 
           <div class="listas-grid-home">
-            <div class="lista-publica-card" *ngFor="let l of [1,2,3,4]">
-              <h4>Nombre de la lista</h4>
-              <p class="likes">❤️ 120 likes</p>
+            <div class="lista-publica-card" *ngFor="let l of listasPublicasPopulares" (click)="verLista(l.id)">
+              <div class="lista-usuario" (click)="irPerfil(l.usuario?.username); $event.stopPropagation()">
+                <img [src]="l.usuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar-small" />
+                <span class="username">{{ l.usuario?.username || 'Usuario' }}</span>
+              </div>
+
+              <h4>{{ l.nombre }}</h4>
+              <h5>{{ l.descripcion }}</h5>
+              <p class="series-count">{{ l.seriesCount }} series</p>
+              <p class="likes">❤️ {{ l.likes }} likes</p>
             </div>
           </div>
+
         </section>
+
 
 
       </div>
 
-      <!-- <div class="series-list">
-        <div *ngFor="let serie of series" class="serie-card" [routerLink]="['/serie', serie.id]">
-          <img [src]="'https://image.tmdb.org/t/p/w300' + serie.poster_path" alt="{{ serie.name }}">
-
-          <div class="serie-info">
-            <h3 class="serie-title">{{ serie.name }}</h3>
-
-            <div class="serie-meta">
-              <span class="serie-year">{{ serie.first_air_date | date:'yyyy' }}</span>
-
-              <div class="serie-rating">
-                <span class="stars">⭐</span>
-                <span class="rating-number">{{ serie.vote_average | number:'1.1-1' }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div *ngIf="loading" class="loading">
-        <p>Cargando más series...</p>
-      </div> -->
     </ng-container>
 
     <ng-template #noAuth>

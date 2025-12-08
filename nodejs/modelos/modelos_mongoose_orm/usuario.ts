@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { Schema, model, Document, Types } from "mongoose";
 
-//Con mongoose ya viene de por si el ID asi que no hace falta declararlo aqui
-
 export interface IUser extends Document {
   username: string;
   email: string;
@@ -33,20 +31,19 @@ const UsuarioSchema = new Schema<IUser>(
 
     //relaciones
 
-    seguidores: [{ type: Schema.Types.ObjectId, ref: "usuario" }], //se guarda el id del amigo y con eso se cargan
+    seguidores: [{ type: Schema.Types.ObjectId, ref: "usuario" }], 
     seguidos: [{ type: Schema.Types.ObjectId, ref: "usuario" }],
-    listas: [{ type: Schema.Types.ObjectId, ref: "lista" }],//referencia a la tabla donde se guardan todas las listas
-    favoritas: [{ type: String }], // array de IDs de series externas 
+    listas: [{ type: Schema.Types.ObjectId, ref: "lista" }],
+    favoritas: [{ type: String }], 
     perfilFavoritas: [{ type: String }], 
     listasPublicas: [{ type: Schema.Types.ObjectId, ref: 'lista' }]
   },
   {
-    timestamps: true, // agrega createdAt y updatedAt
+    timestamps: true, 
   }
 );
 
 
 
 export default model<IUser>("usuario", UsuarioSchema, "usuarios");
-// export default mongoose.model("usuario", UsuarioSchema, "usuarios");
 

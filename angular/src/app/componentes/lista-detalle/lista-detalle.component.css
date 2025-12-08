@@ -138,3 +138,26 @@
   color: #80CED7 !important;
 }
 
+.lista-autor {
+  margin: 0;
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: #9dbcc4;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.lista-autor:hover {
+  color: #80CED7;
+}
+
+.autor-nombre {
+  font-weight: 600;
+  color: #80CED7;
+}
+
+.lista-detalle.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { seriesService } from '../../servicios/series.service';
 import { ListasService } from '../../servicios/listas.service';
 import { forkJoin } from 'rxjs';
 import { LayoutComponent } from '../layout/layout.component';
 import { PerfilService } from '../../servicios/perfil.service';
+import { UsuariosService } from '../../servicios/usuarios.service';
 
 @Component({
   selector: 'app-lista-detalle',
@@ -20,7 +21,9 @@ export class ListaDetalleComponent implements OnInit {
   listasService = inject(ListasService);
   seriesService = inject(seriesService);
   perfilService = inject(PerfilService);
+  usuariosService = inject(UsuariosService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   isLoggedIn = false;
   esPublica = false;
@@ -33,7 +36,7 @@ export class ListaDetalleComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn = this.auth.hasValidSession();
     if (this.isLoggedIn) {
-      this.userId = this.auth.getUserIdFromToken(); // obtener id de usuario
+      this.userId = this.auth.getUserIdFromToken(); 
     }
 
     const idLista = this.route.snapshot.paramMap.get('id');
@@ -54,20 +57,29 @@ export class ListaDetalleComponent implements OnInit {
         this.lista = res;
 
         // Inicializar likes si no existen
-        if (this.lista.likes === undefined) this.lista.likes = 0;
-        if (!this.lista.usuariosQueDieronLike) this.lista.usuariosQueDieronLike = [];
+        this.lista.likes ??= 0;
+        this.lista.usuariosQueDieronLike ??= [];
 
         // Verificar si el usuario ya dio like
-        if (this.userId) {
-          this.dioLike = this.lista.usuariosQueDieronLike.includes(this.userId);
+        if (this.userId) this.dioLike = this.lista.usuariosQueDieronLike.includes(this.userId);
+
+        if (this.lista.usuarioCreador) {
+          this.usuariosService.obtenerUsuarioPorID(this.lista.usuarioCreador).subscribe({
+            next: (usuario) => this.lista.usuario = usuario,
+            error: (err) => {
+              console.error('Error cargando usuario creador:', err);
+              this.lista.usuario = { username: 'Usuario', fotoPerfil: '' };
+            }
+          });
         }
 
+        // Cargar series completas
         if (this.lista.series?.length) {
-          const observables = this.lista.series.map((serieId: string) =>
+          const observablesSeries = this.lista.series.map((serieId: string) =>
             this.seriesService.getSeriesByID(serieId)
           );
 
-          forkJoin(observables).subscribe({
+          forkJoin(observablesSeries).subscribe({
             next: (seriesCompletas) => {
               this.lista.series = seriesCompletas;
               this.loading = false;
@@ -89,28 +101,25 @@ export class ListaDetalleComponent implements OnInit {
   }
 
   eliminarSerie(idSerie: string) {
-    if (!this.lista || !this.lista._id) return;
+    if (!this.lista?._id) return;
 
-    const idLista = this.lista._id;
+    this.listasService.eliminarSerieDeLista(this.lista._id, idSerie).subscribe({
+      next: (listaActualizada) => {
+        this.lista.series = listaActualizada.series;
 
-    this.listasService.eliminarSerieDeLista(idLista, idSerie)
-      .subscribe({
-        next: (listaActualizada) => {
-          this.lista.series = listaActualizada.series;
+        if (this.lista.series.length) {
+          const observables = this.lista.series.map((serieId: string) =>
+            this.seriesService.getSeriesByID(serieId)
+          );
 
-          if (this.lista.series.length) {
-            const observables = this.lista.series.map((serieId: string) =>
-              this.seriesService.getSeriesByID(serieId)
-            );
-
-            forkJoin(observables).subscribe({
-              next: (seriesCompletas) => this.lista.series = seriesCompletas,
-              error: (err) => console.error('Error recargando series:', err)
-            });
-          }
-        },
-        error: (err) => console.error('Error al eliminar serie:', err)
-      });
+          forkJoin(observables).subscribe({
+            next: (seriesCompletas) => (this.lista.series = seriesCompletas),
+            error: (err) => console.error('Error recargando series:', err)
+          });
+        }
+      },
+      error: (err) => console.error('Error al eliminar serie:', err)
+    });
   }
 
   toggleLike() {
@@ -123,5 +132,16 @@ export class ListaDetalleComponent implements OnInit {
       },
       error: (err) => console.error("Error al dar like:", err)
     });
+  }
+
+  irPerfil(username: string) {
+    if (!username) return;
+
+    const usuarioActual = this.auth.getDatosUsuario();
+    if (usuarioActual && username === usuarioActual.username) {
+      this.router.navigate(['/perfil']);
+    } else {
+      this.router.navigate(['/usuario', username]);
+    }
   }
 }

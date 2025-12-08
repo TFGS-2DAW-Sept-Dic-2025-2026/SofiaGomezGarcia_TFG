@@ -6,6 +6,7 @@ import { seriesService } from '../../servicios/series.service';
 import { LayoutComponent } from '../layout/layout.component';
 import { Subscription, timer } from 'rxjs';
 import { OpinionService } from '../../servicios/opinion.service';
+import { ListasService } from '../../servicios/listas.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit {
   servicioSeries = inject(seriesService);
   opinionService = inject(OpinionService);
   router = inject(Router);
+  listasService = inject(ListasService);
 
   isLoggedIn = false;
 
@@ -44,6 +46,7 @@ export class HomeComponent implements OnInit {
       this.cargarDescubrir();
       this.cargarUltimasOpiniones();
       this.cargarTopUsuarios();
+      this.cargarListasPublicasPopulares();
     } else {
       this.cargarSoloPrimeraPagina();
     }
@@ -238,11 +241,40 @@ export class HomeComponent implements OnInit {
   // =========================
 
   cargarTopUsuarios() {
-  this.opinionService.getTopUsuarios().subscribe({
-    next: res => this.topUsuarios = res,
-    error: err => console.error("Error cargando usuarios top", err)
-  });
-}
+    this.opinionService.getTopUsuarios().subscribe({
+      next: res => this.topUsuarios = res,
+      error: err => console.error("Error cargando usuarios top", err)
+    });
+  }
+
+  // =========================
+  //  Listas mas populares
+  // =========================
+
+
+  listasPublicasPopulares: any[] = [];
+
+  cargarListasPublicasPopulares() {
+    this.listasService.getListasPublicasPopulares().subscribe({
+      next: res => this.listasPublicasPopulares = res,
+      error: err => console.error("Error cargando listas públicas populares", err)
+    });
+  }
+
+
+  verLista(idLista: string) {
+    console.log("ID QUE RECIBO", idLista);
+    
+    if (!idLista) {
+      console.error('El ID de la lista es inválido');
+      return;
+    }
+
+    this.router.navigate(['/listas', idLista], { queryParams: { publica: true } });
+  }
+
+
+
 
 
 }

@@ -26,9 +26,8 @@ exports.default = {
         }
     }),
     obtenerUsuariosByID: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
         try {
-            const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+            const userId = req.params.id; // ✅ usar el ID de los parámetros
             const user = yield usuario_1.default.findById(userId).select("-passwordHash -refreshToken -__v");
             if (!user) {
                 return res.status(404).json({ msg: "Usuario no encontrado" });

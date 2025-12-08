@@ -6,15 +6,26 @@
       <div class="lista-header">
         <h2 class="lista-title">{{ lista.nombre }}</h2>
 
-        <button *ngIf="isLoggedIn" class="btn-like" [class.disabled]="lista.usuarioCreador === userId"
-          (click)="lista.usuarioCreador !== userId ? toggleLike() : null">
-          <i class="bi"
-            [ngClass]="dioLike && lista.usuarioCreador !== userId ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+
+        <button *ngIf="isLoggedIn" class="btn-like" [class.disabled]="lista.usuario?._id === userId"
+          (click)="lista.usuario?._id !== userId ? toggleLike() : null">
+
+          <i class="bi" [ngClass]="dioLike && lista.usuario?._id !== userId
+        ? 'bi-heart-fill text-danger'
+        : 'bi-heart'">
+          </i>
+
           <span>{{ lista.likes }}</span>
         </button>
+
+        <p class="lista-autor" (click)="irPerfil(lista.usuario?.username)">
+          Creada por <span class="autor-nombre">{{ lista.usuario?.username || 'Usuario' }}</span>
+        </p>
+
+
       </div>
 
-      
+
       <div *ngIf="loading" class="loading">
         <div class="spinner-border text-warning" role="status"></div>
         <p>Cargando series...</p>
@@ -40,7 +51,7 @@
 
 
       <div *ngIf="!loading && lista.series.length === 0" class="text-center mt-5">
-        <p class="text-muted fs-5">No hay series en esta lista aún 🎬</p>
+        <p class="text-muted fs-5">No hay series en esta lista aún </p>
       </div>
 
     </div>

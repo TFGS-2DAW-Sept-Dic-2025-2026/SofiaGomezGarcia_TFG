@@ -24,16 +24,19 @@ router.get("/tendencias", apiController_1.default.obtenerTendencias);
 router.post("/favoritas/:serieId", authMiddleware_1.authMiddleware, favoritosController_1.default.agregarFavorito);
 router.get("/favoritas", authMiddleware_1.authMiddleware, favoritosController_1.default.obtenerFavoritos);
 //Rutas para listas
-router.use("/listas", authMiddleware_1.authMiddleware); // Aplica el middleware de autenticación a todas las rutas de listas
+router.use("/listas", authMiddleware_1.authMiddleware);
 router.post("/listas", listasController_1.default.crearLista);
 router.get("/listas", listasController_1.default.obtenerListas);
 router.post("/listas/:id/agregar", listasController_1.default.agregarSerieALista);
-router.post("/listas/:id/eliminar", listasController_1.default.eliminarSerieDeLista); // Cambiado a POST para enviar el idSerie en el body
+router.post("/listas/:id/eliminar", listasController_1.default.eliminarSerieDeLista);
 router.get("/listas/:id", listasController_1.default.obtenerListaPorId);
 router.delete("/listas/:id", listasController_1.default.eliminarLista);
 router.get('/listas/conEstado/:idSerie', listasController_1.default.obtenerListasConEstado);
 router.get('/usuarios/:username/listasPublicas', listasController_1.default.obtenerListasPublicasPorUsername);
+router.get('/usuarios/:id', usuariosController_1.default.obtenerUsuariosByID);
+router.get('/usuario/:id/lista', listasController_1.default.obtenerUsuarioPorID);
 router.post("/listas/:id/like", listasController_1.default.darLikeLista);
+router.get("/listas/publicas/populares", listasController_1.default.obtenerListasPublicasPopulares);
 //Rutas para componente descubrir series
 router.get('/series/descubrir', apiController_1.default.descubrirSeries);
 router.get('/series/generos', apiController_1.default.obtenerGeneros);

@@ -76,11 +76,19 @@ export class ListasService {
   }
 
   darLike(idLista: string) {
-    const headers = this.getHeaders(); 
+    const headers = this.getHeaders();
     return this.http.post<any>(
       `${this.apiUrl}/${idLista}/like`,
       {},
-      { headers } 
+      { headers }
     );
   }
+
+
+  getListasPublicasPopulares() {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.baseUrl}/listas/publicas/populares`, { headers });
+  }
+
+
 }

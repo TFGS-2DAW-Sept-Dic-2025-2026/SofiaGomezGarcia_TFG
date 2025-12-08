@@ -262,6 +262,7 @@ export default {
             res.status(500).json({ msg: "Error interno del servidor" });
         }
     },
+    
 
 
 

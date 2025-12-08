@@ -15,9 +15,9 @@ export default {
     },
     obtenerUsuariosByID: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const userId = (req as any).user?.id;
+            const userId = req.params.id; // ✅ usar el ID de los parámetros
             const user = await usuario.findById(userId).select("-passwordHash -refreshToken -__v");
-            
+
             if (!user) {
                 return res.status(404).json({ msg: "Usuario no encontrado" });
             }

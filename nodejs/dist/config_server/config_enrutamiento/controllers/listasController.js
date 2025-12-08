@@ -158,6 +158,19 @@ exports.default = {
             res.status(500).json({ msg: 'Error al obtener la lista' });
         }
     }),
+    obtenerUsuarioPorID: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { id } = req.params; // usar el id que viene en la URL
+            const user = yield usuario_1.default.findById(id).select("-passwordHash -refreshToken -__v");
+            if (!user)
+                return res.status(404).json({ msg: "Usuario no encontrado" });
+            res.status(200).json(user);
+        }
+        catch (error) {
+            console.error("Error obteniendo usuario por ID:", error);
+            res.status(500).json({ msg: "Error en el servidor", error });
+        }
+    }),
     obtenerListasConEstado: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {
@@ -242,6 +255,36 @@ exports.default = {
         catch (error) {
             console.log("Error al dar like a la lista:", error);
             res.status(500).json({ msg: 'Error al dar like a la lista', error });
+        }
+    }),
+    obtenerListasPublicasPopulares: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const listas = yield lista_1.Lista.find({ publica: true })
+                .populate('usuarioCreador', 'username fotoPerfil')
+                .populate('series', '_id')
+                .sort({ likes: -1 })
+                .limit(3);
+            const listasHome = listas.map(l => {
+                var _a, _b;
+                return ({
+                    id: l._id,
+                    nombre: l.nombre,
+                    descripcion: l.descripcion,
+                    likes: (_a = l.likes) !== null && _a !== void 0 ? _a : 0,
+                    seriesCount: ((_b = l.series) === null || _b === void 0 ? void 0 : _b.length) || 0,
+                    usuario: l.usuarioCreador
+                        ? {
+                            username: l.usuarioCreador.username,
+                            fotoPerfil: l.usuarioCreador.fotoPerfil
+                        }
+                        : null
+                });
+            });
+            res.status(200).json(listasHome);
+        }
+        catch (error) {
+            console.error("Error al obtener listas públicas populares:", error);
+            res.status(500).json({ msg: "Error al obtener listas públicas populares" });
         }
     })
 };
