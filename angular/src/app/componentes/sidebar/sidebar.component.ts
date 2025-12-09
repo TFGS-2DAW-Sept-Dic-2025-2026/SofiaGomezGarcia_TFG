@@ -11,6 +11,7 @@ import { AuthService } from '../../servicios/auth.service';
 })
 export class SidebarComponent {
 auth = inject(AuthService);
+sidebarAbierto = false;
 
   get usuario() {
     return this.auth.getDatosUsuario();
@@ -21,6 +22,8 @@ auth = inject(AuthService);
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
-  
+  toggleSidebar() {
+    this.sidebarAbierto = !this.sidebarAbierto;
+  }
 
 }

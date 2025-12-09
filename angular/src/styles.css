@@ -131,13 +131,16 @@ html, body {
 
 
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .footer-content {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
 
-  .footer-logo {
-    margin: 0 auto 1rem;
+  .footer-section {
+    text-align: center;
   }
 }
 
@@ -458,7 +461,52 @@ html, body {
   color: #9b9b9b;
 }
 
+/* ------------------ RESPONSIVE PARA MÓVIL ------------------ */
+@media (max-width: 768px) {
+  .seguimiento-page {
+    padding: 20px;
+  }
 
+  .seguimiento-header {
+    gap: 10px;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+  }
+
+  .seguimiento-tab {
+    flex: 0 0 auto; 
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .seguimiento-lista {
+    grid-template-columns: 1fr; 
+    gap: 15px;
+  }
+
+  .serie-card-horizontal {
+    flex-direction: column; 
+    height: auto;
+  }
+
+  .serie-card-horizontal img {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 4px solid #00121A;
+  }
+
+  .serie-info {
+    padding: 15px;
+  }
+
+  .btn-marcar {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+  }
+}
 
 /* Estilos para el componente Perfil, boton cambiar foto de perfil*/
 
@@ -502,3 +550,19 @@ html, body {
 }
 
 /* Estilos para el componente de Registro y Login */
+
+
+/* ESTILOS DE LOS RESPONSIVE */
+/* Layout principal responsive */
+@media (max-width: 768px) {
+  .layout {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+  }
+
+  .layout-content {
+    margin-top: 60px; /* ajustamos si hay barra fija o margen */
+    padding: 0 1rem; /* un pequeño padding lateral */
+  }
+}

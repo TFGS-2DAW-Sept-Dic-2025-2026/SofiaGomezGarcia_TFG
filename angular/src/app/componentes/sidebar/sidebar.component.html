@@ -1,28 +1,41 @@
+<!-- BOTÓN HAMBURGUESA (solo móvil) -->
+<button class="btn-menu" (click)="toggleSidebar()">
+  ☰
+</button>
 
-<div class="sidebar">
+<!-- CAPA OSCURA -->
+<div class="overlay" *ngIf="sidebarAbierto" (click)="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" [class.abierto]="sidebarAbierto">
+
   <div class="logo-container">
     <img src="recursos/Logo.png" alt="Logo" class="logo" routerLink="/" />
   </div>
 
   <nav class="navbar">
-   <a class="nav-link" routerLink="/" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }">Home</a>
-        <a class="nav-link" routerLink="/listas" routerLinkActive="active-link">Listas</a>
-        <a class="nav-link" routerLink="/favoritas" routerLinkActive="active-link">Favoritos</a>
-        <a class="nav-link" routerLink="/seguimiento" routerLinkActive="active-link">Seguimiento</a>
-        <a class="nav-link" routerLink="/descubre" routerLinkActive="active-link">Descubre</a>
-        <a class="nav-link" routerLink="/actividad" routerLinkActive="active-link">Actividad</a>
+    <a class="nav-link" routerLink="/" routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a class="nav-link" routerLink="/listas" routerLinkActive="active-link">Listas</a>
+    <a class="nav-link" routerLink="/favoritas" routerLinkActive="active-link">Favoritos</a>
+    <a class="nav-link" routerLink="/seguimiento" routerLinkActive="active-link">Seguimiento</a>
+    <a class="nav-link" routerLink="/descubre" routerLinkActive="active-link">Descubre</a>
+    <a class="nav-link" routerLink="/actividad" routerLinkActive="active-link">Actividad</a>
 
-        <ng-container *ngIf="auth.hasValidSession()">
-          <button class="btn btn-danger" (click)="auth.logout()">Cerrar Sesión</button>
-        </ng-container>
+    <ng-container *ngIf="auth.hasValidSession()">
+      <button class="btn btn-danger" (click)="auth.logout()">Cerrar Sesión</button>
+    </ng-container>
   </nav>
 
   <div class="sidebar-usuario" *ngIf="auth.hasValidSession()" routerLink="/perfil">
-    <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" [src]="usuario?.fotoPerfil + '?' + usuario?.id" alt="Foto de perfil" class="sidebar-avatar" />
+    <img *ngIf="usuario?.fotoPerfil; else defaultAvatar"
+         [src]="usuario?.fotoPerfil + '?' + usuario?.id"
+         alt="Foto de perfil"
+         class="sidebar-avatar" />
     <ng-template #defaultAvatar>
-      <img src="recursos/fotoPerfil.jpg" alt="Avatar por defecto" class="sidebar-avatar" />
+      <img src="recursos/fotoPerfil.jpg" alt="Avatar" class="sidebar-avatar" />
     </ng-template>
     <span class="user-name">{{ usuario?.username || 'Usuario' }}</span>
   </div>
+
 </div>

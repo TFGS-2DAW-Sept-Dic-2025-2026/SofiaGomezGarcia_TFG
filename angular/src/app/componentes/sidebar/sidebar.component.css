@@ -1,72 +1,143 @@
-
-.sidebar{
-    position: fixed;
+.sidebar {
+  position: fixed;
 }
 
 .logo-container,
 .navbar,
 .sidebar-usuario {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .logo-container {
-    position: sticky;
-    
-    margin-bottom: 40px;
-    width: 220px;
-    text-align: center;
-    margin-left: 20px;
+  position: sticky;
+
+  margin-bottom: 40px;
+  width: 220px;
+  text-align: center;
+  margin-left: 20px;
 
 }
 
 .logo {
-    cursor: pointer;
-    max-width: 300px;
-    width: 100%;
-    height: auto;
-    
+  cursor: pointer;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+
 }
 
 .sidebar-usuario {
 
-    margin-top: 20px;
+  margin-top: 20px;
 
-    width: 220px;
-    height: 8vh;
-    background-color: #001A26;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 26px;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    z-index: 10;
-    cursor: pointer;
+  width: 220px;
+  height: 8vh;
+  background-color: #001A26;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 26px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  cursor: pointer;
 
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .navbar {
-    position: sticky;
-    
-    grid-column: 1 / 2;
-    width: 220px;
-    height: 320px;
-    background-color: #001A26;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 10px;
-    margin-left: 20px;
-    box-sizing: border-box;
-    border-radius: 26px;
+  position: sticky;
+
+  grid-column: 1 / 2;
+  width: 220px;
+  height: 320px;
+  background-color: #001A26;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+  margin-left: 20px;
+  box-sizing: border-box;
+  border-radius: 26px;
 
 }
 
 .sidebar-usuario .user-name {
-  white-space: nowrap;        
-  overflow: hidden;           
-  text-overflow: ellipsis;   
-  max-width: 120px;           
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+
+.btn-menu {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #001A26;
+  color: #80CED7;
+  padding: 10px 14px;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 10px;
+  z-index: 1001;
+  cursor: pointer;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+/* ------------------------------- */
+/* SIDEBAR RESPONSIVE */
+/* ------------------------------- */
+@media screen and (max-width: 768px) {
+
+  .btn-menu {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100vh;
+    width: 240px;
+    background-color: #001A26;
+    padding-top: 20px;
+    transition: left 0.3s ease;
+    z-index: 1002;
+    border-radius: 0 20px 20px 0;
+  }
+
+  .sidebar.abierto {
+    left: 0;
+  }
+
+
+  .sidebar+* {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-width: 240px;
+
+    transition: left 0.3s ease, transform 0.3s ease;
+  }
+
+  .sidebar.abierto {
+    width: 240px;
+  }
 }

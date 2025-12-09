@@ -63,13 +63,138 @@
   transform: translateY(-2px) scale(1.05);
 }
 
-/* .perfil-header .flex-grow-1 {
-  min-width: 0;
+
+/* ------------------ RESPONSIVE PERFIL ------------------ */
+@media (max-width: 992px) {
+  .perfil-container {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .perfil-header {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .perfil-header .avatar-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  ::ng-deep .perfil-header .avatar-marcado {
+    width: 100px;
+    height: 100px;
+  }
+
+  .perfil-header .nombre-usuario {
+    font-size: 1.4rem;
+  }
+
+  .perfil-header .text-muted {
+    font-size: 0.85rem;
+  }
+
+  .perfil-header .btn-primary {
+    padding: 5px 20px;
+    font-size: 0.9rem;
+  }
+
+  .subir-foto {
+    margin-top: 10px;
+  }
 }
 
-.perfil-header .nombre-usuario {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 250px; 
-} */
+@media (max-width: 576px) {
+  .perfil-header {
+    padding: 15px;
+  }
+
+  .perfil-header .avatar-wrapper {
+    width: 80px;
+    height: 80px;
+  }
+
+  ::ng-deep .perfil-header .avatar-marcado {
+    width: 80px;
+    height: 80px;
+  }
+
+  .perfil-header .nombre-usuario {
+    font-size: 1.2rem;
+  }
+
+  .perfil-header .text-muted {
+    font-size: 0.8rem;
+  }
+
+  .perfil-header .btn-primary {
+    padding: 4px 16px;
+    font-size: 0.85rem;
+  }
+
+  .perfil-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  .perfil-header .btn-editar {
+    padding: 5px 18px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Ajuste para móviles */
+@media (max-width: 576px) {
+  .perfil-header .btn-editar {
+    padding: 4px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+
+@media (max-width: 992px) {
+  .perfil-header {
+    flex-direction: column !important; 
+    align-items: center !important;
+    text-align: center;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .subir-foto {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .perfil-header .btn-editar {
+    padding: 5px 16px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .perfil-header {
+    padding: 15px;
+  }
+
+  .subir-foto {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .perfil-header .btn-editar {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+  }
+}

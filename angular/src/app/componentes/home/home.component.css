@@ -56,7 +56,7 @@
 }
 
 /* =========================================
-   3. BOTONES (Consolidado)
+   3. BOTONES 
    ========================================= */
 .cta-buttons {
   display: flex;
@@ -116,7 +116,7 @@
 }
 
 /* =========================================
-   4. TARJETAS DE SERIES (Optimizado y Corregido para Scroll)
+   4. TARJETAS DE SERIES 
    ========================================= */
 .series-list {
   display: grid;
@@ -253,7 +253,7 @@
 .final-cta p { font-size: 1.2rem; margin-bottom: 1rem; color: #b6d0d6; }
 
 /* =========================================
-   6. CAROUSEL & SCROLL WRAPPERS (Corregido)
+   6. CAROUSEL & SCROLL WRAPPERS 
    ========================================= */
 
 .home-section { margin: 40px 0; width: 75vw; }
@@ -732,3 +732,31 @@
 .lista-publica-card {
   cursor: pointer;
 }
+
+
+
+.top-users-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;      
+  padding-bottom: 0.5rem; 
+  -webkit-overflow-scrolling: touch; 
+}
+
+
+.lista-publica-card {
+  flex: 0 0 auto;   
+}
+
+
+.listas-grid-home {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.lista-publica-card {
+  flex: 0 0 200px; 
+}
+
