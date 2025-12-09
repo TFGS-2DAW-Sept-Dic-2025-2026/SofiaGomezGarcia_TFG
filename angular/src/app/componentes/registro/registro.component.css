@@ -11,7 +11,6 @@ label, h2{
   padding: 40px;
 }
 
-/* TARJETA */
 .auth-card {
   background-color: #001A26;
   padding: 40px 50px;
@@ -29,7 +28,7 @@ label, h2{
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* TÍTULO */
+
 .auth-title {
   text-align: center;
   margin-bottom: 25px;
@@ -38,7 +37,6 @@ label, h2{
   color: #80CED7;
 }
 
-/* INPUT GROUP */
 .auth-group {
   margin-bottom: 20px;
   display: flex;
@@ -68,14 +66,13 @@ label, h2{
   background-color: #001A26;
 }
 
-/* ERRORES */
+
 .auth-error {
   margin-top: 6px;
   color: #ff6b6b;
   font-size: 0.8rem;
 }
 
-/* BOTÓN PRINCIPAL */
 .auth-btn {
   width: 100%;
   background-color: #80CED7;
@@ -100,7 +97,7 @@ label, h2{
   cursor: not-allowed;
 }
 
-/* LINK CAMBIO LOGIN ↔ REGISTRO */
+
 .auth-switch {
   text-align: center;
   margin-top: 20px;
@@ -119,7 +116,7 @@ label, h2{
   color: #80CED7;
 }
 
-/* MENSAJE DE ERROR GENERAL */
+
 .auth-global-error {
   margin-top: 15px;
   color: #ff6b6b;
@@ -142,3 +139,25 @@ label, h2{
   width: 100%;
   height: auto;
 } 
+
+
+.password-requirements {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.password-requirements p {
+  margin: 3px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.password-requirements .ok {
+  color: #7CFC7C; 
+}
+
+.password-requirements .bad {
+  color: #ff6b6b; 
+}

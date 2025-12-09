@@ -29,6 +29,26 @@
       <div class="auth-group">
         <label class="auth-label">Contraseña</label>
         <input type="password" formControlName="password" class="auth-input" />
+        <div class="password-requirements" *ngIf="registerForm.get('password')?.touched">
+
+          <p [class.ok]="passwordHas('upper')" [class.bad]="!passwordHas('upper')">
+            * Una letra mayúscula
+          </p>
+
+          <p [class.ok]="passwordHas('number')" [class.bad]="!passwordHas('number')">
+            * Un número
+          </p>
+
+          <p [class.ok]="passwordHas('special')" [class.bad]="!passwordHas('special')">
+            * Un caracter especial
+          </p>
+
+          <p [class.ok]="passwordHas('length')" [class.bad]="!passwordHas('length')">
+            * Mínimo 6 caracteres
+          </p>
+
+        </div>
+
         <div class="auth-error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
           Mínimo 6 caracteres
         </div>

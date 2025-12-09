@@ -24,7 +24,11 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        this.passwordValidator
+      ]]
     });
   }
 
@@ -35,7 +39,7 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
-        console.log('✅ Registro exitoso', res);
+        console.log('Registro exitoso', res);
 
         // Guarda token + user en el auth service
         if (this.authService['handleSuccessfulAuth']) {
@@ -50,4 +54,30 @@ export class RegisterComponent implements OnInit {
       }
     });
   }
+
+  passwordValidator(control: any) {
+    const value = control.value || '';
+
+    const hasUpper = /[A-Z]/.test(value);
+    const hasNumber = /\d/.test(value);
+    const hasSpecial = /[\W_]/.test(value);
+    const minLength = value.length >= 6;
+
+    return hasUpper && hasNumber && hasSpecial && minLength
+      ? null
+      : { weakPassword: true };
+  }
+
+  passwordHas(type: string) {
+  const value = this.registerForm.get('password')?.value || '';
+
+  switch (type) {
+    case 'upper': return /[A-Z]/.test(value);
+    case 'number': return /\d/.test(value);
+    case 'special': return /[\W_]/.test(value);
+    case 'length': return value.length >= 6;
+    default: return false;
+  }
+}
+
 }
