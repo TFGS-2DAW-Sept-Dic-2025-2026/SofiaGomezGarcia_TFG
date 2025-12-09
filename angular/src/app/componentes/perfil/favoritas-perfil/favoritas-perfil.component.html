@@ -4,9 +4,12 @@
   <div class="favoritas-lista">
     <ng-container *ngIf="favoritas.length > 0; else sinFavoritas">
       <div *ngFor="let serie of favoritas" class="favorita-card">
-        <img [src]="'https://image.tmdb.org/t/p/w200' + serie.poster_path" [alt]="serie.name" />
-        <p>{{ serie.name }}</p>
-      </div>
+  <a [routerLink]="['/serie', serie.id]">
+    <img [src]="'https://image.tmdb.org/t/p/w200' + serie.poster_path" [alt]="serie.name" />
+  </a>
+  <p>{{ serie.name }}</p>
+</div>
+
     </ng-container>
 
     <ng-template #sinFavoritas>

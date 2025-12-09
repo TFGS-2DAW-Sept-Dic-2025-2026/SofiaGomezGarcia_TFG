@@ -12,6 +12,7 @@ import { SeguimientoComponent } from './componentes/seguimiento/seguimiento.comp
 import { DescubreComponent } from './componentes/descubre/descubre.component';
 import { PerfilExternoComponent } from './componentes/perfil-externo/perfil-externo.component';
 import { ActividadComponent } from './componentes/actividad/actividad.component';
+import { TopListasComponent } from './componentes/top-listas/top-listas.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -26,5 +27,7 @@ export const routes: Routes = [
     { path: 'descubre', component:DescubreComponent, canActivate: [authGuard] },
     { path: 'seguimiento', component: SeguimientoComponent, canActivate: [authGuard] },
     { path: 'actividad', component:ActividadComponent, canActivate: [authGuard] },
+    { path: 'listas-publicas', component: TopListasComponent, canActivate: [authGuard] },
+
 
 ];

@@ -284,7 +284,7 @@ export default {
                 .populate('usuarioCreador', 'username fotoPerfil')
                 .populate('series', '_id')
                 .sort({ likes: -1 })
-                .limit(3);
+                .limit(50);
 
             const listasHome = listas.map(l => ({
                 id: l._id,

@@ -102,7 +102,7 @@
 
 
 
-        <!-- ⭐ DESCUBRIR SERIES -->
+        <!-- DESCUBRIR SERIES -->
         <section class="home-section">
           <div class="section-header">
             <h2>Descubrir nuevas series</h2>
@@ -139,7 +139,7 @@
         </section>
 
 
-        <!-- ⭐ ÚLTIMAS RESEÑAS -->
+        <!--  ÚLTIMAS RESEÑAS -->
         <section class="home-section">
           <div class="section-header">
             <h2>Últimas reseñas</h2>
@@ -148,7 +148,6 @@
           <div class="reviews-row">
             <div class="review-card" *ngFor="let r of ultimasOpiniones">
 
-              <!-- Perfil del usuario y puntuación -->
               <div class="review-user-rating" (click)="irPerfil(r.idUsuario?.username)" style="cursor: pointer;">
                 <div class="review-user">
                   <img [src]="r.idUsuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar" />
@@ -159,10 +158,8 @@
                 </div>
               </div>
 
-              <!-- Opinión -->
               <p class="review-text">"{{ r.opinion }}"</p>
 
-              <!-- Serie -->
               <span class="review-serie" [routerLink]="['/serie', r.idSerie]"
                 style="cursor: pointer; text-decoration: none;">
                 {{ r.nombreSerie }}
@@ -175,9 +172,9 @@
 
 
 
-        <!-- ⭐ USUARIO CON MÁS RESEÑAS -->
+        <!--  USUARIO CON MÁS RESEÑAS -->
         <section class="home-section">
-          <div class="section-header">
+          <div class="section-header" id="top-usuarios">
             <h2>Usuarios con más reseñas</h2>
           </div>
 
@@ -196,7 +193,7 @@
         </section>
 
 
-        <!-- ⭐ LISTAS PÚBLICAS CON MÁS LIKES -->
+        <!-- LISTAS PÚBLICAS CON MÁS LIKES -->
         <section class="home-section">
           <div class="section-header">
             <h2>Listas públicas con más likes</h2>
@@ -204,7 +201,7 @@
           </div>
 
           <div class="listas-grid-home">
-            <div class="lista-publica-card" *ngFor="let l of listasPublicasPopulares" (click)="verLista(l.id)">
+            <div class="lista-publica-card" *ngFor="let l of listasPublicasPopulares | slice:0:3" (click)="verLista(l.id)">
               <div class="lista-usuario" (click)="irPerfil(l.usuario?.username); $event.stopPropagation()">
                 <img [src]="l.usuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar-small" />
                 <span class="username">{{ l.usuario?.username || 'Usuario' }}</span>
@@ -276,10 +273,7 @@
           </div>
         </div>
 
-        <!-- <div class="final-cta">
-          <p>Únete gratis y empieza a descubrir tu próxima serie favorita</p>
-          <button routerLink="/register" class="btn-primary">Comenzar</button>
-        </div> -->
+       
 
       </section>
     </ng-template>

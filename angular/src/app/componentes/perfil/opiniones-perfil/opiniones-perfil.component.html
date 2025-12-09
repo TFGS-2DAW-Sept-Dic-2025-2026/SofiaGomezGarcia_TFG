@@ -1,0 +1,39 @@
+<div class="actividad-page">
+    <div class="actividad-container">
+        <h2 class="actividad-titulo">Reseñas</h2>
+
+        <div *ngIf="opinionesConSeries.length === 0" class="sin-actividad">
+            Este usuario aún no ha publicado reseñas.
+        </div>
+
+        <div *ngFor="let opinion of opinionesConSeries" class="actividad-item">
+
+            <div class="actividad-contenido-feed">
+                <img *ngIf="opinion.serie?.poster_path"
+                    [src]="'https://image.tmdb.org/t/p/w200' + opinion.serie.poster_path" [alt]="opinion.serie?.name"
+                    class="actividad-serie-poster">
+
+                <div class="actividad-info-feed">
+                    <div class="actividad-info-texto">
+                        <a [routerLink]="['/serie', opinion.serie?.id]" class="titulo-serie-feed">
+                            {{ opinion.serie?.name }}
+                        </a>
+                        <p class="detalle-feed-titulo"><strong>{{ opinion.titulo }}</strong></p>
+                        <p class="detalle-feed">{{ opinion.opinion }}</p>
+                    </div>
+
+                    <div class="actividad-info-footer">
+                        <p class="detalle-feed estrellas">
+                            <span *ngFor="let s of [].constructor(opinion.estrellas)">★</span>
+                            <span *ngFor="let s of [].constructor(5 - opinion.estrellas)">☆</span>
+                        </p>
+                        <span class="fecha">{{ opinion.fecha | date:'short' }}</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

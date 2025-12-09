@@ -1,0 +1,25 @@
+<app-layout>
+  <main class="home">
+    <div class="page-container">
+      <section class="home-section">
+        <div class="section-header">
+          <h2>Top 50 listas públicas con más likes</h2>
+        </div>
+
+        <div class="listas-grid-home">
+          <div class="lista-publica-card" *ngFor="let l of listasPopulares" (click)="verLista(l.id)">
+            <div class="lista-usuario" (click)="irPerfil(l.usuario?.username); $event.stopPropagation()">
+              <img [src]="l.usuario?.fotoPerfil || 'recursos/fotoPerfil.jpg'" class="avatar-small" />
+              <span class="username">{{ l.usuario?.username || 'Usuario' }}</span>
+            </div>
+
+            <h4>{{ l.nombre }}</h4>
+            <h5>{{ l.descripcion }}</h5>
+            <p class="series-count">{{ l.seriesCount }} series</p>
+            <p class="likes">❤️ {{ l.likes }} likes</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</app-layout>

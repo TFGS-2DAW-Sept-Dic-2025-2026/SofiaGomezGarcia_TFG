@@ -9,10 +9,11 @@ import { ListasPublicasPerfilComponent } from '../perfil/listas-publicas-perfil/
 import { FavoritasPerfilComponent } from '../perfil/favoritas-perfil/favoritas-perfil.component';
 import { PerfilService } from '../../servicios/perfil.service';
 import { AuthService } from '../../servicios/auth.service';
+import { OpinionesPerfilComponent } from '../perfil/opiniones-perfil/opiniones-perfil.component';
 
 @Component({
   selector: 'app-perfil-externo',
-  imports: [FormsModule, CommonModule, LayoutComponent, ActividadPerfilComponent, ListasPublicasPerfilComponent, FavoritasPerfilComponent],
+  imports: [FormsModule, CommonModule, LayoutComponent, ActividadPerfilComponent, ListasPublicasPerfilComponent, FavoritasPerfilComponent, OpinionesPerfilComponent],
   templateUrl: './perfil-externo.component.html',
   styleUrl: './perfil-externo.component.css'
 })
