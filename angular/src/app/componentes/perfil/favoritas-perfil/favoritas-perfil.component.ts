@@ -114,7 +114,7 @@ export class FavoritasPerfilComponent implements OnInit {
     const index = this.favoritasSeleccionadas.findIndex(s => s.id === serie.id);
     if (index >= 0) {
       this.favoritasSeleccionadas.splice(index, 1);
-    } else if (this.favoritasSeleccionadas.length < 4) { //maximo 4 favoritas
+    } else if (this.favoritasSeleccionadas.length < 5) { 
       this.favoritasSeleccionadas.push(serie);
     }
   }
