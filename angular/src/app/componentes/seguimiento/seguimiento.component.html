@@ -18,14 +18,14 @@
         <div class="serie-info">
           <h3>{{ serie.name }}</h3>
 
-          
+
           <p *ngIf="serie.seguimiento.estado === 'siguiendo'">
-            Siguiente capítulo: 
+            Siguiente capítulo:
             T{{ serie.seguimiento.ultimoCapitulo?.temporada || 1 }}
             E{{ serie.seguimiento.ultimoCapitulo?.numero || 0 }}
           </p>
 
-          
+
           <p *ngIf="serie.seguimiento.estado === 'siguiendo' && serie.siguienteCapitulo" class="serie-titulo">
             {{ serie.siguienteCapitulo }}
           </p>
@@ -40,8 +40,13 @@
 
           <button *ngIf="serie.seguimiento.estado !== 'completada'" class="btn-marcar"
             (click)="marcarCapituloVisto(serie)">
-            Marcar como visto
+
+            {{ serie.seguimiento.estado === 'noComenzada'
+            ? 'Empezar serie'
+            : 'Marcar como visto' }}
+
           </button>
+
         </div>
       </div>
     </div>

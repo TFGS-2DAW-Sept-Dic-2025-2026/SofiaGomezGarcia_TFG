@@ -20,6 +20,7 @@ router.get("/serie/:id", apiController_1.default.obtenerSeriePorID);
 router.get('/serie/:id/temporada/:seasonNumber', apiController_1.default.obtenerTemporada);
 router.get("/serie/:id/trailer", apiController_1.default.obtenerTrailer);
 router.get("/tendencias", apiController_1.default.obtenerTendencias);
+router.get("/serie/:id/proveedores", apiController_1.default.obtenerProveedoresPorSerie);
 //Rutas para favoritos
 router.post("/favoritas/:serieId", authMiddleware_1.authMiddleware, favoritosController_1.default.agregarFavorito);
 router.get("/favoritas", authMiddleware_1.authMiddleware, favoritosController_1.default.obtenerFavoritos);
@@ -34,7 +35,6 @@ router.delete("/listas/:id", listasController_1.default.eliminarLista);
 router.get('/listas/conEstado/:idSerie', listasController_1.default.obtenerListasConEstado);
 router.get('/usuarios/:username/listasPublicas', listasController_1.default.obtenerListasPublicasPorUsername);
 router.get('/usuarios/:id', usuariosController_1.default.obtenerUsuariosByID);
-router.get('/usuario/:id/lista', listasController_1.default.obtenerUsuarioPorID);
 router.post("/listas/:id/like", listasController_1.default.darLikeLista);
 router.get("/listas/publicas/populares", listasController_1.default.obtenerListasPublicasPopulares);
 //Rutas para componente descubrir series

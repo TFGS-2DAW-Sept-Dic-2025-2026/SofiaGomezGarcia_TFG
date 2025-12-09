@@ -19,7 +19,20 @@
         <div class="serie-meta">
           <span><strong>Fecha de estreno:</strong> {{ serie.first_air_date }}</span>
           <span><strong>Puntuación:</strong> {{ serie.vote_average }} ⭐</span>
+          <span><strong>Temporadas:</strong> {{ serie.number_of_seasons }}</span>
+
+          <span *ngIf="proveedoresTexto">
+            <strong>Disponible en:</strong> {{ proveedoresTexto }}
+          </span>
+
+          <span *ngIf="generosTexto">
+            <strong>Géneros:</strong> {{ generosTexto }}
+          </span>
+
+
         </div>
+
+
 
         <div class="mt-4 btn-group" *ngIf="auth.hasValidSession()">
           <button class="btn" (click)="abrirTrailer()">

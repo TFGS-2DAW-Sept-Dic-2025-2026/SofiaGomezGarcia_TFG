@@ -59,6 +59,9 @@ export class seriesService {
     return this.http.get<any[]>(`${this.apiUrl}/series/populares`);
   }
 
+  getProveedoresPorSerie(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/serie/${id}/proveedores`);
+  }
 
 
 }

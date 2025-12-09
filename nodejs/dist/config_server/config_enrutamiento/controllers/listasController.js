@@ -158,19 +158,6 @@ exports.default = {
             res.status(500).json({ msg: 'Error al obtener la lista' });
         }
     }),
-    obtenerUsuarioPorID: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const { id } = req.params; // usar el id que viene en la URL
-            const user = yield usuario_1.default.findById(id).select("-passwordHash -refreshToken -__v");
-            if (!user)
-                return res.status(404).json({ msg: "Usuario no encontrado" });
-            res.status(200).json(user);
-        }
-        catch (error) {
-            console.error("Error obteniendo usuario por ID:", error);
-            res.status(500).json({ msg: "Error en el servidor", error });
-        }
-    }),
     obtenerListasConEstado: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {

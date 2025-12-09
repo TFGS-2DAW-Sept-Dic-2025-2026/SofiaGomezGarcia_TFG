@@ -19,6 +19,7 @@ router.get("/serie/:id", apiController.obtenerSeriePorID);
 router.get('/serie/:id/temporada/:seasonNumber', apiController.obtenerTemporada);
 router.get("/serie/:id/trailer", apiController.obtenerTrailer);
 router.get("/tendencias", apiController.obtenerTendencias);
+router.get("/serie/:id/proveedores", apiController.obtenerProveedoresPorSerie);
 
 //Rutas para favoritos
 
@@ -47,6 +48,8 @@ router.get("/listas/publicas/populares", listasController.obtenerListasPublicasP
 router.get('/series/descubrir', apiController.descubrirSeries);
 router.get('/series/generos', apiController.obtenerGeneros);
 router.get('/series/proveedores', apiController.obtenerProveedores);
+
+
 
 // Rutas para seguimiento de series
 

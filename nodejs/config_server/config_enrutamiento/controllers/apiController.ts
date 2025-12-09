@@ -111,6 +111,27 @@ export default {
             res.status(500).json({ error: "Error obteniendo proveedores" });
         }
     },
+    obtenerProveedoresPorSerie: async (req: Request, res: Response) => {
+        try {
+            const id = req.params.id;
+            const url = `${BASE_URL}/tv/${id}/watch/providers?api_key=${API_KEY}`;
+
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Error obteniendo proveedores por serie");
+
+            const data = await response.json();
+
+           
+            const providers = data.results?.ES?.flatrate || [];
+
+            res.json(providers);
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Error obteniendo proveedores por serie" });
+        }
+    },
+
     descubrirSeries: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { query, with_genres, with_original_language, with_watch_providers, page } = req.query;

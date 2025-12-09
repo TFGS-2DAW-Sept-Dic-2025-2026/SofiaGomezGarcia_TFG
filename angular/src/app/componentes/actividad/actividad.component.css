@@ -130,6 +130,20 @@ a {
   text-decoration: none;
 }
 
+.actividad-info-feed {
+  flex: 1;
+  min-width: 0; 
+}
+
+.detalle-feed,
+.detalle-feed-titulo {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+}
+
+
 
 @media (max-width: 768px) {
   .actividad-item {

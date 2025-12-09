@@ -108,6 +108,23 @@ exports.default = {
             res.status(500).json({ error: "Error obteniendo proveedores" });
         }
     }),
+    obtenerProveedoresPorSerie: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b;
+        try {
+            const id = req.params.id;
+            const url = `${BASE_URL}/tv/${id}/watch/providers?api_key=${API_KEY}`;
+            const response = yield fetch(url);
+            if (!response.ok)
+                throw new Error("Error obteniendo proveedores por serie");
+            const data = yield response.json();
+            const providers = ((_b = (_a = data.results) === null || _a === void 0 ? void 0 : _a.ES) === null || _b === void 0 ? void 0 : _b.flatrate) || [];
+            res.json(providers);
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Error obteniendo proveedores por serie" });
+        }
+    }),
     descubrirSeries: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { query, with_genres, with_original_language, with_watch_providers, page } = req.query;

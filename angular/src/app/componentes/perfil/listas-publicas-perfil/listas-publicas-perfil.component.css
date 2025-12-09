@@ -20,7 +20,7 @@
 }
 
 .lista-card-publica {
-  background-color: #002533; /* distinto del fondo del contenedor */
+  background-color: #002533; 
   border-radius: 16px;
   padding: 18px;
   box-shadow: 0 0 8px rgba(0,0,0,0.3);
@@ -217,4 +217,21 @@ button.cancelar {
 
 .lista-item.contiene-serie i {
   color: #ccc;
+}
+
+.lista-item.seleccionada {
+  background: #004960 !important;
+  border: 1px solid #80ced7 !important;
+  transform: scale(1.03);
+  position: relative;
+}
+
+
+.lista-item.seleccionada::after {
+  position: absolute;
+  right: 15px;
+  font-size: 1.4rem;
+  color: #80ced7;
+  font-weight: bold;
+  transition: 0.2s ease;
 }

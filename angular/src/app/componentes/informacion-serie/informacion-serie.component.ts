@@ -37,9 +37,14 @@ export class InformacionSerieComponent implements OnInit {
   youtubeURL!: SafeResourceUrl | null;
 
   listasUsuario: any[] = [];
-  showListMenu = false;
+  proveedores: any[] = [];
+  generos: any[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  showListMenu = false;
+  proveedoresTexto = '';
+  generosTexto = '';
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -47,6 +52,22 @@ export class InformacionSerieComponent implements OnInit {
       this.seriesService.getSeriesByID(id).subscribe({
         next: (data) => {
           this.serie = data;
+          this.generos = data.genres || [];
+          this.seriesService.getProveedoresPorSerie(id).subscribe({
+            next: (providers: any[]) => {
+              this.proveedores = providers;
+              if (providers?.length) {
+                this.proveedoresTexto = providers.map((p: any) => p.provider_name).join(', ');
+              }
+            }
+            ,
+            error: (err) => console.error('Error cargando proveedores:', err)
+          });
+
+
+          if (this.generos?.length) {
+            this.generosTexto = this.generos.map(g => g.name).join(', ');
+          }
           this.checkIfFavorite(id);
           this.checkIfFollowing(this.serie.id || this.serie._id);
         },
