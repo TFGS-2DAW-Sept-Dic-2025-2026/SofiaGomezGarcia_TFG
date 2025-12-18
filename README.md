@@ -34,6 +34,14 @@ Esta carencia me llevó a considerar esta idea como una oportunidad ideal para d
 
 <hr>
 
+## Demo de la aplicación
+
+[![Demo de la aplicación](https://img.youtube.com/vi/jw2OtHrI2HA/0.jpg)](https://youtu.be/jw2OtHrI2HA)
+
+En este vídeo se muestra una demo funcional de la aplicación, recorriendo el flujo principal y las características más importantes del proyecto.
+
+
+
 <h2>3. Análisis y diseño del proyecto</h2>
 
 <h3>3.1 Descripción de la arquitectura web</h3>
